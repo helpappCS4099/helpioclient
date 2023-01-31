@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5C50CBEC2989A3CE008AEDA7 /* Help_AppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CBEB2989A3CE008AEDA7 /* Help_AppApp.swift */; };
+		5C50CBEC2989A3CE008AEDA7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CBEB2989A3CE008AEDA7 /* AppDelegate.swift */; };
 		5C50CBEE2989A3CE008AEDA7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CBED2989A3CE008AEDA7 /* ContentView.swift */; };
 		5C50CBF02989A3D0008AEDA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C50CBEF2989A3D0008AEDA7 /* Assets.xcassets */; };
 		5C50CBF32989A3D0008AEDA7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C50CBF22989A3D0008AEDA7 /* Preview Assets.xcassets */; };
 		5C50CBFD2989A3D1008AEDA7 /* Help_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CBFC2989A3D1008AEDA7 /* Help_AppTests.swift */; };
 		5C50CC072989A3D1008AEDA7 /* Help_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CC062989A3D1008AEDA7 /* Help_AppUITests.swift */; };
 		5C50CC092989A3D1008AEDA7 /* Help_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CC082989A3D1008AEDA7 /* Help_AppUITestsLaunchTests.swift */; };
+		5C50CC1E2989A6B8008AEDA7 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CC1D2989A6B8008AEDA7 /* Config.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,7 +36,7 @@
 
 /* Begin PBXFileReference section */
 		5C50CBE82989A3CE008AEDA7 /* Help App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Help App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5C50CBEB2989A3CE008AEDA7 /* Help_AppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Help_AppApp.swift; sourceTree = "<group>"; };
+		5C50CBEB2989A3CE008AEDA7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C50CBED2989A3CE008AEDA7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		5C50CBEF2989A3D0008AEDA7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5C50CBF22989A3D0008AEDA7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -44,6 +45,9 @@
 		5C50CC022989A3D1008AEDA7 /* Help AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Help AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C50CC062989A3D1008AEDA7 /* Help_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Help_AppUITests.swift; sourceTree = "<group>"; };
 		5C50CC082989A3D1008AEDA7 /* Help_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Help_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		5C50CC152989A443008AEDA7 /* Help-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Help-App-Info.plist"; sourceTree = SOURCE_ROOT; };
+		5C50CC162989A466008AEDA7 /* Help App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Help App.entitlements"; sourceTree = "<group>"; };
+		5C50CC1D2989A6B8008AEDA7 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,8 +98,13 @@
 		5C50CBEA2989A3CE008AEDA7 /* Help App */ = {
 			isa = PBXGroup;
 			children = (
-				5C50CBEB2989A3CE008AEDA7 /* Help_AppApp.swift */,
-				5C50CBED2989A3CE008AEDA7 /* ContentView.swift */,
+				5C50CC1C2989A68E008AEDA7 /* Repositories */,
+				5C50CC1B2989A686008AEDA7 /* Views */,
+				5C50CC1A2989A5F5008AEDA7 /* Interactors */,
+				5C50CC192989A5E8008AEDA7 /* Utility */,
+				5C50CC162989A466008AEDA7 /* Help App.entitlements */,
+				5C50CC152989A443008AEDA7 /* Help-App-Info.plist */,
+				5C50CC172989A5C4008AEDA7 /* ContainerViews */,
 				5C50CBEF2989A3D0008AEDA7 /* Assets.xcassets */,
 				5C50CBF12989A3D0008AEDA7 /* Preview Content */,
 			);
@@ -125,6 +134,44 @@
 				5C50CC082989A3D1008AEDA7 /* Help_AppUITestsLaunchTests.swift */,
 			);
 			path = "Help AppUITests";
+			sourceTree = "<group>";
+		};
+		5C50CC172989A5C4008AEDA7 /* ContainerViews */ = {
+			isa = PBXGroup;
+			children = (
+				5C50CBED2989A3CE008AEDA7 /* ContentView.swift */,
+				5C50CBEB2989A3CE008AEDA7 /* AppDelegate.swift */,
+			);
+			path = ContainerViews;
+			sourceTree = "<group>";
+		};
+		5C50CC192989A5E8008AEDA7 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				5C50CC1D2989A6B8008AEDA7 /* Config.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		5C50CC1A2989A5F5008AEDA7 /* Interactors */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Interactors;
+			sourceTree = "<group>";
+		};
+		5C50CC1B2989A686008AEDA7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5C50CC1C2989A68E008AEDA7 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Repositories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,7 +305,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C50CBEE2989A3CE008AEDA7 /* ContentView.swift in Sources */,
-				5C50CBEC2989A3CE008AEDA7 /* Help_AppApp.swift in Sources */,
+				5C50CBEC2989A3CE008AEDA7 /* AppDelegate.swift in Sources */,
+				5C50CC1E2989A6B8008AEDA7 /* Config.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,23 +462,26 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Help App/Help App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Help App/Preview Content\"";
 				DEVELOPMENT_TEAM = T2CYFJJCXQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Help-App-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "helpapp.ios.Help-App";
+				PRODUCT_BUNDLE_IDENTIFIER = helpapp.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -443,23 +494,26 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Help App/Help App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Help App/Preview Content\"";
 				DEVELOPMENT_TEAM = T2CYFJJCXQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Help-App-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "helpapp.ios.Help-App";
+				PRODUCT_BUNDLE_IDENTIFIER = helpapp.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
