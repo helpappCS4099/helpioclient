@@ -10,6 +10,19 @@
 		5C2E4DDB298B2931004A49B4 /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E4DDA298B2931004A49B4 /* Icons.swift */; };
 		5C2E4DDD298B2947004A49B4 /* Gradients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E4DDC298B2947004A49B4 /* Gradients.swift */; };
 		5C2E4DDF298B299C004A49B4 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E4DDE298B299C004A49B4 /* Colors.swift */; };
+		5C2E4DE1298B3075004A49B4 /* Fields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E4DE0298B3075004A49B4 /* Fields.swift */; };
+		5C2E4DE5298B35B3004A49B4 /* UISizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E4DE4298B35B3004A49B4 /* UISizes.swift */; };
+		5C2E4DE8298B3E5F004A49B4 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E4DE7298B3E5F004A49B4 /* RootView.swift */; };
+		5C2E4DED298B3ECE004A49B4 /* HomeTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E4DEC298B3ECE004A49B4 /* HomeTabView.swift */; };
+		5C2E4DEF298B3EDA004A49B4 /* FriendsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E4DEE298B3EDA004A49B4 /* FriendsTabView.swift */; };
+		5C2E4DF1298B3EE4004A49B4 /* AccountTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E4DF0298B3EE4004A49B4 /* AccountTabView.swift */; };
+		5C2E4DF3298B47FD004A49B4 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E4DF2298B47FD004A49B4 /* Buttons.swift */; };
+		5C2E4DF6298B4ADE004A49B4 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E4DF5298B4ADE004A49B4 /* AppState.swift */; };
+		5C2E4DF8298B4CE5004A49B4 /* AuthRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E4DF7298B4CE5004A49B4 /* AuthRootView.swift */; };
+		5C2E4DFA298BBD0D004A49B4 /* AuthenticationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E4DF9298BBD0D004A49B4 /* AuthenticationInteractor.swift */; };
+		5C2E4DFC298BBF5A004A49B4 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E4DFB298BBF5A004A49B4 /* Enums.swift */; };
+		5C2E4DFE298BC1FC004A49B4 /* AuthenticationOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E4DFD298BC1FC004A49B4 /* AuthenticationOperationsTest.swift */; };
+		5C2E4E00298BC677004A49B4 /* AppStateInitialiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2E4DFF298BC677004A49B4 /* AppStateInitialiser.swift */; };
 		5C50CBEC2989A3CE008AEDA7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CBEB2989A3CE008AEDA7 /* AppDelegate.swift */; };
 		5C50CBEE2989A3CE008AEDA7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CBED2989A3CE008AEDA7 /* ContentView.swift */; };
 		5C50CBF02989A3D0008AEDA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C50CBEF2989A3D0008AEDA7 /* Assets.xcassets */; };
@@ -41,6 +54,19 @@
 		5C2E4DDA298B2931004A49B4 /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 		5C2E4DDC298B2947004A49B4 /* Gradients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gradients.swift; sourceTree = "<group>"; };
 		5C2E4DDE298B299C004A49B4 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		5C2E4DE0298B3075004A49B4 /* Fields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fields.swift; sourceTree = "<group>"; };
+		5C2E4DE4298B35B3004A49B4 /* UISizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISizes.swift; sourceTree = "<group>"; };
+		5C2E4DE7298B3E5F004A49B4 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		5C2E4DEC298B3ECE004A49B4 /* HomeTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabView.swift; sourceTree = "<group>"; };
+		5C2E4DEE298B3EDA004A49B4 /* FriendsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsTabView.swift; sourceTree = "<group>"; };
+		5C2E4DF0298B3EE4004A49B4 /* AccountTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTabView.swift; sourceTree = "<group>"; };
+		5C2E4DF2298B47FD004A49B4 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
+		5C2E4DF5298B4ADE004A49B4 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		5C2E4DF7298B4CE5004A49B4 /* AuthRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRootView.swift; sourceTree = "<group>"; };
+		5C2E4DF9298BBD0D004A49B4 /* AuthenticationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationInteractor.swift; sourceTree = "<group>"; };
+		5C2E4DFB298BBF5A004A49B4 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		5C2E4DFD298BC1FC004A49B4 /* AuthenticationOperationsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationOperationsTest.swift; sourceTree = "<group>"; };
+		5C2E4DFF298BC677004A49B4 /* AppStateInitialiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateInitialiser.swift; sourceTree = "<group>"; };
 		5C50CBE82989A3CE008AEDA7 /* Help App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Help App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C50CBEB2989A3CE008AEDA7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C50CBED2989A3CE008AEDA7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -87,8 +113,47 @@
 				5C2E4DDA298B2931004A49B4 /* Icons.swift */,
 				5C2E4DDC298B2947004A49B4 /* Gradients.swift */,
 				5C2E4DDE298B299C004A49B4 /* Colors.swift */,
+				5C2E4DE0298B3075004A49B4 /* Fields.swift */,
+				5C2E4DE4298B35B3004A49B4 /* UISizes.swift */,
+				5C2E4DF2298B47FD004A49B4 /* Buttons.swift */,
 			);
 			path = utitlity;
+			sourceTree = "<group>";
+		};
+		5C2E4DE6298B3E31004A49B4 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		5C2E4DE9298B3E9F004A49B4 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		5C2E4DEA298B3EAE004A49B4 /* Friends */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Friends;
+			sourceTree = "<group>";
+		};
+		5C2E4DEB298B3EB7004A49B4 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		5C2E4DF4298B4AD4004A49B4 /* State */ = {
+			isa = PBXGroup;
+			children = (
+				5C2E4DF5298B4ADE004A49B4 /* AppState.swift */,
+			);
+			path = State;
 			sourceTree = "<group>";
 		};
 		5C50CBDF2989A3CE008AEDA7 = {
@@ -114,13 +179,14 @@
 		5C50CBEA2989A3CE008AEDA7 /* Help App */ = {
 			isa = PBXGroup;
 			children = (
+				5C50CC172989A5C4008AEDA7 /* ContainerViews */,
+				5C2E4DF4298B4AD4004A49B4 /* State */,
 				5C50CC1C2989A68E008AEDA7 /* Repositories */,
 				5C50CC1B2989A686008AEDA7 /* Views */,
 				5C50CC1A2989A5F5008AEDA7 /* Interactors */,
 				5C50CC192989A5E8008AEDA7 /* Utility */,
 				5C50CC162989A466008AEDA7 /* Help App.entitlements */,
 				5C50CC152989A443008AEDA7 /* Help-App-Info.plist */,
-				5C50CC172989A5C4008AEDA7 /* ContainerViews */,
 				5C50CBEF2989A3D0008AEDA7 /* Assets.xcassets */,
 				5C50CBF12989A3D0008AEDA7 /* Preview Content */,
 			);
@@ -139,6 +205,8 @@
 			isa = PBXGroup;
 			children = (
 				5C50CBFC2989A3D1008AEDA7 /* Help_AppTests.swift */,
+				5C2E4DFD298BC1FC004A49B4 /* AuthenticationOperationsTest.swift */,
+				5C2E4DFF298BC677004A49B4 /* AppStateInitialiser.swift */,
 			);
 			path = "Help AppTests";
 			sourceTree = "<group>";
@@ -155,8 +223,13 @@
 		5C50CC172989A5C4008AEDA7 /* ContainerViews */ = {
 			isa = PBXGroup;
 			children = (
+				5C2E4DE7298B3E5F004A49B4 /* RootView.swift */,
+				5C2E4DF7298B4CE5004A49B4 /* AuthRootView.swift */,
 				5C50CBED2989A3CE008AEDA7 /* ContentView.swift */,
 				5C50CBEB2989A3CE008AEDA7 /* AppDelegate.swift */,
+				5C2E4DEC298B3ECE004A49B4 /* HomeTabView.swift */,
+				5C2E4DEE298B3EDA004A49B4 /* FriendsTabView.swift */,
+				5C2E4DF0298B3EE4004A49B4 /* AccountTabView.swift */,
 			);
 			path = ContainerViews;
 			sourceTree = "<group>";
@@ -165,6 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				5C50CC1D2989A6B8008AEDA7 /* Config.swift */,
+				5C2E4DFB298BBF5A004A49B4 /* Enums.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -172,6 +246,7 @@
 		5C50CC1A2989A5F5008AEDA7 /* Interactors */ = {
 			isa = PBXGroup;
 			children = (
+				5C2E4DF9298BBD0D004A49B4 /* AuthenticationInteractor.swift */,
 			);
 			path = Interactors;
 			sourceTree = "<group>";
@@ -179,6 +254,10 @@
 		5C50CC1B2989A686008AEDA7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5C2E4DEB298B3EB7004A49B4 /* Account */,
+				5C2E4DEA298B3EAE004A49B4 /* Friends */,
+				5C2E4DE9298B3E9F004A49B4 /* Request */,
+				5C2E4DE6298B3E31004A49B4 /* Authentication */,
 				5C2E4DD9298B2913004A49B4 /* utitlity */,
 			);
 			path = Views;
@@ -323,8 +402,19 @@
 			files = (
 				5C2E4DDB298B2931004A49B4 /* Icons.swift in Sources */,
 				5C2E4DDF298B299C004A49B4 /* Colors.swift in Sources */,
+				5C2E4DF8298B4CE5004A49B4 /* AuthRootView.swift in Sources */,
+				5C2E4DF1298B3EE4004A49B4 /* AccountTabView.swift in Sources */,
+				5C2E4DFA298BBD0D004A49B4 /* AuthenticationInteractor.swift in Sources */,
+				5C2E4DFC298BBF5A004A49B4 /* Enums.swift in Sources */,
+				5C2E4DF3298B47FD004A49B4 /* Buttons.swift in Sources */,
 				5C2E4DDD298B2947004A49B4 /* Gradients.swift in Sources */,
 				5C50CBEE2989A3CE008AEDA7 /* ContentView.swift in Sources */,
+				5C2E4DE5298B35B3004A49B4 /* UISizes.swift in Sources */,
+				5C2E4DE8298B3E5F004A49B4 /* RootView.swift in Sources */,
+				5C2E4DE1298B3075004A49B4 /* Fields.swift in Sources */,
+				5C2E4DF6298B4ADE004A49B4 /* AppState.swift in Sources */,
+				5C2E4DEF298B3EDA004A49B4 /* FriendsTabView.swift in Sources */,
+				5C2E4DED298B3ECE004A49B4 /* HomeTabView.swift in Sources */,
 				5C50CBEC2989A3CE008AEDA7 /* AppDelegate.swift in Sources */,
 				5C50CC1E2989A6B8008AEDA7 /* Config.swift in Sources */,
 			);
@@ -334,7 +424,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C2E4E00298BC677004A49B4 /* AppStateInitialiser.swift in Sources */,
 				5C50CBFD2989A3D1008AEDA7 /* Help_AppTests.swift in Sources */,
+				5C2E4DFE298BC1FC004A49B4 /* AuthenticationOperationsTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

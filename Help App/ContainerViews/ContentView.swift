@@ -8,15 +8,30 @@
 import SwiftUI
 
 struct ContentView: View {
+        
     var body: some View {
-        VStack {
-            CategoryIcons.trauma
-                .frame(width: 200, height: 200)
-                .background(AccountGradients.aquarium)
+        TabView {
+            HomeTabView()
+                .tabItem {
+                    Label("Home", systemImage: "house.fill")
+                }
             
-            Text("Hello, world!")
+            FriendsTabView()
+                .tabItem {
+                    Label("Friends", systemImage: "person.2.fill")
+                }
+            
+            AccountTabView()
+                .tabItem {
+                    Label("Account", systemImage: "person.circle.fill")
+                }
         }
-        .padding()
+        .onAppear {
+            //set the tab bar appearance to default
+            let tabBarAppearance = UITabBarAppearance()
+            tabBarAppearance.configureWithDefaultBackground()
+            UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+        }
     }
 }
 

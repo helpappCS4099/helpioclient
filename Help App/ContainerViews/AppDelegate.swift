@@ -12,10 +12,11 @@ import UIKit
 struct Help_AppApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @StateObject var appState: AppState = AppState()
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
         }
     }
 }
