@@ -29,4 +29,8 @@ protocol NewUserCreation {
         async throws -> OperationStatus
 }
 
+struct AuthenticationInteractor {
+    let appState: AppState
+}
+
 

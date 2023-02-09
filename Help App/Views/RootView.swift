@@ -9,7 +9,13 @@ import SwiftUI
 
 struct RootView: View {
     
-    @EnvironmentObject var appState: AppState
+    init(appState: AppState, interactors: Interactors) {
+        self.appState = appState
+        self.interactors = interactors
+    }
+    
+    @State var appState: AppState
+    let interactors: Interactors
     
     var body: some View {
         ZStack {
@@ -24,6 +30,6 @@ struct RootView: View {
 
 struct RootView_Previews: PreviewProvider {
     static var previews: some View {
-        RootView().environmentObject(AppState())
+        RootView(appState: AppState(), interactors: Interactors())
     }
 }
