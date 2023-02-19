@@ -18,3 +18,15 @@ struct LargeRedButton: ButtonStyle {
             .opacity(configuration.isPressed ? 0.6 : 1)
     }
 }
+
+struct SystemLargeButton: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(height: 40)
+            .padding()
+            .background(Color.sysblue)
+            .foregroundColor(.white)
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .opacity(configuration.isPressed ? 0.6 : 1)
+    }
+}

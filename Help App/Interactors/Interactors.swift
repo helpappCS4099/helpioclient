@@ -7,19 +7,19 @@
 
 import Foundation
 
-struct Interactors {
+class Interactors {
 
-    init(appState: AppState) {
+    init(appState: AppState, repositories: Repositories) {
         //default (production) constructor
-        self.authenticationInteractor = AuthenticationInteractor(appState: appState)
+        self.sessionInteractor = SessionInteractor(appState: appState, sessionWebRepository: repositories.session)
     }
     
-    let authenticationInteractor: AuthenticationInteractor
+    let sessionInteractor: SessionInteractor
 }
 
 //"constructors" for dependency injection for production/testing, etc.
 extension Interactors {
-    static func bootstrap(appState: AppState) -> Interactors {
-        return Interactors(appState: appState)
+    static func bootstrap(appState: AppState, repositories: Repositories) -> Interactors {
+        return Interactors(appState: appState, repositories: repositories)
     }
 }

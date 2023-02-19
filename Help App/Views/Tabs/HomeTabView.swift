@@ -25,7 +25,7 @@ struct HomeTabView: View {
                 Map(coordinateRegion: $region, interactionModes: [])
                     .edgesIgnoringSafeArea(.all)
                     .scaleEffect(1.1)
-                    .blur(radius: 6)
+//                    .blur(radius: 6)
                     .opacity(0.5)
                 
                 VStack {
@@ -36,6 +36,8 @@ struct HomeTabView: View {
                         print("help request")
                     } label: {
                         Text("Help Request")
+                            .font(.title)
+                            .fontWeight(.bold)
                             .frame(width: bounds.width - 60)
                     }
                     .buttonStyle(LargeRedButton())

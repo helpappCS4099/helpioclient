@@ -15,7 +15,7 @@ class AppState: ObservableObject {
         }
     }
     
-//    var
+    @Published var auth: AuthState = AuthState()
 }
 
 //"constructors" for dependency injection for production/testing, etc.
@@ -29,4 +29,3 @@ extension AppState {
         return AppState()
     }
 }
-

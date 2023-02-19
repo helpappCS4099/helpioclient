@@ -14,11 +14,9 @@ class SceneDelegate: NSObject, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let _ = (scene as? UIWindowScene) else { return }
         //perform app dependency injections
-        let appState = AppState.bootstrap()
-        let interactors = Interactors.bootstrap(appState: appState)
-        
+        let environement = Environment.bootstrap()
         //launch root scene
-        let rootView = RootView(appState: appState, interactors: interactors)
+        let rootView = RootView(dependencies: environement.diContainer)
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UIHostingController(rootView: rootView)

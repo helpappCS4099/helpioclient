@@ -9,9 +9,9 @@ import SwiftUI
 
 struct RootView: View {
     
-    init(appState: AppState, interactors: Interactors) {
-        self.appState = appState
-        self.interactors = interactors
+    init(dependencies: DI) {
+        self.appState = dependencies.appState
+        self.interactors = dependencies.interactors
     }
     
     @State var appState: AppState
@@ -20,7 +20,8 @@ struct RootView: View {
     var body: some View {
         ZStack {
             if !appState.userIsLoggedIn {
-                AuthRootView().environmentObject(appState)
+                AuthRootView(sessionInteractor: interactors.sessionInteractor)
+                    .environmentObject(appState.auth)
             } else {
                 ContentView().environmentObject(appState)
             }
@@ -29,7 +30,8 @@ struct RootView: View {
 }
 
 struct RootView_Previews: PreviewProvider {
+    
     static var previews: some View {
-        RootView(appState: AppState(), interactors: Interactors())
+        RootView(dependencies: Environment.bootstrap().diContainer)
     }
 }
