@@ -44,12 +44,11 @@ struct AuthRootView: View {
                     case .landing:
                         EmptyView()
                     case .login:
-//                        signInFields()
                         SignInFieldsView(email: $email,
                                          password: $password,
                                          focusedField: $focusedField,
                                          login_onEmailCommit: login_onEmailCommit,
-                                         login_onPasswordCommit: {})
+                                         login_onPasswordCommit: login_onPasswordCommit)
                             .onAppear {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                     focusedField = .email
@@ -59,8 +58,8 @@ struct AuthRootView: View {
                         SignUpCredentialFieldsView(email: $email,
                                          password: $password,
                                          focusedField: $focusedField,
-                                         signup_onEmailCommit: login_onEmailCommit,
-                                         signup_onPasswordCommit: {})
+                                         signup_onEmailCommit: signup_onEmailCommit,
+                                         signup_onPasswordCommit: signup_onPasswordCommit)
                             .onAppear {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                     focusedField = .email
@@ -118,6 +117,7 @@ struct AuthRootView: View {
 extension AuthRootView {
     //if user taps on primary button
     func onPrimaryButtonTap() {
+        errorMessage = nil
         //routes navigation / actions based on event origin screen
         switch authState.currentScreen {
         case .landing:
@@ -125,6 +125,24 @@ extension AuthRootView {
             break
         case .login:
             //login operation
+            Task {
+                isLoading = true
+                let (loggedIn, isVerified, operationStatus) = await sessionInteractor.logIn(email: email, password: password)
+                if !loggedIn {
+                    errorMessage = operationStatus.errorMessage
+                    isLoading = false
+                    focusedField = .email
+                    return
+                }
+                if !isVerified {
+                    isLoading = false
+                    authState.currentScreen = .verification
+                    return
+                }
+                isLoading = false
+                //set user defaults to logged in
+                UserDefaults.standard.set(true, forKey: "isLogged")
+            }
             break
         case .signup_credentials:
             Task {
@@ -172,12 +190,12 @@ extension AuthRootView {
                                                                       firstName: firstName,
                                                                       lastName: lastName)
                 
+                isLoading = false
+                
                 if operation != .success {
                     errorMessage = operation.errorMessage
                     return
                 }
-                
-                isLoading = false
                 
                 //move to verification
                 authState.currentScreen = .verification

@@ -46,6 +46,30 @@ struct SessionInteractor {
 
 extension SessionInteractor {
     
+    func logIn(email: String,
+               password: String) async -> (Bool, Bool, OperationStatus) {
+        //return: successfullyLoggedIn, isVerified, opStatus
+        let loginResponse = await sessionWebRepository.logInRequest(email: email, password: password)
+        switch loginResponse {
+        case .success(_, let model, let errorMessage):
+            guard let loginModel = model as? LoginUserModel else {
+                print("error at model casting in logIN interactor call")
+                return (false, false, .failure(errorMessage: errorMessage ?? "We are having a trouble logging you in now... Please try again later"))
+            }
+            if !loginModel.authenticated {
+                return (false, false, .failure(errorMessage: "Please enter correct credentials to your account."))
+            }
+            //force unwrap because is authenticated
+            if loginModel.user!.verified {
+                return (true, true, .success)
+            } else {
+                return (true, false, .success)
+            }
+        case .failure(_, _, let errorMessage):
+            return (false, false, .failure(errorMessage: errorMessage ?? "We are having a trouble logging you in now... Please try again later"))
+        }
+    }
+    
     func checkEmail(email: String) async -> (Bool,OperationStatus) {
         //check email format (regex)
         let status = isValidEmail(email: email)
@@ -94,6 +118,7 @@ extension SessionInteractor {
                 return .failure(errorMessage: errorMessage ?? "User was not created.")
             }
         case .failure(_,_,let errorMessage):
+            print(errorMessage ?? "no error message")
             return .failure(errorMessage: errorMessage ?? "User was not created.")
         }
         

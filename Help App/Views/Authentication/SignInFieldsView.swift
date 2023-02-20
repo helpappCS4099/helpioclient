@@ -27,11 +27,12 @@ struct SignInFieldsView: View {
                   fieldType: .email,
                   focusedField: focusedField,
                   type: .emailAddress)
+                    .keyboardType(.emailAddress)
 
             Field(fieldLabel: "Enter your passowrd",
                   placeholder: "Password1234",
                   text: $password,
-                  commit: {},
+                  commit: login_onPasswordCommit,
                   fieldType: .password,
                   focusedField: focusedField,
                   type: .password)
@@ -58,5 +59,23 @@ extension AuthRootView {
         errorMessage = nil
         
         focusedField = .password
+    }
+    
+    func login_onPasswordCommit() {
+        //check fields for format
+        errorMessage = nil
+        let isValid = sessionInteractor.isValidEmail(email: email)
+        let passwordNonEmpty = !password.isEmpty
+        
+        if (isValid == true && passwordNonEmpty == true) {
+            onPrimaryButtonTap()
+        } else {
+            errorMessage = "Please enter a valid email and password."
+            if !passwordNonEmpty {
+                focusedField = .password
+            } else {
+                focusedField = .email
+            }
+        }
     }
 }

@@ -27,21 +27,3 @@ extension URLRequest {
         }
     }
 }
-
-func verifyURLResponse(_ response: URLResponse) throws {
-    guard let httpResponse = response as? HTTPURLResponse else {
-        throw APIError.unknown(status: 1000, errorMessage: "Couldn't cast URLResponse as HTTPURLResponse")
-    }
-    switch httpResponse.statusCode {
-    case 200...299:
-        return
-    case 403, 401:
-        throw APIError.notAuthorized(status: httpResponse.statusCode, errorMessage: "Not Authorized")
-    case 400...499:
-        throw APIError.badRequest(status: httpResponse.statusCode, errorMessage: "Bad Request")
-    case 500...599:
-        throw APIError.serverError(status: httpResponse.statusCode, errorMessage: "Internal error occured, please try again later.")
-    default:
-        throw APIError.unknown(status: 1000, errorMessage: "Error occured")
-    }
-}

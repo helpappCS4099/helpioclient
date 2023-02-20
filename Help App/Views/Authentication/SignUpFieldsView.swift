@@ -28,6 +28,7 @@ struct SignUpCredentialFieldsView: View {
                   fieldType: .email,
                   focusedField: focusedField,
                   type: .emailAddress)
+                    .keyboardType(.emailAddress)
 
             Field(fieldLabel: "Come up with a password",
                   placeholder: "Password1234",
@@ -59,7 +60,7 @@ struct SignUpNameFieldsView: View {
                   commit: signup_onFirstNameCommit,
                   fieldType: .firstName,
                   focusedField: focusedField,
-                  type: .name)
+                  type: .givenName)
 
             Field(fieldLabel: "Last name",
                   placeholder: "",
@@ -73,51 +74,6 @@ struct SignUpNameFieldsView: View {
 }
 
 extension AuthRootView {
-    
-    // MARK: - View(s)
-    
-    func createAccountCredentials() -> some View {
-        VStack(spacing: 10) {
-
-            Field(fieldLabel: "Your university email",
-                  placeholder: "@st-andrews.ac.uk",
-                  text: $email,
-                  commit: signup_onEmailCommit,
-                  fieldType: .email,
-                  focusedField: $focusedField,
-                  type: .emailAddress)
-
-            Field(fieldLabel: "Come up with a password",
-                  placeholder: "Password1234",
-                  text: $password,
-                  commit: signup_onPasswordCommit,
-                  fieldType: .password,
-                  focusedField: $focusedField,
-                  type: .password)
-        }
-    }
-    
-    func createAccountName() -> some View {
-        VStack(spacing: 10) {
-
-            Field(fieldLabel: "First name",
-                  placeholder: "",
-                  text: $firstName,
-                  commit: signup_onFirstNameCommit,
-                  fieldType: .firstName,
-                  focusedField: $focusedField,
-                  type: .name)
-
-            Field(fieldLabel: "Last name",
-                  placeholder: "",
-                  text: $lastName,
-                  commit: signup_onLastNameCommit,
-                  fieldType: .lastName,
-                  focusedField: $focusedField,
-                  type: .familyName)
-        }
-    }
-    
     // MARK: - Logic
     
     //email commit

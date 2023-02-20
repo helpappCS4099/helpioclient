@@ -34,14 +34,34 @@ protocol SessionWebRequests {
         async -> RepositoryResponse
 }
 
-struct SessionWebRepository {
+class SessionWebRepository: WebRepository {
     let queue = DispatchQueue(label: "bg_parse_queue")
     var session = URLSession.shared
 }
 
 extension SessionWebRepository: SessionWebRequests {
     func logInRequest(email: String, password: String) async -> RepositoryResponse {
-        return .success(status: 200)
+        do {
+            print("login request")
+            let endpoint = SessionEndpoints.login(email, password)
+            let (responseData, _) = try await makeServerRequest(endpoint: endpoint, session: session)
+            
+            print("login request came back")
+            
+            let loginUserModel = try JSONDecoder().decode(LoginUserModel.self, from: responseData)
+            
+            print(loginUserModel)
+            
+            return RepositoryResponse.success(status: 200, model: loginUserModel)
+            
+        } catch let error as APIError {
+            print(error)
+            return RepositoryResponse.failure(status: error.status, errorMessage: error.errorMessage)
+        } catch {
+            print(error)
+            return RepositoryResponse.failure(status: 1000,
+                                              errorMessage: "Investigate unexpected error at logInRequest")
+        }
     }
     
     func logOutRequest() async -> RepositoryResponse {
@@ -58,12 +78,11 @@ extension SessionWebRepository: SessionWebRequests {
                                                                password: password,
                                                                firstName: firstName,
                                                                lastName: lastName)
-            let urlRequest = URLRequest(endpoint: endpoint)!
-            let (responseData, response) = try await session.data(for: urlRequest)
-            try verifyURLResponse(response)
+            let (responseData, _) = try await makeServerRequest(endpoint: endpoint, session: session)
             //user response model object JSON serialization
             let userWasCreatedModel = try JSONDecoder().decode(UserWasCreatedModel.self, from: responseData)
             //return RepositoryResponse
+            print(userWasCreatedModel)
             return RepositoryResponse.success(status: 200, model: userWasCreatedModel)
             
         } catch let error as APIError {

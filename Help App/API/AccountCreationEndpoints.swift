@@ -79,7 +79,7 @@ extension AccountCreationEndpoints: Endpoint {
         switch self {
         case .checkEmail:
             return [:]
-        case .createUser(email: let email, password: let password, firstName: let firstName,lastName: let lastName):
+        case .createUser(email: let email, password: let password, firstName: let firstName, lastName: let lastName):
             return [
                 "email": email,
                 "password": password,
