@@ -11,7 +11,7 @@ protocol SessionOperations {
     
     func logIn(email: String,
                password: String)
-        async -> OperationStatus
+        async -> (Bool, Bool, OperationStatus)
     
     func logOut()
         async -> OperationStatus
@@ -35,7 +35,7 @@ protocol NewUserCreation {
         async -> OperationStatus
     
     func checkEmailVerification()
-        async -> OperationStatus
+        async -> (Bool, OperationStatus)
     
 }
 
@@ -67,6 +67,24 @@ extension SessionInteractor {
             }
         case .failure(_, _, let errorMessage):
             return (false, false, .failure(errorMessage: errorMessage ?? "We are having a trouble logging you in now... Please try again later"))
+        }
+    }
+    
+    func checkEmailVerification() async -> (Bool, OperationStatus) {
+        let verificationResponse = await sessionWebRepository.checkEmailVerificationRequest()
+        switch verificationResponse {
+        case .success(_, let model, _):
+            guard let verificationModel = model as? EmailVerificationModel else {
+                return (false, .failure(errorMessage: "Investigate Internal Error @ checkEmailVerification"))
+            }
+            print(verificationModel)
+            if verificationModel.userIsVerified {
+                return (true, .success)
+            } else {
+                return (false, .success)
+            }
+        case .failure(_, _, let errorMessage):
+            return (false, .failure(errorMessage: errorMessage ?? "We are having a problem right now...Please try again later"))
         }
     }
     

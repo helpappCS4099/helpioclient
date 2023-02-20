@@ -128,20 +128,19 @@ extension AuthRootView {
             Task {
                 isLoading = true
                 let (loggedIn, isVerified, operationStatus) = await sessionInteractor.logIn(email: email, password: password)
+                isLoading = false
                 if !loggedIn {
                     errorMessage = operationStatus.errorMessage
-                    isLoading = false
                     focusedField = .email
                     return
                 }
                 if !isVerified {
-                    isLoading = false
                     authState.currentScreen = .verification
                     return
                 }
-                isLoading = false
-                //set user defaults to logged in
-                UserDefaults.standard.set(true, forKey: "isLogged")
+                //permissions
+                authState.currentScreen = .persmissions
+                
             }
             break
         case .signup_credentials:
@@ -203,6 +202,15 @@ extension AuthRootView {
             break
         case .verification:
             //query verification status
+            Task {
+                isLoading = true
+                let (isVerified, _) = await sessionInteractor.checkEmailVerification()
+                isLoading = false
+                if (isVerified) {
+                    authState.currentScreen = .persmissions
+                    return
+                }
+            }
             //if verified, go to permissions
             break
         case .persmissions:
