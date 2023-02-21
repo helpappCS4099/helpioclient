@@ -70,6 +70,17 @@ extension SessionInteractor {
         }
     }
     
+    func updateAPNToken(deviceToken: String) async -> OperationStatus {
+        let tokenUpdateReponse = await sessionWebRepository.updateAPNTokenRequest(deviceToken: deviceToken)
+        switch tokenUpdateReponse {
+        case .success(_,_,_):
+            return .success
+        case .failure(_, _, let errorMessage):
+            print(errorMessage ?? "error at updateToken.failure switch (interactor)")
+            return .failure(errorMessage: errorMessage ?? "Token could not be updated")
+        }
+    }
+    
     func checkEmailVerification() async -> (Bool, OperationStatus) {
         let verificationResponse = await sessionWebRepository.checkEmailVerificationRequest()
         switch verificationResponse {

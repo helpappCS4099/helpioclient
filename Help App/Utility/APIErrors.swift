@@ -12,6 +12,8 @@ protocol APIRequestError {
     var errorMessage: String {get}
 }
 
+extension String: Error {}
+
 enum APIError: Error, APIRequestError {
     
     case notAuthorized(status: Int, errorMessage: String),

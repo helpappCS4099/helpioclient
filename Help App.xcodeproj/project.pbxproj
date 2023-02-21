@@ -32,6 +32,7 @@
 		5C50CC092989A3D1008AEDA7 /* Help_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CC082989A3D1008AEDA7 /* Help_AppUITestsLaunchTests.swift */; };
 		5C50CC1E2989A6B8008AEDA7 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CC1D2989A6B8008AEDA7 /* Config.swift */; };
 		5C94796229A40E51006234E9 /* AuthFlowModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C94796129A40E51006234E9 /* AuthFlowModels.swift */; };
+		5C94796429A4F813006234E9 /* PermissionDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C94796329A4F813006234E9 /* PermissionDescription.swift */; };
 		5CC73AAC299DE3B000654047 /* WebRequestResultProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC73AAB299DE3B000654047 /* WebRequestResultProtocol.swift */; };
 		5CC73AAE299DE4DC00654047 /* RepositoryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC73AAD299DE4DC00654047 /* RepositoryResponse.swift */; };
 		5CC73AB0299DEB9100654047 /* URLSessionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC73AAF299DEB9100654047 /* URLSessionExtensions.swift */; };
@@ -101,6 +102,7 @@
 		5C50CC162989A466008AEDA7 /* Help App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Help App.entitlements"; sourceTree = "<group>"; };
 		5C50CC1D2989A6B8008AEDA7 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		5C94796129A40E51006234E9 /* AuthFlowModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthFlowModels.swift; sourceTree = "<group>"; };
+		5C94796329A4F813006234E9 /* PermissionDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionDescription.swift; sourceTree = "<group>"; };
 		5CC73AAB299DE3B000654047 /* WebRequestResultProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRequestResultProtocol.swift; sourceTree = "<group>"; };
 		5CC73AAD299DE4DC00654047 /* RepositoryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryResponse.swift; sourceTree = "<group>"; };
 		5CC73AAF299DEB9100654047 /* URLSessionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionExtensions.swift; sourceTree = "<group>"; };
@@ -226,8 +228,8 @@
 			isa = PBXGroup;
 			children = (
 				5C50CC172989A5C4008AEDA7 /* App */,
-				5C50CC1B2989A686008AEDA7 /* Views */,
 				5C2E4DF4298B4AD4004A49B4 /* State */,
+				5C50CC1B2989A686008AEDA7 /* Views */,
 				5C50CC1C2989A68E008AEDA7 /* Repositories */,
 				5C50CC1A2989A5F5008AEDA7 /* Interactors */,
 				5CC73AB1299DF22900654047 /* Models */,
@@ -288,6 +290,7 @@
 				5CC73AB4299DF6D600654047 /* APIErrors.swift */,
 				5C50CC1D2989A6B8008AEDA7 /* Config.swift */,
 				5C2E4DFB298BBF5A004A49B4 /* Enums.swift */,
+				5C94796329A4F813006234E9 /* PermissionDescription.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -525,6 +528,7 @@
 				5C50CBEC2989A3CE008AEDA7 /* AppDelegate.swift in Sources */,
 				5CFE169429951073001DF260 /* SessionEndpoints.swift in Sources */,
 				5C50CC1E2989A6B8008AEDA7 /* Config.swift in Sources */,
+				5C94796429A4F813006234E9 /* PermissionDescription.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

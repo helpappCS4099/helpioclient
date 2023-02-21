@@ -15,8 +15,12 @@ class SceneDelegate: NSObject, UIWindowSceneDelegate {
         guard let _ = (scene as? UIWindowScene) else { return }
         //perform app dependency injections
         let environement = Environment.bootstrap()
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            appDelegate.environment = environement
+        }
         //launch root scene
         let rootView = RootView(dependencies: environement.diContainer)
+                            .environmentObject(environement.diContainer.appState)
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UIHostingController(rootView: rootView)

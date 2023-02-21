@@ -16,6 +16,12 @@ class AppState: ObservableObject {
     }
     
     @Published var auth: AuthState = AuthState()
+    
+    init() {}
+    
+    init(auth: AuthState) {
+        self.auth = auth
+    }
 }
 
 //"constructors" for dependency injection for production/testing, etc.
@@ -24,8 +30,14 @@ extension AppState {
         return AppState()
     }
     
+    #if DEBUG
     static func developmentLoggedIn() -> AppState {
         //with correct params, etc
         return AppState()
     }
+    
+    static func bootstrapWithAuthAt(screen: AuthScreen) -> AppState {
+        return AppState(auth: AuthState.initAtScreen(screen: screen))
+    }
+    #endif
 }

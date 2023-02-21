@@ -11,4 +11,19 @@ class AuthState: ObservableObject {
     
     @Published var currentScreen: AuthScreen = .landing
     
+    init() {}
+    
+    init(currentScreen: AuthScreen) {
+        self.currentScreen = currentScreen
+    }
+    
 }
+
+#if DEBUG
+extension AuthState {
+    
+    static func initAtScreen(screen: AuthScreen) -> AuthState {
+        return AuthState(currentScreen: screen)
+    }
+}
+#endif

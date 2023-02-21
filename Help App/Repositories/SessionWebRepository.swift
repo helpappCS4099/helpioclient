@@ -68,10 +68,6 @@ extension SessionWebRepository: SessionWebRequests {
         return .success(status: 200)
     }
     
-    func updateAPNTokenRequest(deviceToken: String) async -> RepositoryResponse {
-        return .success(status: 200)
-    }
-    
     func createNewUserRequest(email: String, password: String, firstName: String, lastName: String) async -> RepositoryResponse {
         do {
             let endpoint = AccountCreationEndpoints.createUser(email: email,
@@ -97,7 +93,7 @@ extension SessionWebRepository: SessionWebRequests {
     func checkEmailRequest(email: String) async -> RepositoryResponse {
         do {
             let endpoint = AccountCreationEndpoints.checkEmail(email)
-            let (responseData, response) = try await makeServerRequest(endpoint: endpoint, session: session)
+            let (responseData, _) = try await makeServerRequest(endpoint: endpoint, session: session)
             let emailAvailability = try JSONDecoder().decode(EmailAvailability.self, from: responseData)
             return RepositoryResponse.success(status: 200, model: emailAvailability)
             
@@ -117,10 +113,25 @@ extension SessionWebRepository: SessionWebRequests {
     func checkEmailVerificationRequest() async -> RepositoryResponse {
         do {
             let endpoint = AccountCreationEndpoints.checkEmailVerification
-            let (responseData, response) = try await makeServerRequest(endpoint: endpoint, session: session)
-            print(responseData)
+            let (responseData, _) = try await makeServerRequest(endpoint: endpoint, session: session)
             let emailVerificationModel = try? JSONDecoder().decode(EmailVerificationModel.self, from: responseData)
             return RepositoryResponse.success(status: 200, model: emailVerificationModel)
+        } catch let error as APIError {
+            print(error)
+            return RepositoryResponse.failure(status: error.status, errorMessage: error.errorMessage)
+        } catch {
+            print(error)
+            return RepositoryResponse.failure(status: 1000,
+                                              errorMessage: "Investigate unexpected error at checkEmailverificationRequest")
+        }
+    }
+    
+    func updateAPNTokenRequest(deviceToken: String) async -> RepositoryResponse {
+        do {
+            let endpoint = AccountCreationEndpoints.updateAPNToken(deviceToken)
+            let (responseData, _) = try await makeServerRequest(endpoint: endpoint, session: session)
+            let tokenUpdateModel = try? JSONDecoder().decode(TokenUpdateModel.self, from: responseData)
+            return RepositoryResponse.success(status: 200, model: tokenUpdateModel)
         } catch let error as APIError {
             print(error)
             return RepositoryResponse.failure(status: error.status, errorMessage: error.errorMessage)

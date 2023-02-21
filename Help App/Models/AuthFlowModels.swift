@@ -39,3 +39,8 @@ struct LoginUserModel: Codable, ResponseModel {
 struct EmailVerificationModel: Codable, ResponseModel {
     let userIsVerified: Bool
 }
+
+//response from updating the APN token
+struct TokenUpdateModel: Codable, ResponseModel {
+    let apnTokenWasUpdated: Bool
+}

@@ -24,6 +24,8 @@ struct AuthRootView: View {
     
     @State var errorMessage: String? = nil
     
+    @State var showPermissionsAlert = false
+    
     var body: some View {
         GeometryReader { _ in
             VStack {
@@ -79,7 +81,7 @@ struct AuthRootView: View {
                     case .verification:
                         verifyEmail()
                     case .persmissions:
-                        grantPermissions()
+                        PermissionsDescriptionView()
                     }
                 }
                 .animation(.easeInOut(duration: 0.2))
@@ -97,6 +99,19 @@ struct AuthRootView: View {
             .animation(.none)
             .opacity(isLoading ? 0.5 : 1)
             .scaleEffect(isLoading ? 0.99 : 1)
+            .alert(isPresented: $showPermissionsAlert) {
+                Alert(title: Text("Provide Permissions"),
+                      message: Text("All permissions that the app requires are essential for it to function."),
+                      dismissButton: Alert.Button.default(Text("Provide Essential Permissions"), action: {
+                    //recall permissions
+                    Task {
+                        if let url = URL(string: UIApplication.openSettingsURLString) {
+                            // Ask the system to open that URL.
+                            await UIApplication.shared.open(url)
+                        }
+                    }
+                }))
+            }
             .overlay {
                 //loading indicator
                 if isLoading {
@@ -215,6 +230,9 @@ extension AuthRootView {
             break
         case .persmissions:
             //system ask for permissions
+            Task {
+                await requestPermissions()
+            }
             //get APN token
             break
         }
@@ -337,5 +355,14 @@ struct AuthRootView_Previews: PreviewProvider {
     static var previews: some View {
         AuthRootView(sessionInteractor: Environment.bootstrap().diContainer.interactors.sessionInteractor)
             .environmentObject(AppState.bootstrap().auth)
+            .previewDisplayName("Auth Home")
+        
+        AuthRootView(sessionInteractor: Environment.bootstrap().diContainer.interactors.sessionInteractor)
+            .environmentObject(AppState.bootstrapWithAuthAt(screen: .persmissions).auth)
+            .previewDisplayName("Permissions")
+        
+        AuthRootView(sessionInteractor: Environment.bootstrap().diContainer.interactors.sessionInteractor)
+            .environmentObject(AppState.bootstrapWithAuthAt(screen: .verification).auth)
+            .previewDisplayName("Verification")
     }
 }

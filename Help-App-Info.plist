@@ -15,6 +15,16 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>&quot;Use microphone for voice messages.&quot;</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>&quot;Allow the app to share the location even if you lock your phone or exit the app.&quot;</string>
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>&quot;Receive push notifications about help requests, etc.&quot;</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>&quot;Be able to share location with friends even after you lock your phone or close the app. Only enabled when you create a help request or respond to it.&quot;</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>&quot;Be able to share location with friends even after you lock your phone or close the app. Only enabled when you create a help request or respond to it.&quot;</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

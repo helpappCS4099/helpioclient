@@ -10,11 +10,10 @@ import SwiftUI
 struct RootView: View {
     
     init(dependencies: DI) {
-        self.appState = dependencies.appState
         self.interactors = dependencies.interactors
     }
     
-    @State var appState: AppState
+    @EnvironmentObject var appState: AppState
     let interactors: Interactors
     
     var body: some View {
