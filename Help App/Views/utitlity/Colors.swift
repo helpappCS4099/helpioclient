@@ -38,6 +38,7 @@ extension Color {
 extension Color {
     static let sysblue = Color("System Blue")
     static let tertblue = Color("Tertiary Blue")
+    static let adaptiveBlack = Color("Adaptive Black")
 }
 
 //Avatar Gradient Colors

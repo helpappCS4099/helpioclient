@@ -25,6 +25,11 @@ enum OperationStatus: Comparable {
     
 }
 
+enum AppTab {
+    case home, friends, account
+    //help request??
+}
+
 enum AuthScreen {
     case landing, login, signup_credentials, signup_name, verification, persmissions
     

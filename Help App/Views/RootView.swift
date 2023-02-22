@@ -31,6 +31,9 @@ struct RootView: View {
 struct RootView_Previews: PreviewProvider {
     
     static var previews: some View {
-        RootView(dependencies: Environment.bootstrap().diContainer)
+        let env = Environment.bootstrapLoggedIn(currentPage: .friends)
+        
+        RootView(dependencies: env.diContainer)
+            .environmentObject(env.diContainer.appState)
     }
 }

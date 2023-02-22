@@ -20,7 +20,7 @@ struct HomeTabView: View {
         )
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Map(coordinateRegion: $region, interactionModes: [])
                     .edgesIgnoringSafeArea(.all)
@@ -40,7 +40,7 @@ struct HomeTabView: View {
                             .fontWeight(.bold)
                             .frame(width: bounds.width - 60)
                     }
-                    .buttonStyle(LargeRedButton())
+                    .buttonStyle(LargeRedButton(hasShadow: true))
                     .padding()
                 }
                 .navigationTitle("Help Requests")

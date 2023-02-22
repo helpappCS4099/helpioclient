@@ -8,8 +8,60 @@
 import SwiftUI
 
 struct FriendsTabView: View {
+    
+    @State var queryString: String = ""
+    
+//    @State fileprivate var myFriends
+    
+    @State var showAddNewFriendsSheet: Bool = false
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            ZStack {
+                
+                VStack {
+                    List {
+                        Section(header: Text("Friend Requests")) {
+                            FriendListItemView(friendStatus: 3)
+                                .listRowInsets(EdgeInsets())
+                            
+                            FriendListItemView(friendStatus: 2)
+                                .listRowInsets(EdgeInsets())
+                        }
+                        
+                        Section(header: Text("Your Friends")) {
+                            FriendListItemView()
+                                .listRowInsets(EdgeInsets())
+                        }
+                    }
+                }
+                .navigationTitle("Friends")
+                
+                VStack {
+                    Spacer()
+                    
+                    Button {
+                        showAddNewFriendsSheet = true
+                    } label: {
+                        Text("\(Image(systemName: "person.fill.badge.plus")) Add Friends")
+                            .font(.title2)
+                            .fontWeight(.regular)
+                            .frame(width: bounds.width - 60)
+                    }
+                    .buttonStyle(SystemLargeButton(hasShadow: true))
+                    .padding()
+                }
+            }
+            .sheet(isPresented: $showAddNewFriendsSheet) {
+                AddNewFriendsView(showSheet: $showAddNewFriendsSheet)
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.hidden)
+            }
+        }
+        .searchable(text: $queryString)
+        .onAppear {
+            
+        }
     }
 }
 

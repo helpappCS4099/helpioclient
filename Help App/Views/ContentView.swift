@@ -8,23 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @EnvironmentObject var appState: AppState
         
     var body: some View {
-        TabView {
+        TabView(selection: $appState.currentPage) {
             HomeTabView()
                 .tabItem {
                     Label("Home", systemImage: "house.fill")
                 }
+                .tag(AppTab.home)
             
             FriendsTabView()
                 .tabItem {
                     Label("Friends", systemImage: "person.2.fill")
                 }
+                .tag(AppTab.friends)
             
             AccountTabView()
                 .tabItem {
                     Label("Account", systemImage: "person.circle.fill")
                 }
+                .tag(AppTab.account)
         }
         .onAppear {
             //set the tab bar appearance to default
@@ -37,6 +42,10 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
+        
+        let env = Environment.bootstrapLoggedIn(currentPage: .friends)
+        
         ContentView()
+            .environmentObject(env.diContainer.appState)
     }
 }

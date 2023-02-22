@@ -27,4 +27,16 @@ class Environment {
         
         return Environment(diContainer: diContainer)
     }
+    
+    #if DEBUG
+    static func bootstrapLoggedIn(currentPage: AppTab = .home) -> Environment{
+        let appState = AppState.developmentLoggedIn(currentPage: currentPage)
+        let repositories = Repositories.bootstrap()
+        let interactors = Interactors.bootstrap(appState: appState, repositories: repositories)
+            
+        let diContainer = DI(appState: appState, interactors: interactors)
+        
+        return Environment(diContainer: diContainer)
+    }
+    #endif
 }

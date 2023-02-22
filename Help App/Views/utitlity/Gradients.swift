@@ -7,10 +7,50 @@
 
 import SwiftUI
 
-class AccountGradients {
+class CustomGradients {
     static let greenAsh: LinearGradient = LinearGradient(colors: [.avatarGradientStart, .greenAsh], startPoint: .topLeading, endPoint: .bottomTrailing)
     static let lavender: LinearGradient = LinearGradient(colors: [.avatarGradientStart, .lavender], startPoint: .topLeading, endPoint: .bottomTrailing)
     static let pear: LinearGradient = LinearGradient(colors: [.avatarGradientStart, .pear], startPoint: .topLeading, endPoint: .bottomTrailing)
     static let aquarium: LinearGradient = LinearGradient(colors: [.avatarGradientStart, .aquarium], startPoint: .topLeading, endPoint: .bottomTrailing)
     static let ochre: LinearGradient = LinearGradient(colors: [.avatarGradientStart, .ochre], startPoint: .topLeading, endPoint: .bottomTrailing)
+}
+
+enum AccountGradient: CaseIterable {
+    
+    var id: Int {
+        get  {
+            switch self {
+            case .greenAsh:
+                return 0
+            case .aquarium:
+                return 1
+            case .pear:
+                return 2
+            case .ochre:
+                return 3
+            case .lavender:
+                return 4
+            }
+        }
+    }
+    
+    var gradient: LinearGradient {
+        get  {
+            switch self {
+            case .greenAsh:
+                return CustomGradients.greenAsh
+            case .aquarium:
+                return CustomGradients.aquarium
+            case .pear:
+                return CustomGradients.pear
+            case .ochre:
+                return CustomGradients.ochre
+            case .lavender:
+                return CustomGradients.lavender
+            }
+        }
+    }
+
+    
+    case greenAsh, aquarium, pear, ochre, lavender
 }

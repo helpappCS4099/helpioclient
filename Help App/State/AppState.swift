@@ -15,6 +15,9 @@ class AppState: ObservableObject {
         }
     }
     
+    //extract to NavigationState? or this is extra?
+    @Published var currentPage: AppTab = .home
+    
     @Published var auth: AuthState = AuthState()
     
     init() {}
@@ -22,6 +25,14 @@ class AppState: ObservableObject {
     init(auth: AuthState) {
         self.auth = auth
     }
+    
+    #if DEBUG
+    //convenience for dev, launch logged in at page
+    init(currentPage: AppTab) {
+        self.userIsLoggedIn = true
+        self.currentPage = currentPage
+    }
+    #endif
 }
 
 //"constructors" for dependency injection for production/testing, etc.
@@ -31,9 +42,9 @@ extension AppState {
     }
     
     #if DEBUG
-    static func developmentLoggedIn() -> AppState {
+    static func developmentLoggedIn(currentPage: AppTab = .home) -> AppState {
         //with correct params, etc
-        return AppState()
+        return AppState(currentPage: currentPage)
     }
     
     static func bootstrapWithAuthAt(screen: AuthScreen) -> AppState {
