@@ -25,5 +25,13 @@ extension URLRequest {
                 self.addValue(value, forHTTPHeaderField: header)
             }
         }
+        //if needs auth - add a Bearer header
+        if endpoint.requiresToken {
+            if let jwt = KeychainHelper.standard.read(service: "jwt", account: "helpapp") {
+                self.setValue("Bearer \(jwt)", forHTTPHeaderField: "accesstoken")
+            } else {
+                print("COULD NOT ACCESS JWT IN KEYCHAIN!!!")
+            }
+        }
     }
 }

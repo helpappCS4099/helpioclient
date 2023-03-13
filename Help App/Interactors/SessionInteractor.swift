@@ -59,6 +59,12 @@ extension SessionInteractor {
             if !loginModel.authenticated {
                 return (false, false, .failure(errorMessage: "Please enter correct credentials to your account."))
             }
+            print(loginModel)
+            //save jwt to secureenclave
+            if let jwt = loginModel.jwt {
+                KeychainHelper.standard.save(jwt: jwt, service: "jwt", account: "helpapp")
+            }
+            
             //force unwrap because is authenticated
             if loginModel.user!.verified {
                 return (true, true, .success)
@@ -67,6 +73,20 @@ extension SessionInteractor {
             }
         case .failure(_, _, let errorMessage):
             return (false, false, .failure(errorMessage: errorMessage ?? "We are having a trouble logging you in now... Please try again later"))
+        }
+    }
+    
+    func logOut() async -> OperationStatus {
+        let response = await sessionWebRepository.logOutRequest()
+        if response.status == 200 {
+            //reset auth screen
+            appState.auth = AuthState()
+            appState.userIsLoggedIn = false
+            UserDefaults.standard.set(false, forKey: "isLogged")
+            appState.currentPage = .home
+            return .success
+        } else {
+            return .failure(errorMessage: "Couldn't log you out. Please try again later.")
         }
     }
     
@@ -90,6 +110,8 @@ extension SessionInteractor {
             }
             print(verificationModel)
             if verificationModel.userIsVerified {
+                //save JWT, safe to assume presence of jwt if verified
+                KeychainHelper().save(jwt: verificationModel.jwt!, service: "jwt", account: "helpapp")
                 return (true, .success)
             } else {
                 return (false, .success)

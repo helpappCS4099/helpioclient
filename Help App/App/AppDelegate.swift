@@ -6,6 +6,7 @@
 //
 import UIKit
 import CoreLocation
+import UserNotifications
 
 //@main
 //struct Help_AppApp: App {
@@ -15,11 +16,16 @@ import CoreLocation
 //}
 
 @UIApplicationMain
-final class AppDelegate: UIResponder, UIApplicationDelegate {
+final class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     
     var environment: Environment?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        //notifications delegate configuration
+        let unCenter = UNUserNotificationCenter.current()
+        unCenter.delegate = self
+        URLSession.shared.configuration.httpShouldSetCookies = true
+        URLSession.shared.configuration.httpCookieStorage
         return true
     }
     
@@ -33,7 +39,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         print("devie token:", deviceToken)
         let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         if let environment = environment {
-            let sessionInteractor = environment.diContainer.interactors.sessionInteractor
+            let sessionInteractor = environment.diContainer.interactors.session
             Task {
                 //push token to server
                 let response = await sessionInteractor.updateAPNToken(deviceToken: tokenString)
@@ -52,6 +58,32 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("failed for push notif:", error.localizedDescription)
+    }
+    
+    //UNUserNotificationDelegate
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound, .badge])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        defer { completionHandler() }
+        
+        guard response.actionIdentifier == UNNotificationDefaultActionIdentifier else {
+            return
+        }
+        
+        let payload = response.notification.request.content
+        
+        guard let status = payload.userInfo["s"] as? Int else {
+            print("no status")
+            return
+        }
+        if (status == 2) {
+            //deep link to friends page
+            environment?.diContainer.appState.currentPage = .friends
+        }
+        completionHandler()
     }
     
 //    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {

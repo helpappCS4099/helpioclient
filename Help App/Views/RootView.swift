@@ -19,10 +19,10 @@ struct RootView: View {
     var body: some View {
         ZStack {
             if !appState.userIsLoggedIn {
-                AuthRootView(sessionInteractor: interactors.sessionInteractor)
+                AuthRootView(sessionInteractor: interactors.session)
                     .environmentObject(appState.auth)
             } else {
-                ContentView().environmentObject(appState)
+                ContentView(interactors: interactors).environmentObject(appState)
             }
         }
     }

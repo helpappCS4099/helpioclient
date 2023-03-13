@@ -46,7 +46,7 @@ extension SessionWebRepository: SessionWebRequests {
             let endpoint = SessionEndpoints.login(email, password)
             let (responseData, _) = try await makeServerRequest(endpoint: endpoint, session: session)
             
-            print("login request came back")
+            print("login request came back", responseData)
             
             let loginUserModel = try JSONDecoder().decode(LoginUserModel.self, from: responseData)
             
@@ -65,7 +65,18 @@ extension SessionWebRepository: SessionWebRequests {
     }
     
     func logOutRequest() async -> RepositoryResponse {
-        return .success(status: 200)
+        do {
+            let endpoint = SessionEndpoints.logout
+            let (_, _) = try await makeServerRequest(endpoint: endpoint, session: session)
+            return .success(status: 200)
+        } catch let error as APIError {
+            print(error)
+            return RepositoryResponse.failure(status: error.status, errorMessage: error.errorMessage)
+        } catch {
+            print(error)
+            return RepositoryResponse.failure(status: 1000,
+                                              errorMessage: "Investigate unexpected error at logoutrequest")
+        }
     }
     
     func createNewUserRequest(email: String, password: String, firstName: String, lastName: String) async -> RepositoryResponse {

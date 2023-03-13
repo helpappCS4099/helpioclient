@@ -353,15 +353,15 @@ extension AuthRootView {
 
 struct AuthRootView_Previews: PreviewProvider {
     static var previews: some View {
-        AuthRootView(sessionInteractor: Environment.bootstrap().diContainer.interactors.sessionInteractor)
+        AuthRootView(sessionInteractor: Environment.bootstrap().diContainer.interactors.session)
             .environmentObject(AppState.bootstrap().auth)
             .previewDisplayName("Auth Home")
         
-        AuthRootView(sessionInteractor: Environment.bootstrap().diContainer.interactors.sessionInteractor)
+        AuthRootView(sessionInteractor: Environment.bootstrap().diContainer.interactors.session)
             .environmentObject(AppState.bootstrapWithAuthAt(screen: .persmissions).auth)
             .previewDisplayName("Permissions")
         
-        AuthRootView(sessionInteractor: Environment.bootstrap().diContainer.interactors.sessionInteractor)
+        AuthRootView(sessionInteractor: Environment.bootstrap().diContainer.interactors.session)
             .environmentObject(AppState.bootstrapWithAuthAt(screen: .verification).auth)
             .previewDisplayName("Verification")
     }

@@ -10,6 +10,13 @@ import SwiftUI
 struct ContentView: View {
     
     @EnvironmentObject var appState: AppState
+    var interactors: Interactors
+    
+    func onLogOut() {
+        Task {
+            await interactors.session.logOut()
+        }
+    }
         
     var body: some View {
         TabView(selection: $appState.currentPage) {
@@ -19,13 +26,13 @@ struct ContentView: View {
                 }
                 .tag(AppTab.home)
             
-            FriendsTabView()
+            FriendsTabView(userInteractor: interactors.user)
                 .tabItem {
                     Label("Friends", systemImage: "person.2.fill")
                 }
                 .tag(AppTab.friends)
             
-            AccountTabView()
+            AccountTabView(onLogOut: onLogOut)
                 .tabItem {
                     Label("Account", systemImage: "person.circle.fill")
                 }
@@ -45,7 +52,7 @@ struct ContentView_Previews: PreviewProvider {
         
         let env = Environment.bootstrapLoggedIn(currentPage: .friends)
         
-        ContentView()
+        ContentView(interactors: env.diContainer.interactors)
             .environmentObject(env.diContainer.appState)
     }
 }

@@ -19,13 +19,26 @@ struct HomeTabView: View {
             longitudeDelta: 0.03)
         )
     
+    @State var tracking : MapUserTrackingMode = .follow
+    
+    func getCurrentRegion() -> MKCoordinateRegion? {
+        if let location = clManager.location {
+            region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+            return region
+        } else {
+            return nil
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             ZStack {
-                Map(coordinateRegion: $region, interactionModes: [])
+                Map(coordinateRegion: $region,
+                    interactionModes: .all,
+                    showsUserLocation: true,
+                    userTrackingMode: $tracking)
                     .edgesIgnoringSafeArea(.all)
                     .scaleEffect(1.1)
-//                    .blur(radius: 6)
                     .opacity(0.5)
                 
                 VStack {
@@ -44,6 +57,13 @@ struct HomeTabView: View {
                     .padding()
                 }
                 .navigationTitle("Help Requests")
+            }
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if let updatedRegion = getCurrentRegion() {
+                    region = updatedRegion
+                }
             }
         }
     }

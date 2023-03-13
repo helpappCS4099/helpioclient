@@ -11,10 +11,12 @@ class Interactors {
 
     init(appState: AppState, repositories: Repositories) {
         //default (production) constructor
-        self.sessionInteractor = SessionInteractor(appState: appState, sessionWebRepository: repositories.session)
+        self.session = SessionInteractor(appState: appState, sessionWebRepository: repositories.session)
+        self.user = UserInteractor(appState: appState, userWebRepository: repositories.user)
     }
     
-    let sessionInteractor: SessionInteractor
+    let session: SessionInteractor
+    let user: UserInteractor
 }
 
 //"constructors" for dependency injection for production/testing, etc.

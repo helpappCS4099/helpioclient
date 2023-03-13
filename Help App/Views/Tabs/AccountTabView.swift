@@ -20,6 +20,8 @@ struct AccountTabView: View {
     
     @State var colorTappedID: Int?
     
+    var onLogOut: () -> Void = {}
+    
     var body: some View {
         NavigationStack {
             List {
@@ -70,15 +72,26 @@ struct AccountTabView: View {
                     accountColorSelection()
                 }
                 
+                Section(header: Text("Help Request History")) {
+                    Text("You have not yet had a help request.")
+                }
+                
                 Section(header: Text("Settings")) {
                     
-                    centeredTextButton(text: "Permissions Settings", action: {})
+                    centeredTextButton(text: "Permissions Settings", action: {
+                        
+                    })
                 }
                 
                 Section {
-                    centeredTextButton(text: "Log Out", isPlain: false, action: {})
+                    centeredTextButton(text: "Log Out", isPlain: false, action: {
+                        onLogOut()
+                    })
                 }
             
+            }
+            .refreshable {
+                //
             }
         }
     }

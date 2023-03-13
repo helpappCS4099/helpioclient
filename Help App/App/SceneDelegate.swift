@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TouchVisualizer
 
 class SceneDelegate: NSObject, UIWindowSceneDelegate {
     
@@ -13,6 +14,9 @@ class SceneDelegate: NSObject, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let _ = (scene as? UIWindowScene) else { return }
+        //for user study, enable touch visualisation
+//        Visualizer.start()
+        
         //perform app dependency injections
         let environement = Environment.bootstrap()
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {

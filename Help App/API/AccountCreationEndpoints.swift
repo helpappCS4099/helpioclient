@@ -28,11 +28,11 @@ extension AccountCreationEndpoints: Endpoint {
         case .createUser:
             return false
         case .resendEmail:
-            return true
+            return false
         case .checkEmailVerification:
-            return true
+            return false
         case .updateAPNToken:
-            return true
+            return false
         }
     }
     

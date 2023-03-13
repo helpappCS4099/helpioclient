@@ -17,6 +17,23 @@ class CustomGradients {
 
 enum AccountGradient: CaseIterable {
     
+    static func getByID(id: Int) -> LinearGradient {
+        switch id {
+        case 0:
+            return CustomGradients.greenAsh
+        case 1:
+            return CustomGradients.aquarium
+        case 2:
+            return CustomGradients.pear
+        case 3:
+            return CustomGradients.ochre
+        case 4:
+            return CustomGradients.lavender
+        default:
+            return CustomGradients.greenAsh
+        }
+    }
+    
     var id: Int {
         get  {
             switch self {

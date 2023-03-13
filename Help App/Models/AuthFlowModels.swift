@@ -18,19 +18,10 @@ struct UserWasCreatedModel: Codable, ResponseModel {
     let userID: String?
 }
 
-//response for user login user object
-struct UserModel: Codable, ResponseModel {
-    let email: String
-    let firstName: String
-    let lastName: String
-    let verified: Bool
-    let deviceToken: String
-    //add friends here
-}
-
 //response after login
 struct LoginUserModel: Codable, ResponseModel {
     let authenticated: Bool
+    let jwt: String?
     let userID: String?
     let user: UserModel?
 }
@@ -38,9 +29,11 @@ struct LoginUserModel: Codable, ResponseModel {
 //response for checking email verification
 struct EmailVerificationModel: Codable, ResponseModel {
     let userIsVerified: Bool
+    let jwt: String?
 }
 
 //response from updating the APN token
 struct TokenUpdateModel: Codable, ResponseModel {
     let apnTokenWasUpdated: Bool
+    let jwt: String
 }
