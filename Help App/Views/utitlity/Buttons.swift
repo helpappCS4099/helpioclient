@@ -28,6 +28,27 @@ struct LargeRedButton: ButtonStyle {
     }
 }
 
+struct FormAccessibleButton: ButtonStyle {
+    
+    @Binding var isRed: Bool
+    let isNotched: Bool
+    
+    init(isRed: Binding<Bool>) {
+        self._isRed = isRed
+        isNotched = isNotchedIphone()
+    }
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(width: bounds.width - 32, height: 150)
+            .background(isRed ? .red : .sysblue)
+            .foregroundColor(.white)
+            .cornerRadius(16, corners: [.topRight, .topLeft])
+            .cornerRadius(isNotched ? 39 : 16, corners: [.bottomRight, .bottomLeft])
+            .opacity(configuration.isPressed ? 0.6 : 1)
+    }
+}
+
 struct SystemLargeButton: ButtonStyle {
     
     let hasShadow: Bool

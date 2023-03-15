@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 //https://designcode.io/swiftui-handbook-conditional-modifier
 extension View {
@@ -67,4 +68,21 @@ struct RoundedCorner: Shape {
         let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
         return Path(path.cgPath)
     }
+}
+
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+
+extension Date
+{
+    func toString(dateFormat format: String ) -> String
+    {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        return dateFormatter.string(from: self)
+    }
+
 }

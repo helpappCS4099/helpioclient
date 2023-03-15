@@ -7,12 +7,6 @@
 
 import SwiftUI
 
-enum HelpRequestFormStage: Int {
-    case category = 1
-    case friends = 2
-    case note = 3
-}
-
 struct ProgressBarView: View {
     
     @Binding var progress: HelpRequestFormStage
@@ -40,7 +34,7 @@ struct ProgressBarView: View {
         }
         .frame(width: bounds.width, height: 40)
         .clipShape(Rectangle())
-        .animation(.easeInOut)
+        .animation(.easeInOut, value: progress)
     }
 }
 

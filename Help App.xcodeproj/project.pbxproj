@@ -41,6 +41,12 @@
 		5C50CC072989A3D1008AEDA7 /* Help_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CC062989A3D1008AEDA7 /* Help_AppUITests.swift */; };
 		5C50CC092989A3D1008AEDA7 /* Help_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CC082989A3D1008AEDA7 /* Help_AppUITestsLaunchTests.swift */; };
 		5C50CC1E2989A6B8008AEDA7 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CC1D2989A6B8008AEDA7 /* Config.swift */; };
+		5C56000229BF4245007CB3E2 /* CriticalSituationCategoryFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C56000129BF4245007CB3E2 /* CriticalSituationCategoryFormView.swift */; };
+		5C56000429BF6265007CB3E2 /* FriendFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C56000329BF6265007CB3E2 /* FriendFormView.swift */; };
+		5C56000629BF683D007CB3E2 /* FriendFormItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C56000529BF683D007CB3E2 /* FriendFormItemView.swift */; };
+		5C56534029C03A5D006E3F5E /* NoteFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C56533F29C03A5D006E3F5E /* NoteFormView.swift */; };
+		5C56FFFF29BF30B0007CB3E2 /* AppContentEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C56FFFE29BF30B0007CB3E2 /* AppContentEnums.swift */; };
+		5C6A8E6229C13CCD007C6D55 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6A8E6129C13CCD007C6D55 /* AudioRecorder.swift */; };
 		5C94796229A40E51006234E9 /* AuthFlowModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C94796129A40E51006234E9 /* AuthFlowModels.swift */; };
 		5C94796429A4F813006234E9 /* PermissionDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C94796329A4F813006234E9 /* PermissionDescription.swift */; };
 		5CC73AAC299DE3B000654047 /* WebRequestResultProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC73AAB299DE3B000654047 /* WebRequestResultProtocol.swift */; };
@@ -138,6 +144,12 @@
 		5C50CC152989A443008AEDA7 /* Help-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Help-App-Info.plist"; sourceTree = SOURCE_ROOT; };
 		5C50CC162989A466008AEDA7 /* Help App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Help App.entitlements"; sourceTree = "<group>"; };
 		5C50CC1D2989A6B8008AEDA7 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		5C56000129BF4245007CB3E2 /* CriticalSituationCategoryFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriticalSituationCategoryFormView.swift; sourceTree = "<group>"; };
+		5C56000329BF6265007CB3E2 /* FriendFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendFormView.swift; sourceTree = "<group>"; };
+		5C56000529BF683D007CB3E2 /* FriendFormItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendFormItemView.swift; sourceTree = "<group>"; };
+		5C56533F29C03A5D006E3F5E /* NoteFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteFormView.swift; sourceTree = "<group>"; };
+		5C56FFFE29BF30B0007CB3E2 /* AppContentEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContentEnums.swift; sourceTree = "<group>"; };
+		5C6A8E6129C13CCD007C6D55 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		5C94796129A40E51006234E9 /* AuthFlowModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthFlowModels.swift; sourceTree = "<group>"; };
 		5C94796329A4F813006234E9 /* PermissionDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionDescription.swift; sourceTree = "<group>"; };
 		5CC73AAB299DE3B000654047 /* WebRequestResultProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRequestResultProtocol.swift; sourceTree = "<group>"; };
@@ -229,8 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				5CD517F129BEA94C0087409B /* HelpRequestFormView.swift */,
-				5CD517F529BEB7260087409B /* CriticalSituationItemView.swift */,
-				5CD517F329BEAA220087409B /* ProgressBarView.swift */,
+				5C56000029BF41EA007CB3E2 /* FormComponents */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -349,6 +360,7 @@
 				5C50CC1D2989A6B8008AEDA7 /* Config.swift */,
 				5C2E4DFB298BBF5A004A49B4 /* Enums.swift */,
 				5C94796329A4F813006234E9 /* PermissionDescription.swift */,
+				5C56FFFE29BF30B0007CB3E2 /* AppContentEnums.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -359,6 +371,7 @@
 				5CFE169C29951AF9001DF260 /* Interactors.swift */,
 				5C2E4DF9298BBD0D004A49B4 /* SessionInteractor.swift */,
 				5C27C0A829B8DC66008C1A0B /* UserInteractor.swift */,
+				5C6A8E6129C13CCD007C6D55 /* AudioRecorder.swift */,
 			);
 			path = Interactors;
 			sourceTree = "<group>";
@@ -386,6 +399,19 @@
 				5CC73ABC299E0BF600654047 /* Repositories.swift */,
 			);
 			path = Repositories;
+			sourceTree = "<group>";
+		};
+		5C56000029BF41EA007CB3E2 /* FormComponents */ = {
+			isa = PBXGroup;
+			children = (
+				5CD517F529BEB7260087409B /* CriticalSituationItemView.swift */,
+				5C56000329BF6265007CB3E2 /* FriendFormView.swift */,
+				5C56000529BF683D007CB3E2 /* FriendFormItemView.swift */,
+				5C56533F29C03A5D006E3F5E /* NoteFormView.swift */,
+				5C56000129BF4245007CB3E2 /* CriticalSituationCategoryFormView.swift */,
+				5CD517F329BEAA220087409B /* ProgressBarView.swift */,
+			);
+			path = FormComponents;
 			sourceTree = "<group>";
 		};
 		5CC73AB1299DF22900654047 /* Models */ = {
@@ -557,6 +583,7 @@
 				5CC73AC3299E22BA00654047 /* VerifyEmailView.swift in Sources */,
 				5C2F022729A6A9950068A61B /* FriendListItemView.swift in Sources */,
 				5C2E4DDB298B2931004A49B4 /* Icons.swift in Sources */,
+				5C56000629BF683D007CB3E2 /* FriendFormItemView.swift in Sources */,
 				5CC73AB5299DF6D600654047 /* APIErrors.swift in Sources */,
 				5C2E4DDF298B299C004A49B4 /* Colors.swift in Sources */,
 				5CD517F629BEB7260087409B /* CriticalSituationItemView.swift in Sources */,
@@ -567,6 +594,7 @@
 				5CC73AC1299E22AD00654047 /* SignInFieldsView.swift in Sources */,
 				5CFE16962995107C001DF260 /* AccountCreationEndpoints.swift in Sources */,
 				5CFE169129950F4A001DF260 /* SessionWebRepository.swift in Sources */,
+				5C56534029C03A5D006E3F5E /* NoteFormView.swift in Sources */,
 				5CFE16A02995997E001DF260 /* SceneDelegate.swift in Sources */,
 				5C27C0AB29B8E210008C1A0B /* UserEndpoints.swift in Sources */,
 				5CFE1698299510B8001DF260 /* EndpointProtocol.swift in Sources */,
@@ -576,11 +604,13 @@
 				5C2E4DF3298B47FD004A49B4 /* Buttons.swift in Sources */,
 				5C2E4DDD298B2947004A49B4 /* Gradients.swift in Sources */,
 				5C2F022929A6BB8E0068A61B /* AddNewFriendsView.swift in Sources */,
+				5C56000429BF6265007CB3E2 /* FriendFormView.swift in Sources */,
 				5C27C0AF29B92F2E008C1A0B /* KeychainHelper.swift in Sources */,
 				5C50CBEE2989A3CE008AEDA7 /* ContentView.swift in Sources */,
 				5CC73ABB299E086E00654047 /* ResponseModel.swift in Sources */,
 				5CC73ABF299E226800654047 /* SignUpFieldsView.swift in Sources */,
 				5CD517F229BEA94C0087409B /* HelpRequestFormView.swift in Sources */,
+				5C56000229BF4245007CB3E2 /* CriticalSituationCategoryFormView.swift in Sources */,
 				5C2E4DE5298B35B3004A49B4 /* UISizes.swift in Sources */,
 				5C2E4DE8298B3E5F004A49B4 /* RootView.swift in Sources */,
 				5CC73AAE299DE4DC00654047 /* RepositoryResponse.swift in Sources */,
@@ -598,6 +628,8 @@
 				5C2E4DED298B3ECE004A49B4 /* HomeTabView.swift in Sources */,
 				5C2F022529A6A89C0068A61B /* Extensions.swift in Sources */,
 				5C27C0A929B8DC66008C1A0B /* UserInteractor.swift in Sources */,
+				5C56FFFF29BF30B0007CB3E2 /* AppContentEnums.swift in Sources */,
+				5C6A8E6229C13CCD007C6D55 /* AudioRecorder.swift in Sources */,
 				5C50CBEC2989A3CE008AEDA7 /* AppDelegate.swift in Sources */,
 				5CFE169429951073001DF260 /* SessionEndpoints.swift in Sources */,
 				5C27C0A729B8DC60008C1A0B /* UserWebRepository.swift in Sources */,

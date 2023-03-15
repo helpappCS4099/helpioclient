@@ -30,6 +30,8 @@ struct HomeTabView: View {
         }
     }
     
+    @State var showHelpRequestForm: Bool = false
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -47,6 +49,7 @@ struct HomeTabView: View {
                     
                     Button {
                         print("help request")
+                        showHelpRequestForm = true
                     } label: {
                         Text("Help Request")
                             .font(.title)
@@ -57,6 +60,10 @@ struct HomeTabView: View {
                     .padding()
                 }
                 .navigationTitle("Help Requests")
+            }
+            .sheet(isPresented: $showHelpRequestForm) {
+                HelpRequestFormView(showHelpRequestForm: $showHelpRequestForm)
+                    .interactiveDismissDisabled()
             }
         }
         .onAppear {
