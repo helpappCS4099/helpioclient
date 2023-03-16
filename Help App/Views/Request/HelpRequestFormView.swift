@@ -10,27 +10,13 @@ import SwiftUI
 struct HelpRequestFormView: View {
     
     @Binding var showHelpRequestForm: Bool
+    @Binding var availableFriends: [FriendModel]
+    @State var selectedFriendIDS: [String] = []
     
-    @State var progress: HelpRequestFormStage = .note
+    @State var progress: HelpRequestFormStage = .none
     @State var redButton: Bool = false
     
-    @State var selectedCriticalSituation: CriticalSituation = .stalking
-    
-    var user: UserModel = UserModel(userID: "sjkldjsldjlsd",
-                                   email: "ar303@st-andrews.ac.uk",
-                                   firstName: "Artem",
-                                   lastName: "Rakhmanov",
-                                   verified: true,
-                                   currentHelpRequestID: "",
-                                   colorScheme: 2,
-                                   friends: [
-                                       FriendModel(userID: "jskldsjldjlsd",
-                                                   firstName: "Bob",
-                                                   lastName: "Roberts",
-                                                   colorScheme: 1,
-                                                   status: 1,
-                                                   email: "br202@st-andrews.ac.uk")
-                                   ])
+    @State var selectedCriticalSituation: CriticalSituation = .trauma
     
     let criticalSituations = CriticalSituation.allCases
     
@@ -39,9 +25,45 @@ struct HelpRequestFormView: View {
     
     @FocusState var keyboardIsShown: Bool
     
+    @State var errorMessage: String = ""
+    @State var showError = false
+    
+    @State var messages: [NewMessageModel] = []
+    
+    var audioRecorder: AudioRecorder = AudioRecorder(session: Date().toString(dateFormat: "dd-MM-YY 'at' HH_mm_ss"))
+    
+    func onSituationSelect(_ situation: CriticalSituation) {
+        selectedCriticalSituation = situation
+        progress = .friends
+    }
+    
+    func onFriendsSelect() {
+        if selectedFriendIDS.isEmpty {
+            //illegal
+            errorMessage = "You need to select at least one friend"
+            showError = true
+            return
+        }
+        progress = .note
+    }
+    
+    func createHelpRequest() {
+        
+    }
+    
+    func onRecordingEnd() {
+        //fetch the new audio recording
+        //add new audio message to messages array
+    }
+    
+    func onAddMessage(_ messageBody: String) {
+        //add new text message to messages array
+    }
+    
     var body: some View {
         NavigationStack {
             ZStack {
+                
                 VStack(alignment: .leading) {
                     
                     ProgressBarView(progress: $progress)
@@ -50,21 +72,28 @@ struct HelpRequestFormView: View {
                     case .none:
                         EmptyView()
                     case .category:
-                        CriticalSituationCategoryFormView()
-                            .transition(.opacity)
+                        CriticalSituationCategoryFormView(
+                            selectedCriticalSituation: $selectedCriticalSituation,
+                            onSelect: onSituationSelect
+                        )
+                        .transition(.opacity)
                     default:
                         ScrollViewReader { scroll in
                             ScrollView(showsIndicators: false) {
                                 VStack(spacing: 30) {
                                     FriendFormView(
                                         criticalSituation: $selectedCriticalSituation,
-                                        user: user
+                                        friends: $availableFriends,
+                                        onBackToCategory: {
+                                            progress = .category
+                                        },
+                                        selectedFriends: $selectedFriendIDS
                                     )
                                     
                                     if progress == .note {
                                         NoteFormView(keyboardIsShown: $keyboardIsShown)
                                             .id(NOTESCROLLPOSITION)
-//                                            .adaptsToKeyboard()
+                                        //                                            .adaptsToKeyboard()
                                             .onAppear {
                                                 scroll.scrollTo(NOTESCROLLPOSITION)
                                             }
@@ -84,7 +113,7 @@ struct HelpRequestFormView: View {
                                         scroll.scrollTo(BOTTOM)
                                     }
                                 }
-
+                                
                             }
                         }
                     }
@@ -103,6 +132,16 @@ struct HelpRequestFormView: View {
                 .onTapGesture {
                     hideKeyboard()
                 }
+                .alert(errorMessage, isPresented: $showError) {
+                    Button("Hide", role: .cancel) {}
+                }
+                .onChange(of: progress) { newValue in
+                    if newValue.rawValue > 2 {
+                        redButton = true
+                    } else {
+                        redButton = false
+                    }
+                }
                 
                 //overlay button
                 if progress.rawValue > 1 {
@@ -110,27 +149,33 @@ struct HelpRequestFormView: View {
                         Spacer()
                         
                         Button {
-                            //action
+                            //friends -> note -> create
+                            switch progress {
+                            case .friends:
+                                onFriendsSelect()
+                            case .note:
+                                createHelpRequest()
+                            default:
+                                break
+                            }
                         } label: {
                             Text(progress == .note ? "Get Help" : "Continue")
                                 .font(.title)
                                 .fontWeight(.bold)
                         }
                         .buttonStyle(FormAccessibleButton(isRed: $redButton))
-                        .padding(.bottom)
+                        .padding(.bottom, 5)
                         .transition(.opacity)
+                        .animation(.default, value: progress)
                         .ignoresSafeArea(.keyboard)
-
+                        
                     }
                     .edgesIgnoringSafeArea(.bottom)
                 }
             }
         }
         .onAppear {
-//            progress = .category
-            if progress == .note {
-                redButton = true
-            }
+            progress = .category
         }
     }
 }
@@ -139,21 +184,7 @@ struct HelpRequestFormView_Previews: PreviewProvider {
     static var previews: some View {
         HelpRequestFormView(
             showHelpRequestForm: .constant(true),
-            user: UserModel(userID: "sjkldjsldjlsd",
-                            email: "ar303@st-andrews.ac.uk",
-                            firstName: "Artem",
-                            lastName: "Rakhmanov",
-                            verified: true,
-                            currentHelpRequestID: "",
-                            colorScheme: 2,
-                            friends: [
-                                FriendModel(userID: "jskldsjldjlsd",
-                                            firstName: "Bob",
-                                            lastName: "Roberts",
-                                            colorScheme: 1,
-                                            status: 1,
-                                            email: "br202@st-andrews.ac.uk")
-                            ])
+            availableFriends: .constant([])
         )
         .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
     }

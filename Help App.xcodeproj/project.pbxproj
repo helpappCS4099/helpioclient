@@ -47,6 +47,10 @@
 		5C56534029C03A5D006E3F5E /* NoteFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C56533F29C03A5D006E3F5E /* NoteFormView.swift */; };
 		5C56FFFF29BF30B0007CB3E2 /* AppContentEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C56FFFE29BF30B0007CB3E2 /* AppContentEnums.swift */; };
 		5C6A8E6229C13CCD007C6D55 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6A8E6129C13CCD007C6D55 /* AudioRecorder.swift */; };
+		5C6A8E6429C2FD6F007C6D55 /* HelpRequestModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6A8E6329C2FD6F007C6D55 /* HelpRequestModels.swift */; };
+		5C6A8E6629C30990007C6D55 /* HelpWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6A8E6529C30990007C6D55 /* HelpWebRepository.swift */; };
+		5C6A8E6829C30DD9007C6D55 /* HelpRequestEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6A8E6729C30DD9007C6D55 /* HelpRequestEndpoints.swift */; };
+		5C6A8E6A29C3101E007C6D55 /* HelpInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6A8E6929C3101E007C6D55 /* HelpInteractor.swift */; };
 		5C94796229A40E51006234E9 /* AuthFlowModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C94796129A40E51006234E9 /* AuthFlowModels.swift */; };
 		5C94796429A4F813006234E9 /* PermissionDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C94796329A4F813006234E9 /* PermissionDescription.swift */; };
 		5CC73AAC299DE3B000654047 /* WebRequestResultProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC73AAB299DE3B000654047 /* WebRequestResultProtocol.swift */; };
@@ -150,6 +154,10 @@
 		5C56533F29C03A5D006E3F5E /* NoteFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteFormView.swift; sourceTree = "<group>"; };
 		5C56FFFE29BF30B0007CB3E2 /* AppContentEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContentEnums.swift; sourceTree = "<group>"; };
 		5C6A8E6129C13CCD007C6D55 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		5C6A8E6329C2FD6F007C6D55 /* HelpRequestModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpRequestModels.swift; sourceTree = "<group>"; };
+		5C6A8E6529C30990007C6D55 /* HelpWebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpWebRepository.swift; sourceTree = "<group>"; };
+		5C6A8E6729C30DD9007C6D55 /* HelpRequestEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpRequestEndpoints.swift; sourceTree = "<group>"; };
+		5C6A8E6929C3101E007C6D55 /* HelpInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpInteractor.swift; sourceTree = "<group>"; };
 		5C94796129A40E51006234E9 /* AuthFlowModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthFlowModels.swift; sourceTree = "<group>"; };
 		5C94796329A4F813006234E9 /* PermissionDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionDescription.swift; sourceTree = "<group>"; };
 		5CC73AAB299DE3B000654047 /* WebRequestResultProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRequestResultProtocol.swift; sourceTree = "<group>"; };
@@ -370,6 +378,7 @@
 			children = (
 				5CFE169C29951AF9001DF260 /* Interactors.swift */,
 				5C2E4DF9298BBD0D004A49B4 /* SessionInteractor.swift */,
+				5C6A8E6929C3101E007C6D55 /* HelpInteractor.swift */,
 				5C27C0A829B8DC66008C1A0B /* UserInteractor.swift */,
 				5C6A8E6129C13CCD007C6D55 /* AudioRecorder.swift */,
 			);
@@ -396,6 +405,7 @@
 			children = (
 				5CFE169029950F4A001DF260 /* SessionWebRepository.swift */,
 				5C27C0A629B8DC60008C1A0B /* UserWebRepository.swift */,
+				5C6A8E6529C30990007C6D55 /* HelpWebRepository.swift */,
 				5CC73ABC299E0BF600654047 /* Repositories.swift */,
 			);
 			path = Repositories;
@@ -420,6 +430,7 @@
 				5C94796129A40E51006234E9 /* AuthFlowModels.swift */,
 				5C27C0AC29B8E562008C1A0B /* UserModels.swift */,
 				5CC73ABA299E086E00654047 /* ResponseModel.swift */,
+				5C6A8E6329C2FD6F007C6D55 /* HelpRequestModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -430,6 +441,7 @@
 				5CC73AAD299DE4DC00654047 /* RepositoryResponse.swift */,
 				5CFE169329951073001DF260 /* SessionEndpoints.swift */,
 				5C27C0AA29B8E210008C1A0B /* UserEndpoints.swift */,
+				5C6A8E6729C30DD9007C6D55 /* HelpRequestEndpoints.swift */,
 				5CFE16952995107C001DF260 /* AccountCreationEndpoints.swift */,
 			);
 			path = API;
@@ -596,7 +608,9 @@
 				5CFE169129950F4A001DF260 /* SessionWebRepository.swift in Sources */,
 				5C56534029C03A5D006E3F5E /* NoteFormView.swift in Sources */,
 				5CFE16A02995997E001DF260 /* SceneDelegate.swift in Sources */,
+				5C6A8E6429C2FD6F007C6D55 /* HelpRequestModels.swift in Sources */,
 				5C27C0AB29B8E210008C1A0B /* UserEndpoints.swift in Sources */,
+				5C6A8E6A29C3101E007C6D55 /* HelpInteractor.swift in Sources */,
 				5CFE1698299510B8001DF260 /* EndpointProtocol.swift in Sources */,
 				5C2E4DFA298BBD0D004A49B4 /* SessionInteractor.swift in Sources */,
 				5C27C0AD29B8E562008C1A0B /* UserModels.swift in Sources */,
@@ -608,9 +622,11 @@
 				5C27C0AF29B92F2E008C1A0B /* KeychainHelper.swift in Sources */,
 				5C50CBEE2989A3CE008AEDA7 /* ContentView.swift in Sources */,
 				5CC73ABB299E086E00654047 /* ResponseModel.swift in Sources */,
+				5C6A8E6829C30DD9007C6D55 /* HelpRequestEndpoints.swift in Sources */,
 				5CC73ABF299E226800654047 /* SignUpFieldsView.swift in Sources */,
 				5CD517F229BEA94C0087409B /* HelpRequestFormView.swift in Sources */,
 				5C56000229BF4245007CB3E2 /* CriticalSituationCategoryFormView.swift in Sources */,
+				5C6A8E6629C30990007C6D55 /* HelpWebRepository.swift in Sources */,
 				5C2E4DE5298B35B3004A49B4 /* UISizes.swift in Sources */,
 				5C2E4DE8298B3E5F004A49B4 /* RootView.swift in Sources */,
 				5CC73AAE299DE4DC00654047 /* RepositoryResponse.swift in Sources */,

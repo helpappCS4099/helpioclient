@@ -15,7 +15,8 @@ struct UserModel: Codable, ResponseModel {
     let firstName: String
     let lastName: String
     let verified: Bool
-    let currentHelpRequestID: String
+    let myCurrentHelpRequestID: String
+    let respondingCurrentHelpRequestID: String
     let colorScheme: Int
     let friends: [FriendModel]
 }
@@ -26,7 +27,8 @@ struct SearchUserModel: Codable, ResponseModel {
     let firstName: String
     let lastName: String
     let verified: Bool
-    let currentHelpRequestID: String
+    let myCurrentHelpRequestID: String
+    let respondingCurrentHelpRequestID: String
     let colorScheme: Int
     let friends: [FriendModel]
 }

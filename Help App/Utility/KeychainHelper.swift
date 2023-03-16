@@ -13,6 +13,10 @@ final class KeychainHelper {
     
     func save(_ data: Data, service: String, account: String) {
         
+        #if targetEnvironment(simulator)
+        return
+        #endif
+        
         // Create query
         let query = [
             kSecValueData: data,
@@ -42,12 +46,17 @@ final class KeychainHelper {
     }
     
     func save(jwt: String, service: String, account: String) {
+        #if targetEnvironment(simulator)
+        return
+        #endif
         let dataRepresentation = Data(jwt.utf8)
         self.save(dataRepresentation, service: service, account: account)
     }
     
     func read(service: String, account: String) -> String? {
-        
+        #if targetEnvironment(simulator)
+        return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NDA4ZWNiMjVjZGVmMjg0ZGRmN2RkNDQiLCJhY2Nlc3MiOiJhdXRob3Jpc2VkIiwiaWF0IjoxNjc4NjU0NTA1LCJleHAiOjE2OTQyMDY1MDV9.RZ9hIPQw7LCqyEVertCVr7P0MqkOvUjjcuov1SK9jiI"
+        #endif
         let query = [
             kSecAttrService: service,
             kSecAttrAccount: account,
@@ -60,6 +69,7 @@ final class KeychainHelper {
         
         if let dataRepresentation = result as? Data {
             let jwt = String(data: dataRepresentation, encoding: .utf8)!
+            print("key: " + jwt)
             return jwt
         } else {
             return nil

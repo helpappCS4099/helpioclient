@@ -20,7 +20,7 @@ struct ContentView: View {
         
     var body: some View {
         TabView(selection: $appState.currentPage) {
-            HomeTabView()
+            HomeTabView(helpInteractor: interactors.help)
                 .tabItem {
                     Label("Home", systemImage: "house.fill")
                 }
@@ -41,7 +41,7 @@ struct ContentView: View {
         .onAppear {
             //set the tab bar appearance to default
             let tabBarAppearance = UITabBarAppearance()
-            tabBarAppearance.configureWithDefaultBackground()
+            tabBarAppearance.configureWithTransparentBackground()
             UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
         }
     }

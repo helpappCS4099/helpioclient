@@ -13,10 +13,12 @@ class Interactors {
         //default (production) constructor
         self.session = SessionInteractor(appState: appState, sessionWebRepository: repositories.session)
         self.user = UserInteractor(appState: appState, userWebRepository: repositories.user)
+        self.help = HelpInteractor(appState: appState, helpWebRepository: repositories.help)
     }
     
     let session: SessionInteractor
     let user: UserInteractor
+    let help: HelpInteractor
 }
 
 //"constructors" for dependency injection for production/testing, etc.

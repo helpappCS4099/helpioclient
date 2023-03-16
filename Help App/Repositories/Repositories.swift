@@ -12,10 +12,12 @@ class Repositories {
     init() {
         self.session = SessionWebRepository()
         self.user = UserWebRepository()
+        self.help = HelpWebRepository()
     }
     
     let session: SessionWebRepository
     let user: UserWebRepository
+    let help: HelpWebRepository
 }
 
 extension Repositories {

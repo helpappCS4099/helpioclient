@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CriticalSituationItemView: View {
     
+    var onSelect: (CriticalSituation) -> Void = {_ in}
+    
     var situation: CriticalSituation = .trauma
     
     @State var tapped: Bool = false
@@ -60,6 +62,7 @@ struct CriticalSituationItemView: View {
                 tapped = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     tapped = false
+                    onSelect(situation)
                 }
             }
 //            .simultaneousGesture(

@@ -40,7 +40,7 @@ struct FormAccessibleButton: ButtonStyle {
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .frame(width: bounds.width - 32, height: 150)
+            .frame(width: bounds.width - 10, height: 150)
             .background(isRed ? .red : .sysblue)
             .foregroundColor(.white)
             .cornerRadius(16, corners: [.topRight, .topLeft])

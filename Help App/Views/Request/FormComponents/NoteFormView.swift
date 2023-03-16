@@ -71,20 +71,24 @@ struct NoteFormView: View {
                 .frame(width: 50, height: 50)
                 .scaleEffect(isPressingRecord ? 1.2 : 1)
                 .animation(.easeInOut, value: isPressingRecord)
-                .onLongPressGesture(
-                    minimumDuration: .infinity,
-                    pressing: { isPressing in
-                        if isPressing {
-                            print("start rec")
-                            audioRecorder.startRecording()
-                        } else {
-                            print("end rec")
-                            audioRecorder.stopRecording()
-                            let recordings = audioRecorder.getSessionRecordings()
-                        }
-                    },
-                    perform: {}
+                .highPriorityGesture(
+                    LongPressGesture(
+                        minimumDuration: .infinity
+                    )
+                    .updating($isPressingRecord, body: { value, state, transaction in
+                        state = value
+                    })
                 )
+            }
+            .onChange(of: isPressingRecord) { newValue in
+                if newValue {
+                    print("start rec")
+                    audioRecorder.startRecording()
+                } else {
+                    print("end rec")
+                    audioRecorder.stopRecording()
+                    let recordings = audioRecorder.getSessionRecordings()
+                }
             }
             .padding([.leading, .trailing])
             

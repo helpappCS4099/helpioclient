@@ -25,6 +25,7 @@ struct RootView: View {
                 ContentView(interactors: interactors).environmentObject(appState)
             }
         }
+        .persistentSystemOverlays(.hidden)
     }
 }
 

@@ -18,7 +18,7 @@ enum CriticalSituation: String, CaseIterable, Identifiable {
     case trauma = "Trauma"
     case assault = "Assault"
     case stalking = "Stalking"
-    case intocication = "Intoxication"
+    case intoxication = "Intoxication"
     case spiking = "Spiking"
     
     var color: Color {
@@ -30,10 +30,27 @@ enum CriticalSituation: String, CaseIterable, Identifiable {
                 return .stop
             case .stalking:
                 return .cherry
-            case .intocication:
+            case .intoxication:
                 return .altyn
             case .spiking:
                 return .fog
+            }
+        }
+    }
+    
+    var categoryCode: Int {
+        get {
+            switch self {
+            case .trauma:
+                return 0
+            case .assault:
+                return 1
+            case .stalking:
+                return 2
+            case .intoxication:
+                return 3
+            case .spiking:
+                return 4
             }
         }
     }
@@ -47,7 +64,7 @@ enum CriticalSituation: String, CaseIterable, Identifiable {
                 return (CategoryIcons.assault)
             case .stalking:
                 return (CategoryIcons.stalking)
-            case .intocication:
+            case .intoxication:
                 return (CategoryIcons.intoxication)
             case .spiking:
                 return (CategoryIcons.spiking)

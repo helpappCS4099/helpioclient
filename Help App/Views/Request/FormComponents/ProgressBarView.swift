@@ -22,17 +22,17 @@ struct ProgressBarView: View {
                     .overlay(
                         LinearGradient(colors: [.sysblue, .tertblue], startPoint: .leading, endPoint: .trailing)
                     )
-                    .frame(width: (bounds.width / CGFloat(3) * CGFloat(progress.rawValue)), height: 40)
+                    .frame(width: (bounds.width / CGFloat(3) * CGFloat(progress.rawValue)), height: 10)
                 
-                Text(String(Int(Double(progress.rawValue * 100 / 3).rounded())) + "%")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.white)
+//                Text(String(Int(Double(progress.rawValue * 100 / 3).rounded())) + "%")
+//                    .font(.system(size: 16, weight: .semibold))
+//                    .foregroundColor(.white)
                 
             }
             .cornerRadius(progress == .note ? 0 : 40, corners: [.bottomRight, .topRight])
             .shadow(color: Color.black.opacity(0.2), radius: 10, x: 5, y:0)
         }
-        .frame(width: bounds.width, height: 40)
+        .frame(width: bounds.width, height: 10)
         .clipShape(Rectangle())
         .animation(.easeInOut, value: progress)
     }
