@@ -73,15 +73,15 @@ struct CriticalSituationItemView: View {
 //                    }
 //                })
 //            )
-            .simultaneousGesture(
-                LongPressGesture(minimumDuration: 3)
-                    .onEnded({ value in
-                    
-                    })
-                    .updating($press, body: { currentState, gestureState, transaction in
-                        gestureState = currentState
-                    })
-            )
+//            .simultaneousGesture(
+//                LongPressGesture(minimumDuration: 3)
+//                    .onEnded({ value in
+//
+//                    })
+//                    .updating($press, body: { currentState, gestureState, transaction in
+//                        gestureState = currentState
+//                    })
+//            )
         }
         .animation(.spring(response: 0.3, dampingFraction: 0.5), value: tapped)
         .animation(.spring(response: 0.4, dampingFraction: 0.6), value: press)

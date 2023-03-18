@@ -42,8 +42,24 @@ struct HomeTabView: View {
     
     @State var isLoading: Bool = false
     
+    func onCreateHelpRequest(category: Int, friends: [FriendModel], selectedFriends: [String], messages: [String]) {
+        Task {
+            print("creating...")
+            let (model, opStatus) = await helpInteractor.createNewHelpRequest(
+                category: category,
+                messages: messages,
+                selectedFriendIDs: selectedFriends,
+                friends: friends
+            )
+            
+            print(model, opStatus)
+        }
+    }
+    
     func onAddHelpRequestTap() {
         Task {
+            let impact = await UIImpactFeedbackGenerator(style: .light)
+            await impact.impactOccurred()
             isLoading = true
             //fetch available friends
             let (friends, opStatus) = await helpInteractor.getAvailableFriends()
@@ -51,6 +67,8 @@ struct HomeTabView: View {
             //if exists - open
             availableFriends = friends
             if (availableFriends.isEmpty) {
+                errorMessage = "All of your friends are currently unavailble, as they are helping someone. Please try again later."
+                showError = true
                 return
             }
             if (opStatus == .success) {
@@ -105,7 +123,8 @@ struct HomeTabView: View {
             .sheet(isPresented: $showHelpRequestForm) {
                 HelpRequestFormView(
                     showHelpRequestForm: $showHelpRequestForm,
-                    availableFriends: $availableFriends
+                    availableFriends: $availableFriends,
+                    onCreateHelpRequest: onCreateHelpRequest
                 )
                     .interactiveDismissDisabled()
             }

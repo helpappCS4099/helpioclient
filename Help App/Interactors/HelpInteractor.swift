@@ -9,6 +9,7 @@ import Foundation
 
 protocol NewHelpRequestOperations {
     func getAvailableFriends() async -> ([FriendModel], OperationStatus)
+    func createNewHelpRequest(category: Int, messages: [String], selectedFriendIDs: [String], friends: [FriendModel]) async -> (HelpRequestModel?, OperationStatus)
 }
 
 struct HelpInteractor {
@@ -17,6 +18,27 @@ struct HelpInteractor {
 }
 
 extension HelpInteractor: NewHelpRequestOperations {
+    
+    func createNewHelpRequest(category: Int, messages: [String], selectedFriendIDs: [String], friends: [FriendModel]) async -> (HelpRequestModel?, OperationStatus) {
+        // encode selected friends as respondents
+        let respondents: [RespondentModel] = friends.filter{selectedFriendIDs.contains($0.userID)}.map { friend in
+            let respondent = RespondentModel(friend: friend)
+            return respondent
+        }
+        print(respondents)
+        let newHelpRequestResponse = await helpWebRepository.postNewHelpRequest(category: category, messages: messages, respondents: respondents)
+        switch newHelpRequestResponse {
+        case .success(_, let model, _):
+            guard let newHelpRequestModel = model as? HelpRequestModel else {
+                return (nil, .failure(errorMessage: "could not cast help request model"))
+            }
+            return (newHelpRequestModel, .success)
+        case .failure(let status, _, let errorMessage):
+            return (nil, .failure(errorMessage: errorMessage ?? "\(status) ; unexp error at newHR"))
+        }
+        
+    }
+    
     
     func getAvailableFriends() async -> ([FriendModel], OperationStatus) {
         let friendsResponse = await helpWebRepository.availableUsersRequest()

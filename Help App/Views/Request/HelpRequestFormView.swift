@@ -12,6 +12,7 @@ struct HelpRequestFormView: View {
     @Binding var showHelpRequestForm: Bool
     @Binding var availableFriends: [FriendModel]
     @State var selectedFriendIDS: [String] = []
+    @State var messages: [String] = []
     
     @State var progress: HelpRequestFormStage = .none
     @State var redButton: Bool = false
@@ -28,13 +29,19 @@ struct HelpRequestFormView: View {
     @State var errorMessage: String = ""
     @State var showError = false
     
-    @State var messages: [NewMessageModel] = []
+    var onCreateHelpRequest: (Int, [FriendModel], [String], [String]) -> Void = {_,_,_,_ in
+        
+    }
     
-    var audioRecorder: AudioRecorder = AudioRecorder(session: Date().toString(dateFormat: "dd-MM-YY 'at' HH_mm_ss"))
+    var audioRecorder: AudioRecorder = AudioRecorder(session: Date().toString(dateFormat: "dd-MM-YY__HH_mm_ss"))
     
     func onSituationSelect(_ situation: CriticalSituation) {
+        let impact = UIImpactFeedbackGenerator(style: .light)
+        impact.impactOccurred()
         selectedCriticalSituation = situation
-        progress = .friends
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            progress = .friends
+        }
     }
     
     func onFriendsSelect() {
@@ -44,11 +51,21 @@ struct HelpRequestFormView: View {
             showError = true
             return
         }
+        let impact = UIImpactFeedbackGenerator(style: .light)
+        impact.impactOccurred()
         progress = .note
     }
     
     func createHelpRequest() {
-        
+        let impact = UIImpactFeedbackGenerator(style: .heavy)
+        impact.impactOccurred()
+        if selectedFriendIDS.isEmpty {
+            //illegal
+            errorMessage = "You need to select at least one friend"
+            showError = true
+            return
+        }
+        onCreateHelpRequest(selectedCriticalSituation.categoryCode, availableFriends, selectedFriendIDS, messages)
     }
     
     func onRecordingEnd() {
@@ -91,7 +108,14 @@ struct HelpRequestFormView: View {
                                     )
                                     
                                     if progress == .note {
-                                        NoteFormView(keyboardIsShown: $keyboardIsShown)
+                                        NoteFormView(
+                                            messages: $messages,
+                                            keyboardIsShown: $keyboardIsShown,
+                                            audioRecorder: audioRecorder,
+                                            onMessageSend: {
+                                                scroll.scrollTo(NOTESCROLLPOSITION)
+                                            }
+                                        )
                                             .id(NOTESCROLLPOSITION)
                                         //                                            .adaptsToKeyboard()
                                             .onAppear {
@@ -115,6 +139,7 @@ struct HelpRequestFormView: View {
                                 }
                                 
                             }
+                            .scrollDisabled(keyboardIsShown)
                         }
                     }
                     

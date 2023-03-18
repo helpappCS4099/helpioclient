@@ -36,6 +36,7 @@ class AudioRecorder {
         
         let documentPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let sessionFolder = documentPath.appendingPathComponent(session)
+        print("session folder: " + sessionFolder.path())
         do {
             try FileManager.default.createDirectory(atPath: sessionFolder.path(), withIntermediateDirectories: true)
         } catch let error as NSError {

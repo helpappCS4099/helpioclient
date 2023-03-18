@@ -9,7 +9,7 @@ import Foundation
 
 enum HelpRequestEndpoint {
     case availableFriends
-    case newHelpRequest(category: Int, messages: NewMessageModel, respondents: [RespondentModel])
+    case newHelpRequest(category: Int, messages: [String], respondents: [RespondentModel])
 }
 
 extension HelpRequestEndpoint: Endpoint {
@@ -52,7 +52,9 @@ extension HelpRequestEndpoint: Endpoint {
             return [
                 "category" : category,
                 "messages" : messages,
-                "respondents" : respondents
+                "respondents" : respondents.map({ res in
+                    return res.convertToDictionary()
+                })
             ]
         }
     }
