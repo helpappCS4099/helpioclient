@@ -33,6 +33,15 @@ struct MessageModel: Codable, ResponseModel {
 }
 
 struct RespondentModel: Codable, ResponseModel {
+    internal init(userID: String, firstName: String, lastName: String, colorScheme: Int, status: Int, location: [LocationPointModel]) {
+        self.userID = userID
+        self.firstName = firstName
+        self.lastName = lastName
+        self.colorScheme = colorScheme
+        self.status = status
+        self.location = location
+    }
+    
     
     init(friend: FriendModel) {
         self.userID = friend.userID
@@ -42,6 +51,8 @@ struct RespondentModel: Codable, ResponseModel {
         self.status = 0
         self.location = []
     }
+    
+    
     
     let userID: String
     let firstName: String
@@ -90,9 +101,16 @@ struct HelpRequestStatusModel: Codable, ResponseModel {
     let progressMessageRespondent: String
 }
 
+struct OwnerModel: Codable, ResponseModel {
+    let userID: String
+    let firstName: String
+    let lastName: String
+    let colorScheme: Int
+}
+
 struct HelpRequestModel: Codable, ResponseModel {
     let helpRequestID: String
-    let ownerUserID: String
+    let owner: OwnerModel
     let messages: [MessageModel]
     let isResolved: Bool
     let category: Int

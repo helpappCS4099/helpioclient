@@ -79,7 +79,7 @@ extension AuthRootView {
             }
             
             //check if location permission is given
-            clManager.requestAlwaysAuthorization()
+            LocationTracker.standard.cl.requestAlwaysAuthorization()
             
             //get token to the server
             UIApplication.shared.registerForRemoteNotifications()

@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @EnvironmentObject var appState: AppState
+    
     var interactors: Interactors
     
     func onLogOut() {
@@ -19,30 +20,38 @@ struct ContentView: View {
     }
         
     var body: some View {
-        TabView(selection: $appState.currentPage) {
-            HomeTabView(helpInteractor: interactors.help)
-                .tabItem {
-                    Label("Home", systemImage: "house.fill")
-                }
-                .tag(AppTab.home)
-            
-            FriendsTabView(userInteractor: interactors.user)
-                .tabItem {
-                    Label("Friends", systemImage: "person.2.fill")
-                }
-                .tag(AppTab.friends)
-            
-            AccountTabView(onLogOut: onLogOut)
-                .tabItem {
-                    Label("Account", systemImage: "person.circle.fill")
-                }
-                .tag(AppTab.account)
-        }
-        .onAppear {
-            //set the tab bar appearance to default
-            let tabBarAppearance = UITabBarAppearance()
-            tabBarAppearance.configureWithTransparentBackground()
-            UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+        if appState.showHelpRequest {
+            if appState.isRespondent {
+                RespondentHelpRequestView()
+            } else {
+                VictimHelpRequestView()
+            }
+        } else {
+            TabView(selection: $appState.currentPage) {
+                HomeTabView(helpInteractor: interactors.help)
+                    .tabItem {
+                        Label("Home", systemImage: "house.fill")
+                    }
+                    .tag(AppTab.home)
+                
+                FriendsTabView(userInteractor: interactors.user)
+                    .tabItem {
+                        Label("Friends", systemImage: "person.2.fill")
+                    }
+                    .tag(AppTab.friends)
+                
+                AccountTabView(onLogOut: onLogOut)
+                    .tabItem {
+                        Label("Account", systemImage: "person.circle.fill")
+                    }
+                    .tag(AppTab.account)
+            }
+            .onAppear {
+                //set the tab bar appearance to default
+                let tabBarAppearance = UITabBarAppearance()
+                tabBarAppearance.configureWithTransparentBackground()
+                UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+            }
         }
     }
 }

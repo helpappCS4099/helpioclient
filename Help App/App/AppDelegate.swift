@@ -133,5 +133,3 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationC
 ////https://stackoverflow.com/questions/63531310/how-to-force-always-location-access-in-ios-app
 //var alreadyRequestedLocationWhenInUse = UserDefaults.standard.bool(forKey: "alreadyRequestedLocationWhenInUse")
 //var alreadyRequestedLocationAlways = UserDefaults.standard.bool(forKey: "alreadyRequestedLocationAlways")
-
-let clManager = CLLocationManager.init()

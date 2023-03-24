@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 protocol NewHelpRequestOperations {
     func getAvailableFriends() async -> ([FriendModel], OperationStatus)
@@ -32,6 +33,20 @@ extension HelpInteractor: NewHelpRequestOperations {
             guard let newHelpRequestModel = model as? HelpRequestModel else {
                 return (nil, .failure(errorMessage: "could not cast help request model"))
             }
+            
+            //save to user defaults
+            UserDefaults.standard.set(newHelpRequestModel.helpRequestID, forKey: "helpRequestID")
+            UserDefaults.standard.set(true, forKey: "isInHelpRequest")
+            UserDefaults.standard.set(false, forKey: "isRespondent")
+            UserDefaults.standard.set(newHelpRequestModel.owner.userID, forKey: "userID")
+            
+            withAnimation {
+                //route through appstate
+                appState.isRespondent = false
+                appState.showHelpRequest = true
+            }
+            
+            
             return (newHelpRequestModel, .success)
         case .failure(let status, _, let errorMessage):
             return (nil, .failure(errorMessage: errorMessage ?? "\(status) ; unexp error at newHR"))

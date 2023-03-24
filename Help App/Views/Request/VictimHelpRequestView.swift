@@ -1,0 +1,444 @@
+//
+//  VictimHelpRequestView.swift
+//  Help App
+//
+//  Created by Artem Rakhmanov on 24/03/2023.
+//
+
+import SwiftUI
+import MapKit
+
+struct VictimHelpRequestView: View {
+    
+    @SwiftUI.Environment(\.colorScheme) var colorScheme : ColorScheme
+    
+    @State var region: MKCoordinateRegion = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(
+            latitude: 40.83834587046632,
+            longitude: 14.254053016537693),
+        span: MKCoordinateSpan(
+            latitudeDelta: 0.03,
+            longitudeDelta: 0.03)
+        )
+    
+    func getCurrentRegion() -> MKCoordinateRegion? {
+        if let location = LocationTracker.standard.cl.location {
+            withAnimation {
+                region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+            }
+            return region
+        } else {
+            return nil
+        }
+    }
+    
+    @State var tracking : MapUserTrackingMode = .follow
+    
+    @State var detent: PresentationDetent = .fraction(0.45)
+    
+    @StateObject var helpRequest: HelpRequestState = HelpRequestState()
+    
+    var body: some View {
+        ZStack {
+            Map(coordinateRegion: $region,
+                interactionModes: .all,
+                showsUserLocation: true,
+                userTrackingMode: $tracking)
+                .edgesIgnoringSafeArea(.all)
+                .onAppear {
+                    _ = getCurrentRegion()
+                    LocationTracker.standard.startMonitoringLocation()
+                }
+            
+            topRightCornerButtons
+            
+        }
+        .transparentSheet(show: .constant(true)) {
+            //onDismiss?
+        } content: {
+            VictimHRContent(detent: $detent)
+                .environmentObject(helpRequest)
+                .presentationDetents(
+                    undimmed: [.fraction(0.25), .fraction(0.45), .fraction(0.97), .fraction(1)],
+                    largestUndimmed: .fraction(1),
+                    selection: $detent
+                )
+                .interactiveDismissDisabled(true)
+                .background(Color.white.opacity(colorScheme == .light ? 0.5 : 0))
+            
+        }
+
+        
+    }
+    
+    private var topRightCornerButtons: some View {
+        VStack(alignment: .trailing) {
+            //button stack
+            VStack(alignment: .center, spacing: 0) {
+                Button {
+                    //resolve HR
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 28, weight: .light))
+                        .tint(colorScheme == .light ? .gray : .white)
+                }
+                .padding(8)
+                .frame(height: 55)
+                
+                Divider()
+                
+                Button {
+                    //focus on current location
+                    _ = getCurrentRegion()
+                } label: {
+                    Image(systemName: "location.fill")
+                        .font(.system(size: 28, weight: .light))
+                        .tint(colorScheme == .light ? .gray : .white)
+                }
+                .padding(8)
+                .frame(height: 55)
+
+            }
+            .background(.ultraThinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 7))
+            .frame(width: 50)
+            .frame(maxHeight: 120)
+            .padding(.trailing)
+            
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, alignment: .trailing)
+    }
+}
+
+struct VictimHRContent: View {
+    
+    @Binding var detent: PresentationDetent
+    
+    @EnvironmentObject var helpRequest: HelpRequestState
+    
+    @State var showMessages: Bool = false
+    
+    @State var isExpanded: Bool = false
+    @State var isFolded: Bool = false
+    
+    var body: some View {
+        GeometryReader { geometry in
+            VStack(spacing: 0) {
+                if !showMessages {
+                    Group {
+                        //status row
+                        HStack {
+                            HStack(spacing: 10) {
+                                CriticalSituation(code: helpRequest.category).image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 50, height: 50)
+                                
+                                VStack(spacing: 6) {
+                                    Text(CriticalSituation(code: helpRequest.category).rawValue)
+                                        .font(.subheadline)
+                                        .fontWeight(.medium)
+                                        .lineLimit(1)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    
+                                    Text(helpRequest.currentStatus.progressMessageOwner)
+                                        .font(.footnote)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                        .lineLimit(2)
+                                        .multilineTextAlignment(.leading)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    
+                                }
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            Button {
+                                //sos
+                            } label: {
+                                Text("SOS")
+                            }
+                            .tint(.red)
+                            .buttonStyle(.borderedProminent)
+                            .controlSize(.large)
+
+                        }
+                        .padding()
+                        
+                        Spacer()
+                        
+                        //respondents
+                        GeometryReader { respondentGeometry in
+                            RespondentsView(isExpanded: $isExpanded, isFolded: $isFolded)
+                                .environmentObject(helpRequest)
+                                .frame(maxHeight: geometry.size.height / 2)
+                                .opacity(detent == .fraction(0.25) ? 0 : 1)
+                                .animation(.linear, value: detent)
+                                .zIndex(4)
+                        }
+                        .padding(.top)
+                        
+                        if detent == .fraction(0.97) {
+                            withAnimation {
+                                Spacer()
+                            }
+                        }
+                    }
+                    
+                } else {
+                    MessengerView()
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            hideKeyboard()
+                        }
+                }
+                
+                //message capsule
+                MessageCapsuleView(
+                    showMessages: $showMessages,
+                    onToggleMessenger: {
+                        withAnimation(.easeInOut) {
+                            detent = .fraction(showMessages ? 0.45 : 0.97)
+                            showMessages.toggle()
+                            hideKeyboard()
+                        }
+                    }
+                )
+                .zIndex(5)
+
+            }
+            .onChange(of: detent) { newValue in
+                if newValue == .fraction(0.25) {
+                    withAnimation(.linear(duration: 0.2)) {
+                        isFolded = true
+                        isExpanded = false
+                    }
+                } else if newValue == .fraction(0.97) {
+                    withAnimation {
+                        isExpanded = true
+                        isFolded = false
+                    }
+                } else if newValue == .fraction(0.45) {
+                    withAnimation {
+                        isExpanded = false
+                        isFolded = false
+                    }
+                }
+            }
+            .onAppear {
+                detent = .fraction(0.45)
+            }
+        }
+    }
+}
+
+struct RespondentsView: View {
+    
+    @EnvironmentObject var helpRequest: HelpRequestState
+    
+    @SwiftUI.Environment(\.colorScheme) var colorScheme : ColorScheme
+    
+    @Binding var isExpanded: Bool
+    @Binding var isFolded: Bool
+    
+    let diameter: CGFloat = 100
+    
+    @Namespace private var respondentEffect
+    
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
+    var body: some View {
+        GeometryReader { geometry in
+            Group {
+                if isExpanded {
+                    verticalRepresentation(geometry: geometry)
+                } else {
+                    horizontalRepresentation(geometry: geometry)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .scaleEffect(isFolded ? 0 : 1)
+            .opacity(isFolded ? 0 : 1)
+            .frame(height: isFolded ? 0 : geometry.size.height)
+            .padding([.leading, .trailing])
+            
+        }
+    }
+    
+    private func verticalRepresentation(geometry: GeometryProxy) -> some View {
+        LazyVGrid(columns: columns, spacing: 10) {
+            ForEach(helpRequest.respondents.sorted(by: { elem1, elem2 in
+                return elem1.status > elem2.status
+            }), id: \.userID) { respondent in
+                
+                let rStatus = RespondentStatus.init(rawValue: respondent.status)!
+                
+                respondentThumbnailView(
+                    respondent: respondent,
+                    rStatus: rStatus,
+                    geometry: geometry,
+                    diameter: geometry.size.height / 4
+                )
+            }
+        }
+        .padding()
+        .frame(maxWidth: .infinity)
+        .if(colorScheme == .light, transform: { config in
+            config.background(.ultraThinMaterial)
+        })
+        .if(colorScheme == .dark, transform: { config in
+            config.background(Color.white.opacity(0.2))
+        })
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .shadow(color: .black.opacity(0.16), radius: 17, x: 0, y: 2)
+    }
+    
+    private func horizontalRepresentation(geometry: GeometryProxy) -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+
+            HStack(alignment: .center) {
+
+                ForEach(helpRequest.respondents.sorted(by: { elem1, elem2 in
+                    return elem1.status > elem2.status
+                }), id: \.userID) { respondent in
+
+                        let rStatus = RespondentStatus.init(rawValue: respondent.status)!
+
+                        respondentThumbnailView(
+                            respondent: respondent,
+                            rStatus: rStatus,
+                            geometry: geometry,
+                            diameter: geometry.size.height / 2
+                        )
+                    }
+                }
+
+            Spacer()
+        }
+        .frame(maxWidth: .infinity)
+        .if(colorScheme == .light, transform: { config in
+            config.background(.ultraThinMaterial)
+        })
+        .if(colorScheme == .dark, transform: { config in
+            config.background(Color.white.opacity(0.2))
+        })
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .shadow(color: .black.opacity(0.16), radius: 17, x: 0, y: 2)
+    }
+    
+    private func respondentThumbnailView(respondent: RespondentModel, rStatus: RespondentStatus, geometry: GeometryProxy, diameter: CGFloat) -> some View {
+        VStack(spacing: 6) {
+            ZStack {
+                Text(respondent.firstName[0].uppercased() + respondent.lastName[0].uppercased())
+                    .font(.system(.title, design: .rounded))
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .shadow(color: Color.black.opacity(0.3), radius: 5)
+            }
+            .frame(width: diameter, height: diameter)
+            .frame(maxHeight: 100)
+            .background(AccountGradient.getByID(id: respondent.colorScheme))
+            .clipShape(Circle())
+            .shadow(color: rStatus.shadowColor, radius: 5)
+            .overlay {
+                VStack {
+                    Image(systemName: rStatus.glyphSystemName)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundColor(rStatus.color)
+                        .frame(height: diameter / 4)
+                        .background(
+                            Color.adaptiveWhite.mask(Circle().scale(0.86))
+                        )
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                    
+                    Spacer()
+                }
+            }
+            
+            Text(respondent.firstName)
+                .font(.headline)
+                .fontWeight(.medium)
+            
+            Text(rStatus.statusString)
+                .font(.subheadline)
+        }
+        .matchedGeometryEffect(id: respondent.userID, in: respondentEffect)
+        .frame(maxHeight: .infinity, alignment: .center)
+        .padding(8)
+    }
+}
+
+struct MessengerView: View {
+    var body: some View {
+        Text("Messages:")
+            .font(.largeTitle)
+            .fontWeight(.bold)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding()
+        
+        Spacer()
+    }
+}
+
+struct MessageCapsuleView: View {
+    
+    @SwiftUI.Environment(\.colorScheme) var colorScheme : ColorScheme
+    
+    @Binding var showMessages: Bool
+    
+    var onToggleMessenger: () -> Void
+    
+    @State var message: String = ""
+    
+    @FocusState var focused: Bool
+    
+    var body: some View {
+        ZStack {
+            TextField("Type Here", text: $message, axis: .vertical)
+                .lineLimit(5)
+                .frame(minHeight: 50)
+                .padding([.leading, .trailing])
+                .focused($focused)
+            
+            //button
+            HStack {
+                Button {
+                    onToggleMessenger()
+                } label: {
+                    if showMessages {
+                        Text("Hide Chat")
+                    } else {
+                        Text("All Messages")
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.regular)
+                .buttonBorderShape(.capsule)
+                .tint(showMessages ? Color.orange : Color.sysblue)
+                .padding(.trailing, 10)
+
+            }
+            .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+        .background(Color.white.opacity(colorScheme == .light ? 1 : 0.2))
+        .clipShape(RoundedRectangle(cornerRadius: 25))
+        .frame(minHeight: 50, maxHeight: 100)
+        .padding([.leading, .trailing])
+        .onChange(of: focused) { newValue in
+            if newValue == true && !showMessages {
+                focused = true
+                onToggleMessenger()
+            }
+        }
+    }
+}
+
+struct VictimHelpRequestView_Previews: PreviewProvider {
+    static var previews: some View {
+        VictimHelpRequestView()
+    }
+}

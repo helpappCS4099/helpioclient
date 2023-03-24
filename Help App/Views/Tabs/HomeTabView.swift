@@ -24,7 +24,7 @@ struct HomeTabView: View {
     @State var tracking : MapUserTrackingMode = .follow
     
     func getCurrentRegion() -> MKCoordinateRegion? {
-        if let location = clManager.location {
+        if let location = LocationTracker.standard.cl.location {
             region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
             return region
         } else {

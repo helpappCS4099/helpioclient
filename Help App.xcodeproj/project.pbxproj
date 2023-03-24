@@ -33,6 +33,7 @@
 		5C2F022529A6A89C0068A61B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F022429A6A89C0068A61B /* Extensions.swift */; };
 		5C2F022729A6A9950068A61B /* FriendListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F022629A6A9950068A61B /* FriendListItemView.swift */; };
 		5C2F022929A6BB8E0068A61B /* AddNewFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F022829A6BB8E0068A61B /* AddNewFriendsView.swift */; };
+		5C37283529CE3FDA00FF32D1 /* LocationTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C37283429CE3FDA00FF32D1 /* LocationTracker.swift */; };
 		5C50CBEC2989A3CE008AEDA7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CBEB2989A3CE008AEDA7 /* AppDelegate.swift */; };
 		5C50CBEE2989A3CE008AEDA7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CBED2989A3CE008AEDA7 /* ContentView.swift */; };
 		5C50CBF02989A3D0008AEDA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C50CBEF2989A3D0008AEDA7 /* Assets.xcassets */; };
@@ -53,6 +54,11 @@
 		5C6A8E6A29C3101E007C6D55 /* HelpInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6A8E6929C3101E007C6D55 /* HelpInteractor.swift */; };
 		5C94796229A40E51006234E9 /* AuthFlowModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C94796129A40E51006234E9 /* AuthFlowModels.swift */; };
 		5C94796429A4F813006234E9 /* PermissionDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C94796329A4F813006234E9 /* PermissionDescription.swift */; };
+		5CB9FF9229CD423900D85FAD /* VictimHelpRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB9FF9129CD423900D85FAD /* VictimHelpRequestView.swift */; };
+		5CB9FF9429CD424700D85FAD /* RespondentHelpRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB9FF9329CD424700D85FAD /* RespondentHelpRequestView.swift */; };
+		5CB9FF9629CD431F00D85FAD /* TransparentSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB9FF9529CD431F00D85FAD /* TransparentSheet.swift */; };
+		5CB9FF9829CD901400D85FAD /* HelpRequestState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB9FF9729CD901400D85FAD /* HelpRequestState.swift */; };
+		5CB9FF9A29CE134400D85FAD /* UndimmedDetents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB9FF9929CE134400D85FAD /* UndimmedDetents.swift */; };
 		5CC73AAC299DE3B000654047 /* WebRequestResultProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC73AAB299DE3B000654047 /* WebRequestResultProtocol.swift */; };
 		5CC73AAE299DE4DC00654047 /* RepositoryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC73AAD299DE4DC00654047 /* RepositoryResponse.swift */; };
 		5CC73AB0299DEB9100654047 /* URLSessionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC73AAF299DEB9100654047 /* URLSessionExtensions.swift */; };
@@ -135,6 +141,7 @@
 		5C2F022429A6A89C0068A61B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		5C2F022629A6A9950068A61B /* FriendListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListItemView.swift; sourceTree = "<group>"; };
 		5C2F022829A6BB8E0068A61B /* AddNewFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFriendsView.swift; sourceTree = "<group>"; };
+		5C37283429CE3FDA00FF32D1 /* LocationTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTracker.swift; sourceTree = "<group>"; };
 		5C50CBE82989A3CE008AEDA7 /* Help App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Help App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C50CBEB2989A3CE008AEDA7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C50CBED2989A3CE008AEDA7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -160,6 +167,11 @@
 		5C6A8E6929C3101E007C6D55 /* HelpInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpInteractor.swift; sourceTree = "<group>"; };
 		5C94796129A40E51006234E9 /* AuthFlowModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthFlowModels.swift; sourceTree = "<group>"; };
 		5C94796329A4F813006234E9 /* PermissionDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionDescription.swift; sourceTree = "<group>"; };
+		5CB9FF9129CD423900D85FAD /* VictimHelpRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VictimHelpRequestView.swift; sourceTree = "<group>"; };
+		5CB9FF9329CD424700D85FAD /* RespondentHelpRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RespondentHelpRequestView.swift; sourceTree = "<group>"; };
+		5CB9FF9529CD431F00D85FAD /* TransparentSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentSheet.swift; sourceTree = "<group>"; };
+		5CB9FF9729CD901400D85FAD /* HelpRequestState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpRequestState.swift; sourceTree = "<group>"; };
+		5CB9FF9929CE134400D85FAD /* UndimmedDetents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndimmedDetents.swift; sourceTree = "<group>"; };
 		5CC73AAB299DE3B000654047 /* WebRequestResultProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRequestResultProtocol.swift; sourceTree = "<group>"; };
 		5CC73AAD299DE4DC00654047 /* RepositoryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryResponse.swift; sourceTree = "<group>"; };
 		5CC73AAF299DEB9100654047 /* URLSessionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionExtensions.swift; sourceTree = "<group>"; };
@@ -223,6 +235,8 @@
 			isa = PBXGroup;
 			children = (
 				5C2E4DDA298B2931004A49B4 /* Icons.swift */,
+				5CB9FF9529CD431F00D85FAD /* TransparentSheet.swift */,
+				5CB9FF9929CE134400D85FAD /* UndimmedDetents.swift */,
 				5C2E4DDC298B2947004A49B4 /* Gradients.swift */,
 				5C2E4DDE298B299C004A49B4 /* Colors.swift */,
 				5C2E4DE0298B3075004A49B4 /* Fields.swift */,
@@ -249,6 +263,9 @@
 			isa = PBXGroup;
 			children = (
 				5CD517F129BEA94C0087409B /* HelpRequestFormView.swift */,
+				5CB9FF9729CD901400D85FAD /* HelpRequestState.swift */,
+				5CB9FF9129CD423900D85FAD /* VictimHelpRequestView.swift */,
+				5CB9FF9329CD424700D85FAD /* RespondentHelpRequestView.swift */,
 				5C56000029BF41EA007CB3E2 /* FormComponents */,
 			);
 			path = Request;
@@ -275,6 +292,7 @@
 			children = (
 				5C2E4DF5298B4ADE004A49B4 /* AppState.swift */,
 				5CC73AC6299E230700654047 /* AuthState.swift */,
+				5C37283429CE3FDA00FF32D1 /* LocationTracker.swift */,
 			);
 			path = State;
 			sourceTree = "<group>";
@@ -596,6 +614,7 @@
 				5C2F022729A6A9950068A61B /* FriendListItemView.swift in Sources */,
 				5C2E4DDB298B2931004A49B4 /* Icons.swift in Sources */,
 				5C56000629BF683D007CB3E2 /* FriendFormItemView.swift in Sources */,
+				5C37283529CE3FDA00FF32D1 /* LocationTracker.swift in Sources */,
 				5CC73AB5299DF6D600654047 /* APIErrors.swift in Sources */,
 				5C2E4DDF298B299C004A49B4 /* Colors.swift in Sources */,
 				5CD517F629BEB7260087409B /* CriticalSituationItemView.swift in Sources */,
@@ -622,6 +641,8 @@
 				5C27C0AF29B92F2E008C1A0B /* KeychainHelper.swift in Sources */,
 				5C50CBEE2989A3CE008AEDA7 /* ContentView.swift in Sources */,
 				5CC73ABB299E086E00654047 /* ResponseModel.swift in Sources */,
+				5CB9FF9829CD901400D85FAD /* HelpRequestState.swift in Sources */,
+				5CB9FF9629CD431F00D85FAD /* TransparentSheet.swift in Sources */,
 				5C6A8E6829C30DD9007C6D55 /* HelpRequestEndpoints.swift in Sources */,
 				5CC73ABF299E226800654047 /* SignUpFieldsView.swift in Sources */,
 				5CD517F229BEA94C0087409B /* HelpRequestFormView.swift in Sources */,
@@ -642,13 +663,16 @@
 				5C2E4DEF298B3EDA004A49B4 /* FriendsTabView.swift in Sources */,
 				5CC73AB0299DEB9100654047 /* URLSessionExtensions.swift in Sources */,
 				5C2E4DED298B3ECE004A49B4 /* HomeTabView.swift in Sources */,
+				5CB9FF9229CD423900D85FAD /* VictimHelpRequestView.swift in Sources */,
 				5C2F022529A6A89C0068A61B /* Extensions.swift in Sources */,
 				5C27C0A929B8DC66008C1A0B /* UserInteractor.swift in Sources */,
 				5C56FFFF29BF30B0007CB3E2 /* AppContentEnums.swift in Sources */,
 				5C6A8E6229C13CCD007C6D55 /* AudioRecorder.swift in Sources */,
 				5C50CBEC2989A3CE008AEDA7 /* AppDelegate.swift in Sources */,
+				5CB9FF9A29CE134400D85FAD /* UndimmedDetents.swift in Sources */,
 				5CFE169429951073001DF260 /* SessionEndpoints.swift in Sources */,
 				5C27C0A729B8DC60008C1A0B /* UserWebRepository.swift in Sources */,
+				5CB9FF9429CD424700D85FAD /* RespondentHelpRequestView.swift in Sources */,
 				5C50CC1E2989A6B8008AEDA7 /* Config.swift in Sources */,
 				5C94796429A4F813006234E9 /* PermissionDescription.swift in Sources */,
 			);

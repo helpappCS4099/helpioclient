@@ -20,6 +20,28 @@ class AppState: ObservableObject {
     
     @Published var auth: AuthState = AuthState()
     
+    @Published var userID: String = UserDefaults.standard.string(forKey: "userID") ?? "" {
+        didSet {
+            UserDefaults.standard.set(self.userID, forKey: "userID")
+        }
+    }
+    
+    @Published var showHelpRequest: Bool = UserDefaults.standard.bool(forKey: "isInHelpRequest") {
+        didSet {
+            UserDefaults.standard.set(self.showHelpRequest, forKey: "isInHelpRequest")
+        }
+    }
+    @Published var isRespondent: Bool = UserDefaults.standard.bool(forKey: "isRespondent") {
+        didSet {
+            UserDefaults.standard.set(self.isRespondent, forKey: "isRespondent")
+        }
+    }
+    @Published var helpRequestID: String = UserDefaults.standard.string(forKey: "helpRequestID") ?? "" {
+        didSet {
+            UserDefaults.standard.set(self.helpRequestID, forKey: "helpRequestID")
+        }
+    }
+    
     init() {}
     
     init(auth: AuthState) {
