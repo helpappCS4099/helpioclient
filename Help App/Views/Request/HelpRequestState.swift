@@ -55,16 +55,85 @@ class HelpRequestState: ObservableObject {
         self.respondents = hrModel.respondents
     }
     
-    @Published var helpRequestID: String
-    @Published var owner: OwnerModel
+    init(model: HelpRequestModel) {
+        self.helpRequestID = model.helpRequestID
+        self.owner = model.owner
+        self.messages = model.messages
+        self.isResolved = model.isResolved
+        self.category = model.category
+        self.currentStatus = model.currentStatus
+        self.startTime = model.startTime
+        self.endTime = model.endTime
+        self.location = model.location
+        self.respondents = model.respondents
+    }
+    
+    init(id: String) {
+        self.helpRequestID = id
+        self.owner = nil
+        self.messages = []
+        self.isResolved = nil
+        self.category = nil
+        self.currentStatus = nil
+        self.startTime = nil
+        self.endTime = nil
+        self.location = []
+        self.respondents = []
+    }
+    
+    func updateFields(model: HelpRequestModel) {
+        self.helpRequestID = model.helpRequestID
+        self.owner = model.owner
+        self.messages = model.messages
+        self.isResolved = model.isResolved
+        self.category = model.category
+        self.currentStatus = model.currentStatus
+        self.startTime = model.startTime
+        self.endTime = model.endTime
+        self.location = model.location
+        self.respondents = model.respondents
+    }
+    
+    func myName() -> String {
+        if userIsOwner() {
+            return owner?.firstName ?? "FirstN"
+        } else {
+            let index = respondentIndex()
+            return respondents[index].firstName
+        }
+    }
+    
+    func myColorScheme() -> Int {
+        if userIsOwner() {
+            return owner?.colorScheme ?? 1
+        } else {
+            let index = respondentIndex()
+            return respondents[index].colorScheme
+        }
+    }
+    
+    func userIsOwner() -> Bool {
+        return myUserID == owner?.userID
+    }
+    
+    func respondentIndex() -> Int {
+        if let index = respondents.firstIndex(where: {$0.userID == myUserID}) {
+            return index
+        } else {
+            return 0
+        }
+    }
+    
+    @Published var helpRequestID: String?
+    @Published var owner: OwnerModel?
     @Published var messages: [MessageModel]
-    @Published var isResolved: Bool
-    @Published var category: Int
-    @Published var currentStatus: HelpRequestStatusModel
-    @Published var startTime: String   //parse date
+    @Published var isResolved: Bool?
+    @Published var category: Int?
+    @Published var currentStatus: HelpRequestStatusModel?
+    @Published var startTime: String?   //parse date
     @Published var endTime: String?    //parse date
     @Published var location: [LocationPointModel]
     @Published var respondents: [RespondentModel]
     
-    @Published var myUserID: String = "sdjklkjsdldsld"
+    @Published var myUserID: String = "6408ecb25cdef284ddf7dd44"
 }

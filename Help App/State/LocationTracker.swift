@@ -65,10 +65,7 @@ final class LocationTracker: NSObject, ObservableObject, CLLocationManagerDelega
         
         print("more than 5 meters diff, pushing!")
         lastPushedLocation = location
-        
-        //determine whether to push over
-        Task {
-            
-        }
+    
+        SocketInteractor.standard.pushLocation(longitude: location.coordinate.longitude, latitude: location.coordinate.latitude)
     }
 }

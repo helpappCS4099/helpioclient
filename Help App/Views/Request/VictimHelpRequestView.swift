@@ -36,7 +36,8 @@ struct VictimHelpRequestView: View {
     
     @State var detent: PresentationDetent = .fraction(0.45)
     
-    @StateObject var helpRequest: HelpRequestState = HelpRequestState()
+//    @StateObject var helpRequest: HelpRequestState = HelpRequestState()
+    @StateObject var helpRequest: HelpRequestState = HelpRequestState(id: "641e02cdd8d58cfffdabe641")
     
     var body: some View {
         ZStack {
@@ -66,6 +67,15 @@ struct VictimHelpRequestView: View {
                 .interactiveDismissDisabled(true)
                 .background(Color.white.opacity(colorScheme == .light ? 0.5 : 0))
             
+        }
+        .onAppear {
+            print("onAppear")
+            #if !targetEnvironment(simulator)
+            SocketInteractor.standard.openSocket(for: "641e02cdd8d58cfffdabe641")
+            SocketInteractor.standard.onUpdate = { updatedModel in
+                helpRequest.updateFields(model: updatedModel)
+            }
+            #endif
         }
 
         
@@ -122,6 +132,9 @@ struct VictimHRContent: View {
     @State var isExpanded: Bool = false
     @State var isFolded: Bool = false
     
+    
+    @State var focused: Bool = false
+    
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
@@ -130,19 +143,19 @@ struct VictimHRContent: View {
                         //status row
                         HStack {
                             HStack(spacing: 10) {
-                                CriticalSituation(code: helpRequest.category).image
+                                CriticalSituation(code: helpRequest.category ?? 0).image
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 50, height: 50)
                                 
                                 VStack(spacing: 6) {
-                                    Text(CriticalSituation(code: helpRequest.category).rawValue)
+                                    Text(CriticalSituation(code: helpRequest.category ?? 0).rawValue)
                                         .font(.subheadline)
                                         .fontWeight(.medium)
                                         .lineLimit(1)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     
-                                    Text(helpRequest.currentStatus.progressMessageOwner)
+                                    Text(helpRequest.currentStatus?.progressMessageOwner ?? "Progress Message Placeholder")
                                         .font(.footnote)
                                         .fixedSize(horizontal: false, vertical: true)
                                         .lineLimit(2)
@@ -186,7 +199,8 @@ struct VictimHRContent: View {
                     }
                     
                 } else {
-                    MessengerView()
+                    MessengerView(focused: $focused)
+                        .environmentObject(helpRequest)
                         .contentShape(Rectangle())
                         .onTapGesture {
                             hideKeyboard()
@@ -202,9 +216,9 @@ struct VictimHRContent: View {
                             showMessages.toggle()
                             hideKeyboard()
                         }
-                    }
+                    },
+                    focused: $focused
                 )
-                .zIndex(5)
 
             }
             .onChange(of: detent) { newValue in
@@ -227,6 +241,11 @@ struct VictimHRContent: View {
             }
             .onAppear {
                 detent = .fraction(0.45)
+            }
+            .if(helpRequest.owner == nil) { view in
+                withAnimation {
+                    view.redacted(reason: .placeholder)
+                }
             }
         }
     }
@@ -373,20 +392,135 @@ struct RespondentsView: View {
 }
 
 struct MessengerView: View {
+    
+    @EnvironmentObject var helpRequest: HelpRequestState
+    
+    @Binding var focused: Bool
+    
     var body: some View {
-        Text("Messages:")
-            .font(.largeTitle)
-            .fontWeight(.bold)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
-        
-        Spacer()
+        ZStack {
+            
+            //messages renderer
+            chatMessages()
+                .padding()
+            
+            VStack {
+                Text("Messages:")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                
+                Spacer()
+            }
+            
+        }
+    }
+    
+    func myMessageView(message: MessageModel) -> some View {
+        HStack {
+            Spacer()
+            
+            VStack {
+                Text(message.body)
+                    .font(.body)
+                    .multilineTextAlignment(.leading)
+                    .padding(10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text(Date.toMessageFormat(isoDate: message.timeStamp))
+                    .font(.caption)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                
+            }
+            .padding(5)
+            .background(Color(uiColor: .tertiarySystemGroupedBackground))
+            .cornerRadius(16, corners: [.topRight, .topLeft, .bottomLeft])
+            .shadow(color: .black.opacity(0.15), radius: 3, x: 0, y: 3)
+            .padding(.leading, 30)
+                
+        }
+    }
+    
+    func incomingMessage(message: MessageModel) -> some View {
+        HStack {
+            
+            //icon
+            VStack {
+                Spacer()
+                
+                ZStack {
+                    Text(message.firstName[0].uppercased())
+                        .font(.system(.caption2, design: .rounded))
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .shadow(color: Color.black.opacity(0.3), radius: 5)
+                }
+                .frame(width: 25, height: 25)
+                .background(AccountGradient.getByID(id: message.colorScheme))
+                .clipShape(Circle())
+            }
+            
+            
+            VStack {
+                Text(message.body)
+                    .font(.body)
+                    .multilineTextAlignment(.leading)
+                    .padding(10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text(Date.toMessageFormat(isoDate: message.timeStamp))
+                    .font(.caption)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                
+            }
+            .padding(5)
+            .background(Color(uiColor: .tertiarySystemGroupedBackground))
+            .cornerRadius(16, corners: [.topRight, .topLeft, .bottomLeft])
+            .shadow(color: .black.opacity(0.15), radius: 3, x: 0, y: 3)
+            .padding(.trailing, 30)
+            
+            Spacer()
+        }
+    }
+    
+    @ViewBuilder func chatMessages() -> some View {
+        ScrollView(showsIndicators: false) {
+            ScrollViewReader { scroll in
+                LazyVStack {
+                    Spacer().frame(height: 75)
+                    
+                    ForEach(helpRequest.messages, id: \.messageID) { message in
+                        if message.userID == helpRequest.myUserID {
+                            myMessageView(message: message)
+                                .id(message.messageID)
+                        } else {
+                            incomingMessage(message: message)
+                                .id(message.messageID)
+                        }
+                    }
+                    
+                    Spacer().frame(height: 100)
+                }
+                .onAppear {
+                    withAnimation {
+                        scroll.scrollTo(helpRequest.messages.last?.messageID)
+                    }
+                }
+                .onChange(of: focused) { newValue in
+                    withAnimation {
+                        scroll.scrollTo(helpRequest.messages.last?.messageID)
+                    }
+                }
+            }
+        }
     }
 }
 
 struct MessageCapsuleView: View {
     
     @SwiftUI.Environment(\.colorScheme) var colorScheme : ColorScheme
+    @EnvironmentObject var helpRequest: HelpRequestState
     
     @Binding var showMessages: Bool
     
@@ -394,15 +528,35 @@ struct MessageCapsuleView: View {
     
     @State var message: String = ""
     
-    @FocusState var focused: Bool
+    @Binding var focused: Bool
+    
+    @FocusState var keyboard: Bool
+    
+    func sendMessage() {
+        let messageModel = MessageModel(
+            messageID: UUID().uuidString,
+            userID: helpRequest.myUserID,
+            firstName: helpRequest.myName(),
+            colorScheme: helpRequest.myColorScheme(),
+            isAudio: false,
+            body: message,
+            timeStamp: Date().toString(dateFormat: "YYYY-MM-DDTHH:mm:ss.sssZ"),
+            data: nil
+        )
+        helpRequest.messages.append(messageModel)
+        SocketInteractor.standard.sendMessage(message: message)
+        message = ""
+    }
     
     var body: some View {
         ZStack {
-            TextField("Type Here", text: $message, axis: .vertical)
-                .lineLimit(5)
-                .frame(minHeight: 50)
+            TextField("Type Here", text: $message, axis: .horizontal)
+                .frame(height: 50)
                 .padding([.leading, .trailing])
-                .focused($focused)
+                .focused($keyboard)
+                .onSubmit {
+                    sendMessage()
+                }
             
             //button
             HStack {
@@ -420,7 +574,6 @@ struct MessageCapsuleView: View {
                 .buttonBorderShape(.capsule)
                 .tint(showMessages ? Color.orange : Color.sysblue)
                 .padding(.trailing, 10)
-
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
         }
@@ -428,7 +581,8 @@ struct MessageCapsuleView: View {
         .clipShape(RoundedRectangle(cornerRadius: 25))
         .frame(minHeight: 50, maxHeight: 100)
         .padding([.leading, .trailing])
-        .onChange(of: focused) { newValue in
+        .onChange(of: keyboard) { newValue in
+            focused = newValue
             if newValue == true && !showMessages {
                 focused = true
                 onToggleMessenger()

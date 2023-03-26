@@ -84,5 +84,24 @@ extension Date
         dateFormatter.dateFormat = format
         return dateFormatter.string(from: self)
     }
+    
+    static func fromString(isoDate: String) -> Date {
+        let df = DateFormatter()
+        df.dateFormat = "YYYY-MM-DDTHH:mm:ss.sssZ"
+        return df.date(from: isoDate) ?? Date()
+    }
+    
+    func toMessageFormat() -> String {
+        let df = DateFormatter()
+        df.setLocalizedDateFormatFromTemplate("HH:mm")
+        return df.string(from: self)
+    }
+    
+    static func toMessageFormat(isoDate: String) -> String {
+        let df = DateFormatter()
+        df.setLocalizedDateFormatFromTemplate("HH:mm")
+        let date = Date.fromString(isoDate: isoDate)
+        return df.string(from: date)
+    }
 
 }

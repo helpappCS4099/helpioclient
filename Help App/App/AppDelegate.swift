@@ -35,6 +35,15 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationC
         return sceneConfig
     }
     
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        //stop any existing socket connections
+        SocketInteractor.standard.terminateConnections()
+    }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        SocketInteractor.standard.resume()
+    }
+    
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("devie token:", deviceToken)
         let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()

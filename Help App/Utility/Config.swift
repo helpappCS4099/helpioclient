@@ -6,3 +6,4 @@
 //
 
 let BASEURLSTRING = "https://helpapp.loca.lt/"
+//let BASEURLSTRING = "100.103.40.127:8000/"
