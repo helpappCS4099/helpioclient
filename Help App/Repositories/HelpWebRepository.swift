@@ -31,7 +31,7 @@ extension HelpWebRepository: NewHelpRequestProtocol {
         do {
             let endpoint = HelpRequestEndpoint.newHelpRequest(
                 category: category,
-                messages: ["Hey"],
+                messages: messages,
                 respondents: respondents)
             
             let (responseData, _) = try await makeServerRequest(endpoint: endpoint, session: session)

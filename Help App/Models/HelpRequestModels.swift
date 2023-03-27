@@ -40,6 +40,7 @@ struct RespondentModel: Codable, ResponseModel {
         self.colorScheme = colorScheme
         self.status = status
         self.location = location
+        self.deviceToken = ""
     }
     
     
@@ -50,6 +51,7 @@ struct RespondentModel: Codable, ResponseModel {
         self.colorScheme = friend.colorScheme
         self.status = 0
         self.location = []
+        self.deviceToken = ""
     }
     
     
@@ -59,6 +61,7 @@ struct RespondentModel: Codable, ResponseModel {
     let lastName: String
     let colorScheme: Int
     let status: Int
+    let deviceToken: String
     let location: [LocationPointModel]
     
     func convertToDictionary() -> Dictionary<String, Any> {
@@ -70,7 +73,8 @@ struct RespondentModel: Codable, ResponseModel {
                     "status" : self.status,
                     "location" : self.location.map({ loc in
                         return loc.convertToDictionary()
-                    })
+                    }),
+                    "deviceToken": self.deviceToken
                 ]
             }
 }

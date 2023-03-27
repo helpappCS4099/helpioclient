@@ -135,5 +135,5 @@ class HelpRequestState: ObservableObject {
     @Published var location: [LocationPointModel]
     @Published var respondents: [RespondentModel]
     
-    @Published var myUserID: String = "6408ecb25cdef284ddf7dd44"
+    @Published var myUserID: String = UserDefaults.standard.string(forKey: "userID") ?? ""
 }

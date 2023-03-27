@@ -11,6 +11,7 @@ import MapKit
 struct VictimHelpRequestView: View {
     
     @SwiftUI.Environment(\.colorScheme) var colorScheme : ColorScheme
+    var helpInteractor: HelpInteractor
     
     @State var region: MKCoordinateRegion = MKCoordinateRegion(
         center: CLLocationCoordinate2D(
@@ -36,8 +37,9 @@ struct VictimHelpRequestView: View {
     
     @State var detent: PresentationDetent = .fraction(0.45)
     
-//    @StateObject var helpRequest: HelpRequestState = HelpRequestState()
-    @StateObject var helpRequest: HelpRequestState = HelpRequestState(id: "641e02cdd8d58cfffdabe641")
+    @StateObject var helpRequest: HelpRequestState
+    @State var showResolutionDialogue = false
+    @State var showContent = false
     
     var body: some View {
         ZStack {
@@ -46,15 +48,10 @@ struct VictimHelpRequestView: View {
                 showsUserLocation: true,
                 userTrackingMode: $tracking)
                 .edgesIgnoringSafeArea(.all)
-                .onAppear {
-                    _ = getCurrentRegion()
-                    LocationTracker.standard.startMonitoringLocation()
-                }
             
             topRightCornerButtons
-            
         }
-        .transparentSheet(show: .constant(true)) {
+        .transparentSheet(show: $showContent) {
             //onDismiss?
         } content: {
             VictimHRContent(detent: $detent)
@@ -66,14 +63,46 @@ struct VictimHelpRequestView: View {
                 )
                 .interactiveDismissDisabled(true)
                 .background(Color.white.opacity(colorScheme == .light ? 0.5 : 0))
+                .confirmationDialog("Resolve your help request?",
+                                    isPresented: $showResolutionDialogue) {
+                    Button("I am safe now", role: .destructive) {
+                        helpInteractor.resolveHelpRequest()
+                    }
+                    Button("Cancel", role: .cancel) {
+                        DispatchQueue.main.async {
+                            showResolutionDialogue = false
+                            showContent = true
+                        }
+                    }
+                }
             
         }
         .onAppear {
             print("onAppear")
             #if !targetEnvironment(simulator)
-            SocketInteractor.standard.openSocket(for: "641e02cdd8d58cfffdabe641")
+            _ = getCurrentRegion()
+            guard let id = UserDefaults.standard.string(forKey: "helpRequestID") else {
+                print("user defauls sucks")
+                return
+            }
+            if helpRequest.helpRequestID != nil && helpRequest.helpRequestID != "" {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    SocketInteractor.standard.openSocket(for: helpRequest.helpRequestID!)
+                    LocationTracker.standard.startMonitoringLocation()
+                }
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    SocketInteractor.standard.openSocket(for: id)
+                    helpRequest.helpRequestID = id
+                    LocationTracker.standard.startMonitoringLocation()
+                }
+            }
             SocketInteractor.standard.onUpdate = { updatedModel in
                 helpRequest.updateFields(model: updatedModel)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                showContent = true
+                detent = .fraction(0.45)
             }
             #endif
         }
@@ -87,6 +116,9 @@ struct VictimHelpRequestView: View {
             VStack(alignment: .center, spacing: 0) {
                 Button {
                     //resolve HR
+                    DispatchQueue.main.async {
+                        showResolutionDialogue = true
+                    }
                 } label: {
                     Image(systemName: "xmark")
                         .font(.system(size: 28, weight: .light))
@@ -199,7 +231,7 @@ struct VictimHRContent: View {
                     }
                     
                 } else {
-                    MessengerView(focused: $focused)
+                    MessengerView(focused: $focused, showMessages: $showMessages)
                         .environmentObject(helpRequest)
                         .contentShape(Rectangle())
                         .onTapGesture {
@@ -396,6 +428,9 @@ struct MessengerView: View {
     @EnvironmentObject var helpRequest: HelpRequestState
     
     @Binding var focused: Bool
+    @Binding var showMessages: Bool
+    
+    let END = UUID()
     
     var body: some View {
         ZStack {
@@ -501,15 +536,21 @@ struct MessengerView: View {
                     }
                     
                     Spacer().frame(height: 100)
+                        .id(END)
                 }
                 .onAppear {
                     withAnimation {
-                        scroll.scrollTo(helpRequest.messages.last?.messageID)
+                        scroll.scrollTo(END)
                     }
                 }
                 .onChange(of: focused) { newValue in
                     withAnimation {
-                        scroll.scrollTo(helpRequest.messages.last?.messageID)
+                        scroll.scrollTo(END)
+                    }
+                }
+                .onChange(of: showMessages) { newValue in
+                    withAnimation {
+                        scroll.scrollTo(END)
                     }
                 }
             }
@@ -553,6 +594,7 @@ struct MessageCapsuleView: View {
             TextField("Type Here", text: $message, axis: .horizontal)
                 .frame(height: 50)
                 .padding([.leading, .trailing])
+                .padding(.trailing, 100)
                 .focused($keyboard)
                 .onSubmit {
                     sendMessage()
@@ -582,9 +624,9 @@ struct MessageCapsuleView: View {
         .frame(minHeight: 50, maxHeight: 100)
         .padding([.leading, .trailing])
         .onChange(of: keyboard) { newValue in
+            keyboard = newValue
             focused = newValue
             if newValue == true && !showMessages {
-                focused = true
                 onToggleMessenger()
             }
         }
@@ -593,6 +635,7 @@ struct MessageCapsuleView: View {
 
 struct VictimHelpRequestView_Previews: PreviewProvider {
     static var previews: some View {
-        VictimHelpRequestView()
+        let helpInteractor = Environment.bootstrapLoggedIn(currentPage: .home).diContainer.interactors.help
+        VictimHelpRequestView(helpInteractor: helpInteractor, helpRequest: HelpRequestState())
     }
 }

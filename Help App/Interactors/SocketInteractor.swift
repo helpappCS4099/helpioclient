@@ -63,6 +63,18 @@ final class SocketInteractor {
             }
         }
         
+        socket.on("helprequest: close") { payload, _ in
+            print("close!")
+            let isRespondent = UserDefaults.standard.bool(forKey: "isRespondent")
+            
+            if isRespondent {
+                //
+            } else {
+                //owner
+                self.breakConnections()
+            }
+        }
+        
         socket.connect(withPayload: authHeaderPayload)
         
     }

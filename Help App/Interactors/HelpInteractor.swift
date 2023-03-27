@@ -41,9 +41,12 @@ extension HelpInteractor: NewHelpRequestOperations {
             UserDefaults.standard.set(newHelpRequestModel.owner.userID, forKey: "userID")
             
             withAnimation {
-                //route through appstate
-                appState.isRespondent = false
-                appState.showHelpRequest = true
+                DispatchQueue.main.async {
+                    //route through appstate
+                    appState.helpRequestID = newHelpRequestModel.helpRequestID
+                    appState.isRespondent = false
+                    appState.showHelpRequest = true
+                }
             }
             
             
@@ -74,4 +77,22 @@ extension HelpInteractor: NewHelpRequestOperations {
         }
     }
     
+    //owner
+    func resolveHelpRequest() {
+        //socket method
+        SocketInteractor.standard.resolveHelpRequest { status in
+            //ack?
+        }
+        //reset app state
+        appState.helpRequestID = ""
+        appState.isRespondent = false
+        appState.showHelpRequest = false
+        LocationTracker.standard.terminateLocationMonitoring()
+        //socket gets closed on "close" event
+    }
+    
+    //respondent on owner resolve
+    func closeOnResolutionHelpRequest() {
+        
+    }
 }

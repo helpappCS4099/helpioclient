@@ -36,6 +36,8 @@
 		5C37283529CE3FDA00FF32D1 /* LocationTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C37283429CE3FDA00FF32D1 /* LocationTracker.swift */; };
 		5C37283829D0B07F00FF32D1 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 5C37283729D0B07F00FF32D1 /* SocketIO */; };
 		5C37283A29D0B26200FF32D1 /* SocketInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C37283929D0B26200FF32D1 /* SocketInteractor.swift */; };
+		5C37283C29D1E09B00FF32D1 /* LocationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C37283B29D1E09B00FF32D1 /* LocationInteractor.swift */; };
+		5C37283E29D1E0A700FF32D1 /* LocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C37283D29D1E0A700FF32D1 /* LocationRepository.swift */; };
 		5C50CBEC2989A3CE008AEDA7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CBEB2989A3CE008AEDA7 /* AppDelegate.swift */; };
 		5C50CBEE2989A3CE008AEDA7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50CBED2989A3CE008AEDA7 /* ContentView.swift */; };
 		5C50CBF02989A3D0008AEDA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C50CBEF2989A3D0008AEDA7 /* Assets.xcassets */; };
@@ -145,6 +147,8 @@
 		5C2F022829A6BB8E0068A61B /* AddNewFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewFriendsView.swift; sourceTree = "<group>"; };
 		5C37283429CE3FDA00FF32D1 /* LocationTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTracker.swift; sourceTree = "<group>"; };
 		5C37283929D0B26200FF32D1 /* SocketInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketInteractor.swift; sourceTree = "<group>"; };
+		5C37283B29D1E09B00FF32D1 /* LocationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInteractor.swift; sourceTree = "<group>"; };
+		5C37283D29D1E0A700FF32D1 /* LocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRepository.swift; sourceTree = "<group>"; };
 		5C50CBE82989A3CE008AEDA7 /* Help App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Help App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C50CBEB2989A3CE008AEDA7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C50CBED2989A3CE008AEDA7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -399,6 +403,7 @@
 			isa = PBXGroup;
 			children = (
 				5CFE169C29951AF9001DF260 /* Interactors.swift */,
+				5C37283B29D1E09B00FF32D1 /* LocationInteractor.swift */,
 				5C2E4DF9298BBD0D004A49B4 /* SessionInteractor.swift */,
 				5C6A8E6929C3101E007C6D55 /* HelpInteractor.swift */,
 				5C37283929D0B26200FF32D1 /* SocketInteractor.swift */,
@@ -429,6 +434,7 @@
 				5CFE169029950F4A001DF260 /* SessionWebRepository.swift */,
 				5C27C0A629B8DC60008C1A0B /* UserWebRepository.swift */,
 				5C6A8E6529C30990007C6D55 /* HelpWebRepository.swift */,
+				5C37283D29D1E0A700FF32D1 /* LocationRepository.swift */,
 				5CC73ABC299E0BF600654047 /* Repositories.swift */,
 			);
 			path = Repositories;
@@ -661,6 +667,7 @@
 				5CFE169D29951AF9001DF260 /* Interactors.swift in Sources */,
 				5C94796229A40E51006234E9 /* AuthFlowModels.swift in Sources */,
 				5CC73AB9299E04C900654047 /* Environment.swift in Sources */,
+				5C37283C29D1E09B00FF32D1 /* LocationInteractor.swift in Sources */,
 				5CC73ABD299E0BF600654047 /* Repositories.swift in Sources */,
 				5CC73AC7299E230700654047 /* AuthState.swift in Sources */,
 				5C2E4DE1298B3075004A49B4 /* Fields.swift in Sources */,
@@ -672,6 +679,7 @@
 				5C2E4DED298B3ECE004A49B4 /* HomeTabView.swift in Sources */,
 				5CB9FF9229CD423900D85FAD /* VictimHelpRequestView.swift in Sources */,
 				5C2F022529A6A89C0068A61B /* Extensions.swift in Sources */,
+				5C37283E29D1E0A700FF32D1 /* LocationRepository.swift in Sources */,
 				5C27C0A929B8DC66008C1A0B /* UserInteractor.swift in Sources */,
 				5C56FFFF29BF30B0007CB3E2 /* AppContentEnums.swift in Sources */,
 				5C6A8E6229C13CCD007C6D55 /* AudioRecorder.swift in Sources */,

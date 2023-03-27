@@ -18,13 +18,18 @@ struct ContentView: View {
             await interactors.session.logOut()
         }
     }
+    
+    @State var once = true
         
     var body: some View {
         if appState.showHelpRequest {
             if appState.isRespondent {
                 RespondentHelpRequestView()
             } else {
-                VictimHelpRequestView()
+                VictimHelpRequestView(
+                    helpInteractor: interactors.help,
+                    helpRequest: HelpRequestState(id: appState.helpRequestID)
+                )
             }
         } else {
             TabView(selection: $appState.currentPage) {
