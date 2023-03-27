@@ -143,15 +143,24 @@ extension SocketInteractor {
 
 //respondent events
 extension SocketInteractor {
-    func acceptHelpRequest() {
-        
+    func acceptHelpRequest(userID: String, firstName: String) {
+        socket?.emit("helprequest: accept", [
+            "respondentID": userID,
+            "firstName": firstName
+        ])
     }
     
-    func rejectHelpRequest() {
-        
+    func rejectHelpRequest(userID: String, firstName: String) {
+        socket?.emit("helprequest: reject", [
+            "respondentID": userID,
+            "firstName": firstName
+        ])
     }
     
-    func sendOnTheWayStatus() {
-        
+    func sendOnTheWayStatus(userID: String, firstName: String) {
+        socket?.emit("helprequest: ontheway", [
+            "respondentID": userID,
+            "firstName": firstName
+        ])
     }
 }

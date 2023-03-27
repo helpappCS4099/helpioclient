@@ -76,6 +76,8 @@
 		5CC73AC3299E22BA00654047 /* VerifyEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC73AC2299E22BA00654047 /* VerifyEmailView.swift */; };
 		5CC73AC5299E22C100654047 /* PermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC73AC4299E22C100654047 /* PermissionsView.swift */; };
 		5CC73AC7299E230700654047 /* AuthState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC73AC6299E230700654047 /* AuthState.swift */; };
+		5CCBEF9A29D20C7B00F81063 /* PromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCBEF9929D20C7B00F81063 /* PromptView.swift */; };
+		5CCBEF9C29D20C8400F81063 /* ThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCBEF9B29D20C8400F81063 /* ThumbnailView.swift */; };
 		5CD517F229BEA94C0087409B /* HelpRequestFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD517F129BEA94C0087409B /* HelpRequestFormView.swift */; };
 		5CD517F429BEAA220087409B /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD517F329BEAA220087409B /* ProgressBarView.swift */; };
 		5CD517F629BEB7260087409B /* CriticalSituationItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD517F529BEB7260087409B /* CriticalSituationItemView.swift */; };
@@ -192,6 +194,8 @@
 		5CC73AC2299E22BA00654047 /* VerifyEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyEmailView.swift; sourceTree = "<group>"; };
 		5CC73AC4299E22C100654047 /* PermissionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsView.swift; sourceTree = "<group>"; };
 		5CC73AC6299E230700654047 /* AuthState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthState.swift; sourceTree = "<group>"; };
+		5CCBEF9929D20C7B00F81063 /* PromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptView.swift; sourceTree = "<group>"; };
+		5CCBEF9B29D20C8400F81063 /* ThumbnailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailView.swift; sourceTree = "<group>"; };
 		5CD517F129BEA94C0087409B /* HelpRequestFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpRequestFormView.swift; sourceTree = "<group>"; };
 		5CD517F329BEAA220087409B /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		5CD517F529BEB7260087409B /* CriticalSituationItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriticalSituationItemView.swift; sourceTree = "<group>"; };
@@ -271,6 +275,8 @@
 			isa = PBXGroup;
 			children = (
 				5CD517F129BEA94C0087409B /* HelpRequestFormView.swift */,
+				5CCBEF9929D20C7B00F81063 /* PromptView.swift */,
+				5CCBEF9B29D20C8400F81063 /* ThumbnailView.swift */,
 				5CB9FF9729CD901400D85FAD /* HelpRequestState.swift */,
 				5CB9FF9129CD423900D85FAD /* VictimHelpRequestView.swift */,
 				5CB9FF9329CD424700D85FAD /* RespondentHelpRequestView.swift */,
@@ -627,6 +633,7 @@
 				5C2F022729A6A9950068A61B /* FriendListItemView.swift in Sources */,
 				5C2E4DDB298B2931004A49B4 /* Icons.swift in Sources */,
 				5C56000629BF683D007CB3E2 /* FriendFormItemView.swift in Sources */,
+				5CCBEF9A29D20C7B00F81063 /* PromptView.swift in Sources */,
 				5C37283529CE3FDA00FF32D1 /* LocationTracker.swift in Sources */,
 				5CC73AB5299DF6D600654047 /* APIErrors.swift in Sources */,
 				5C2E4DDF298B299C004A49B4 /* Colors.swift in Sources */,
@@ -669,6 +676,7 @@
 				5CC73AB9299E04C900654047 /* Environment.swift in Sources */,
 				5C37283C29D1E09B00FF32D1 /* LocationInteractor.swift in Sources */,
 				5CC73ABD299E0BF600654047 /* Repositories.swift in Sources */,
+				5CCBEF9C29D20C8400F81063 /* ThumbnailView.swift in Sources */,
 				5CC73AC7299E230700654047 /* AuthState.swift in Sources */,
 				5C2E4DE1298B3075004A49B4 /* Fields.swift in Sources */,
 				5CC73AAC299DE3B000654047 /* WebRequestResultProtocol.swift in Sources */,

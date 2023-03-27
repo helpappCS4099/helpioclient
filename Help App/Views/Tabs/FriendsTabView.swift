@@ -163,19 +163,17 @@ struct FriendsTabView: View {
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.hidden)
             }
-            .task {
-                //get a user object and fill in friends
-                let (myUserObject, opStatus) = await userInteractor.getMyself()
-                print("getting my user object: ", opStatus)
-                if let myUserObject = myUserObject {
-                    user = myUserObject
-                    friends = myUserObject.friends
-                }
-            }
+            
         }
         .searchable(text: $queryString)
-        .onAppear {
-            
+        .task {
+            //get a user object and fill in friends
+            let (myUserObject, opStatus) = await userInteractor.getMyself()
+            print("getting my user object: ", opStatus)
+            if let myUserObject = myUserObject {
+                user = myUserObject
+                friends = myUserObject.friends
+            }
         }
     }
 }

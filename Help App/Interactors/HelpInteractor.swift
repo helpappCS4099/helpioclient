@@ -77,6 +77,28 @@ extension HelpInteractor: NewHelpRequestOperations {
         }
     }
     
+    func acceptHelpRequest(firstName: String, helpRequestID: String) {
+        
+        guard let userID = UserDefaults.standard.string(forKey: "userID") else {
+            print("no userID in accept")
+            return
+        }
+        
+        SocketInteractor.standard.acceptHelpRequest(userID: userID, firstName: firstName)
+        appState.helpRequestID = helpRequestID
+        appState.isRespondent = true
+        appState.showHelpRequest = true
+    }
+    
+    func rejectHelpRequest(firstName: String) {
+        guard let userID = UserDefaults.standard.string(forKey: "userID") else {
+            print("no userID in accept")
+            return
+        }
+        
+        SocketInteractor.standard.rejectHelpRequest(userID: userID, firstName: firstName)
+    }
+    
     //owner
     func resolveHelpRequest() {
         //socket method

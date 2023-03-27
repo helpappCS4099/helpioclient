@@ -10,7 +10,19 @@ import SwiftUI
 class HelpRequestState: ObservableObject {
     
     init() {
-        let hrModel: HelpRequestModel = HelpRequestModel(helpRequestID: "jskjdls", owner: .init(userID: "sdjklkjsdldsld", firstName: "Artem", lastName: "Rakhmanov", colorScheme: 1), messages: [], isResolved: false, category: 2, currentStatus: .init(progressStatus: 0, progressMessageOwner: "Notifications sent. Hold on for a moment.", progressMessageRespondent: "Artem "), startTime: "2023-03-18T14:36:39.927Z", endTime: nil, location: [],
+        let hrModel: HelpRequestModel = HelpRequestModel(helpRequestID: "jskjdls", owner: .init(userID: "sdjklkjsdldsld", firstName: "Artem", lastName: "Rakhmanov", colorScheme: 1),
+            messages: [
+                MessageModel(
+                    messageID: "dhskjdsdsdhls",
+                    userID: "djskljljsd",
+                    firstName: "Artem",
+                    colorScheme: 1,
+                    isAudio: false,
+                    body: "Testing messaging",
+                    timeStamp: Date().toString(),
+                    data: nil)
+            
+            ], isResolved: false, category: 2, currentStatus: .init(progressStatus: 0, progressMessageOwner: "Notifications sent. Hold on for a moment.", progressMessageRespondent: "Artem "), startTime: "2023-03-18T14:36:39.927Z", endTime: nil, location: [],
             respondents: [
                 RespondentModel(
                     userID: "djksljslds",

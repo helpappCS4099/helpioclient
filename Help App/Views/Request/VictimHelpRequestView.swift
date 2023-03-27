@@ -432,6 +432,8 @@ struct MessengerView: View {
     
     let END = UUID()
     
+    @Namespace var messageEffect
+    
     var body: some View {
         ZStack {
             
@@ -462,6 +464,7 @@ struct MessengerView: View {
                     .multilineTextAlignment(.leading)
                     .padding(10)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .matchedGeometryEffect(id: message.messageID, in: messageEffect)
                 
                 Text(Date.toMessageFormat(isoDate: message.timeStamp))
                     .font(.caption)
@@ -503,6 +506,7 @@ struct MessengerView: View {
                     .multilineTextAlignment(.leading)
                     .padding(10)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .matchedGeometryEffect(id: message.messageID, in: messageEffect)
                 
                 Text(Date.toMessageFormat(isoDate: message.timeStamp))
                     .font(.caption)
@@ -511,7 +515,7 @@ struct MessengerView: View {
             }
             .padding(5)
             .background(Color(uiColor: .tertiarySystemGroupedBackground))
-            .cornerRadius(16, corners: [.topRight, .topLeft, .bottomLeft])
+            .cornerRadius(16, corners: [.topRight, .topLeft, .bottomRight])
             .shadow(color: .black.opacity(0.15), radius: 3, x: 0, y: 3)
             .padding(.trailing, 30)
             

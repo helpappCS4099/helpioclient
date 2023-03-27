@@ -10,7 +10,10 @@ import MapKit
 
 struct HomeTabView: View {
     
+    @EnvironmentObject var appState: AppState
+    
     var helpInteractor: HelpInteractor
+    var userInteractor: UserInteractor
     
     @State var region: MKCoordinateRegion = MKCoordinateRegion(
         center: CLLocationCoordinate2D(
@@ -41,6 +44,56 @@ struct HomeTabView: View {
     @State var availableFriends: [FriendModel] = []
     
     @State var isLoading: Bool = false
+    
+    @StateObject var helpRequest: HelpRequestState = HelpRequestState(id: "")
+    @State var showHelpRequestThumbnail = false
+    @State var showHelpRequestPrompt = false
+    
+    func pageVisitRoutine() async {
+        //get user
+        debugMessage = "fetching user"
+        let (myUserObject, _) = await userInteractor.getMyself()
+        if let user = myUserObject {
+            appState.userID = user.userID
+            debugMessage = "user received"
+            if user.respondingCurrentHelpRequestID != "" {
+                debugMessage = "user is responding to help request"
+                helpRequest.helpRequestID = user.respondingCurrentHelpRequestID
+                //open socket connection
+                SocketInteractor.standard.onUpdate = { update in
+                    helpRequest.updateFields(model: update)
+                    if let respondent = update.respondents.first(where: {$0.userID == appState.userID}) {
+                        switch respondent.status {
+                        case -1:
+                            //rejected
+                            debugMessage = "showing thumbnail"
+                            withAnimation(.easeInOut) {
+                                showHelpRequestThumbnail = true
+                            }
+                        case 0:
+                            //notified
+                            debugMessage = "showing prompt"
+                            withAnimation {
+                                showHelpRequestPrompt = true
+                            }
+                        default:
+                            //accepted / on the way
+                            break
+                        }
+                    }
+                }
+                SocketInteractor.standard.openSocket(for: user.respondingCurrentHelpRequestID)
+            } else {
+                SocketInteractor.standard.breakConnections()
+            }
+        }
+        //focus on current location
+        if let updatedRegion = getCurrentRegion() {
+            withAnimation(.easeInOut) {
+                region = updatedRegion
+            }
+        }
+    }
     
     func onCreateHelpRequest(category: Int, friends: [FriendModel], selectedFriends: [String], messages: [String]) {
         Task {
@@ -85,7 +138,7 @@ struct HomeTabView: View {
         NavigationStack {
             ZStack {
                 
-//                Text(debugMessage)
+                Text(debugMessage)
                 
                 Map(coordinateRegion: $region,
                     interactionModes: .all,
@@ -128,16 +181,16 @@ struct HomeTabView: View {
                 )
                     .interactiveDismissDisabled()
             }
+            .sheet(isPresented: $showHelpRequestPrompt, content: {
+                PromptView(helpInteractor: helpInteractor, helpRequest: helpRequest, showHelpRequestPrompt: $showHelpRequestPrompt)
+                    .interactiveDismissDisabled(true)
+            })
             .alert(errorMessage, isPresented: $showError) {
                 Button("Hide", role: .cancel) {}
             }
         }
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                if let updatedRegion = getCurrentRegion() {
-                    region = updatedRegion
-                }
-            }
+        .task {
+            await pageVisitRoutine()
         }
     }
 }
@@ -145,6 +198,7 @@ struct HomeTabView: View {
 struct HomeTabView_Previews: PreviewProvider {
     static var previews: some View {
         let di = Environment.bootstrap().diContainer
-        HomeTabView(helpInteractor: di.interactors.help)
+        HomeTabView(helpInteractor: di.interactors.help, userInteractor: di.interactors.user)
+            .environmentObject(di.appState)
     }
 }

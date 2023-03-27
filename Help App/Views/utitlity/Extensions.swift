@@ -78,7 +78,7 @@ extension View {
 
 extension Date
 {
-    func toString(dateFormat format: String ) -> String
+    func toString(dateFormat format: String = "YYYY-MM-DDTHH:mm:ss.sssZ") -> String
     {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format

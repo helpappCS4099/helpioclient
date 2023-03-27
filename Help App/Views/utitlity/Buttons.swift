@@ -52,20 +52,40 @@ struct FormAccessibleButton: ButtonStyle {
 struct SystemLargeButton: ButtonStyle {
     
     let hasShadow: Bool
+    var color = Color.sysblue
     
     init(hasShadow: Bool = false) {
         self.hasShadow = hasShadow
+    }
+    
+    init(color: Color) {
+        self.hasShadow = false
+        self.color = color
     }
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .frame(height: 40)
             .padding()
-            .background(Color.sysblue)
+            .background(color)
             .foregroundColor(.white)
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             .shadow(color: hasShadow ? Color.sysblue.opacity(0.5) : .clear, radius: 5, x: 0, y: 2)
             .shadow(color: hasShadow ? Color.sysblue.opacity(0.3) : .clear, radius: 20, x: 0, y: 10)
+            .opacity(configuration.isPressed ? 0.6 : 1)
+    }
+}
+
+struct TransparentLargeButton: ButtonStyle {
+    
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(height: 40)
+            .padding()
+            .background(.ultraThinMaterial)
+            .foregroundColor(.white)
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             .opacity(configuration.isPressed ? 0.6 : 1)
     }
 }
