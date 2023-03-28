@@ -9,7 +9,10 @@ import SwiftUI
 
 struct ThumbnailView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("Thumbnail")
+            .padding(30)
+            .background(.ultraThinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
 

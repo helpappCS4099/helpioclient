@@ -42,6 +42,18 @@ class AppState: ObservableObject {
         }
     }
     
+    @Published var showThumbnail: Bool = UserDefaults.standard.bool(forKey: "showThumbnail") {
+        didSet {
+            UserDefaults.standard.set(self.showThumbnail, forKey: "showThumbnail")
+        }
+    }
+    
+    @Published var user: UserModel? = nil {
+        didSet {
+            self.objectWillChange.send()
+        }
+    }
+    
     init() {}
     
     init(auth: AuthState) {

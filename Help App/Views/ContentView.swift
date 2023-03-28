@@ -25,7 +25,8 @@ struct ContentView: View {
         if appState.showHelpRequest {
             if appState.isRespondent {
                 RespondentHelpRequestView(helpInteractor: interactors.help,
-                                          helpRequest: HelpRequestState(id: appState.helpRequestID)
+                                          helpRequest: HelpRequestState(id: appState.helpRequestID))
+                .environmentObject(appState)
             } else {
                 VictimHelpRequestView(
                     helpInteractor: interactors.help,
@@ -36,13 +37,14 @@ struct ContentView: View {
             TabView(selection: $appState.currentPage) {
                 HomeTabView(helpInteractor: interactors.help,
                             userInteractor: interactors.user)
-                .environmentObject(appState)
+                    .environmentObject(appState)
                     .tabItem {
                         Label("Home", systemImage: "house.fill")
                     }
                     .tag(AppTab.home)
                 
                 FriendsTabView(userInteractor: interactors.user)
+                    .environmentObject(appState)
                     .tabItem {
                         Label("Friends", systemImage: "person.2.fill")
                     }

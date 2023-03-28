@@ -46,7 +46,6 @@ struct HomeTabView: View {
     @State var isLoading: Bool = false
     
     @StateObject var helpRequest: HelpRequestState = HelpRequestState(id: "")
-    @State var showHelpRequestThumbnail = false
     @State var showHelpRequestPrompt = false
     
     func pageVisitRoutine() async {
@@ -56,42 +55,56 @@ struct HomeTabView: View {
         if let user = myUserObject {
             appState.userID = user.userID
             debugMessage = "user received"
-            if user.respondingCurrentHelpRequestID != "" {
-                debugMessage = "user is responding to help request"
-                helpRequest.helpRequestID = user.respondingCurrentHelpRequestID
-                //open socket connection
-                SocketInteractor.standard.onUpdate = { update in
-                    helpRequest.updateFields(model: update)
-                    if let respondent = update.respondents.first(where: {$0.userID == appState.userID}) {
-                        switch respondent.status {
-                        case -1:
-                            //rejected
-                            debugMessage = "showing thumbnail"
-                            withAnimation(.easeInOut) {
-                                showHelpRequestThumbnail = true
-                            }
-                        case 0:
-                            //notified
-                            debugMessage = "showing prompt"
-                            withAnimation {
-                                showHelpRequestPrompt = true
-                            }
-                        default:
-                            //accepted / on the way
-                            break
-                        }
-                    }
-                }
-                SocketInteractor.standard.openSocket(for: user.respondingCurrentHelpRequestID)
-            } else {
-                SocketInteractor.standard.breakConnections()
-            }
+            queryHelpRequestStatusAndDisplay(user: user)
         }
         //focus on current location
         if let updatedRegion = getCurrentRegion() {
             withAnimation(.easeInOut) {
                 region = updatedRegion
             }
+        }
+    }
+    
+    func queryHelpRequestStatusAndDisplay(user: UserModel) {
+        if user.respondingCurrentHelpRequestID != "" {
+            debugMessage = "user is responding to help request"
+            helpRequest.helpRequestID = user.respondingCurrentHelpRequestID
+            //open socket connection
+            SocketInteractor.standard.onUpdate = { update in
+                helpRequest.updateFields(model: update)
+                if let respondent = update.respondents.first(where: {$0.userID == appState.userID}) {
+                    switch respondent.status {
+                    case -1:
+                        //rejected
+                        debugMessage = "showing thumbnail"
+                        withAnimation(.easeInOut) {
+                            appState.showThumbnail = true
+                        }
+                    case 0:
+                        //notified
+                        debugMessage = "showing prompt"
+                        withAnimation {
+                            showHelpRequestPrompt = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                appState.showThumbnail = true
+                            }
+                        }
+                    default:
+                        //accepted / on the way
+                        appState.showThumbnail = false
+                    }
+                }
+            }
+            SocketInteractor.standard.openSocket(for: user.respondingCurrentHelpRequestID)
+        } else {
+            SocketInteractor.standard.breakConnections()
+            appState.showThumbnail = false
+        }
+    }
+    
+    func onUserChange(_ user: UserModel) {
+        if user.respondingCurrentHelpRequestID != "" {
+            queryHelpRequestStatusAndDisplay(user: user)
         }
     }
     
@@ -111,8 +124,8 @@ struct HomeTabView: View {
     
     func onAddHelpRequestTap() {
         Task {
-            let impact = await UIImpactFeedbackGenerator(style: .light)
-            await impact.impactOccurred()
+            let impact = UIImpactFeedbackGenerator(style: .light)
+            impact.impactOccurred()
             isLoading = true
             //fetch available friends
             let (friends, opStatus) = await helpInteractor.getAvailableFriends()
@@ -149,8 +162,12 @@ struct HomeTabView: View {
                     .opacity(0.5)
                 
                 VStack {
-                    Spacer()
                     
+                    if appState.showThumbnail {
+                        ThumbnailView()
+                    }
+                    
+                    Spacer()
                     
                     Button {
                         onAddHelpRequestTap()
@@ -179,10 +196,11 @@ struct HomeTabView: View {
                     availableFriends: $availableFriends,
                     onCreateHelpRequest: onCreateHelpRequest
                 )
-                    .interactiveDismissDisabled()
+                    .interactiveDismissDisabled(true)
             }
             .sheet(isPresented: $showHelpRequestPrompt, content: {
                 PromptView(helpInteractor: helpInteractor, helpRequest: helpRequest, showHelpRequestPrompt: $showHelpRequestPrompt)
+                    .environmentObject(appState)
                     .interactiveDismissDisabled(true)
             })
             .alert(errorMessage, isPresented: $showError) {
@@ -191,6 +209,11 @@ struct HomeTabView: View {
         }
         .task {
             await pageVisitRoutine()
+        }
+        .onChange(of: appState.user) { newValue in
+            if let newUser = newValue {
+                onUserChange(newUser)
+            }
         }
     }
 }

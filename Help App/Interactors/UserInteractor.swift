@@ -34,6 +34,9 @@ extension UserInteractor: UserOperations {
             guard let userObject = model as? UserModel else {
                 return (nil, .failure(errorMessage: "Could not cast model to userObject at getMyself()"))
             }
+            DispatchQueue.main.async {
+                appState.user = userObject
+            }
             return (userObject, .success)
         case .failure(_, _, let errorMessage):
             return (nil, .failure(errorMessage: errorMessage!))

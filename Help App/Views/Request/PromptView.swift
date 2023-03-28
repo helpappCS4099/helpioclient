@@ -10,6 +10,8 @@ import MapKit
 
 struct PromptView: View {
     
+    @EnvironmentObject var appState: AppState
+    
     var helpInteractor: HelpInteractor
     
     
@@ -41,21 +43,55 @@ struct PromptView: View {
     
     @StateObject var helpRequest: HelpRequestState
     
+    @Binding var showHelpRequestPrompt: Bool
+    
+    @State var showContent = true
+    
     func onAccept() {
-        withAnimation {
-            helpInteractor.acceptHelpRequest(firstName: helpRequest.myName(), helpRequestID: helpRequest.helpRequestID ?? "")
-            showHelpRequestPrompt = false
+//        DispatchQueue.main.async {
+//            withAnimation {
+//                showHelpRequestPrompt = false
+//            }
+//        }
+        showContent = false
+//        showHelpRequestPrompt = false
+        appState.showThumbnail = true
+        helpInteractor.acceptHelpRequest(firstName: helpRequest.myName(), helpRequestID: helpRequest.helpRequestID ?? "")
+        //workarund the bug in iOS 16: https://developer.apple.com/forums/thread/716310
+        if #available(iOS 16.0, *) {
+            let keyWindow = UIApplication.shared.connectedScenes
+                .filter { $0.activationState == .foregroundActive }
+                .first(where: { $0 is UIWindowScene })
+                .flatMap { $0 as? UIWindowScene }?.windows
+                .first(where: \.isKeyWindow)
+
+            if let window = keyWindow {
+                window.rootViewController?.presentedViewController?.dismiss(animated: true)
+            }
         }
     }
     
     func onReject() {
-        withAnimation {
-            helpInteractor.rejectHelpRequest(firstName: helpRequest.myName())
-            showHelpRequestPrompt = false
-        }
+//        DispatchQueue.main.async {
+//            withAnimation {
+//                showHelpRequestPrompt = false
+//            }
+//        }
+        showContent = false
+        showHelpRequestPrompt = false
+        helpInteractor.rejectHelpRequest(firstName: helpRequest.myName())
+//        if #available(iOS 16.0, *) {
+//            let keyWindow = UIApplication.shared.connectedScenes
+//                .filter { $0.activationState == .foregroundActive }
+//                .first(where: { $0 is UIWindowScene })
+//                .flatMap { $0 as? UIWindowScene }?.windows
+//                .first(where: \.isKeyWindow)
+//
+//            if let window = keyWindow {
+//                window.rootViewController?.presentedViewController?.dismiss(animated: true)
+//            }
+//        }
     }
-    
-    @Binding var showHelpRequestPrompt: Bool
     
     var body: some View {
         ZStack {
@@ -71,7 +107,7 @@ struct PromptView: View {
         .task {
             _ = getCurrentRegion()
         }
-        .transparentSheet(show: .constant(true), onDismiss: {}) {
+        .transparentSheet(show: $showContent, onDismiss: {}) {
             PromptContentView(detent: $detent,
                               onAccept: onAccept,
                               onReject: onReject)
@@ -346,9 +382,11 @@ struct MessagePreview: View {
 struct PromptView_Previews: PreviewProvider {
     static var previews: some View {
 //        PromptView(helpRequest: HelpRequestState(id: "6421ce2de057e10b6209e9b6"))
+        let di = Environment.bootstrapLoggedIn(currentPage: .home).diContainer
         PromptView(
-            helpInteractor: Environment.bootstrapLoggedIn(currentPage: .home).diContainer.interactors.help,
+            helpInteractor: di.interactors.help,
             helpRequest: HelpRequestState(),
             showHelpRequestPrompt: .constant(true))
+        .environmentObject(di.appState)
     }
 }

@@ -9,7 +9,13 @@ import Foundation
 
 //struct Use
 //response for user login user object
-struct UserModel: Codable, ResponseModel {
+struct UserModel: Codable, ResponseModel, Equatable {
+    
+    //trigger change for homepage / friends page
+    static func == (lhs: UserModel, rhs: UserModel) -> Bool {
+        return lhs.respondingCurrentHelpRequestID == rhs.respondingCurrentHelpRequestID || lhs.friends.count == rhs.friends.count
+    }
+    
     let userID: String
     let email: String
     let firstName: String

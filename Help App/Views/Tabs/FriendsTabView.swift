@@ -9,6 +9,8 @@ import SwiftUI
 
 struct FriendsTabView: View {
     
+    @EnvironmentObject var appState: AppState
+    
     var userInteractor: UserInteractor
     
     @State var queryString: String = ""
@@ -175,6 +177,13 @@ struct FriendsTabView: View {
                 friends = myUserObject.friends
             }
         }
+        .onChange(of: appState.user) { newValue in
+            //update friends
+            if let newValue {
+                user = newValue
+                friends = newValue.friends
+            }
+        }
     }
 }
 
@@ -183,5 +192,6 @@ struct FriendsTabView_Previews: PreviewProvider {
         let env = Environment.bootstrapLoggedIn(currentPage: .friends)
         
         FriendsTabView(userInteractor: env.diContainer.interactors.user)
+            .environmentObject(env.diContainer.appState)
     }
 }
