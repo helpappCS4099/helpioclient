@@ -314,8 +314,6 @@ struct MessagePreview: View {
                     .fontWeight(.bold)
                     .foregroundColor(.white)
                     .shadow(color: Color.black.opacity(0.3), radius: 5)
-                    .id(lastMessage.messageID)
-                    .matchedGeometryEffect(id: lastMessage.messageID, in: messageEffect)
             }
             .frame(width: geometry.size.height * 0.9, height: geometry.size.height * 0.9)
             .frame(maxHeight: 100)
@@ -344,6 +342,8 @@ struct MessagePreview: View {
                         .lineLimit(2)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .multilineTextAlignment(.leading)
+                        .id(lastMessage.messageID)
+                        .matchedGeometryEffect(id: lastMessage.messageID, in: messageEffect)
                     
                     Spacer()
                     

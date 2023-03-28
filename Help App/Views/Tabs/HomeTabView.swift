@@ -149,62 +149,68 @@ struct HomeTabView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                
-                Text(debugMessage)
-                
-                Map(coordinateRegion: $region,
-                    interactionModes: .all,
-                    showsUserLocation: true,
-                    userTrackingMode: $tracking)
-                    .edgesIgnoringSafeArea(.all)
-                    .scaleEffect(1.1)
-                    .opacity(0.5)
-                
-                VStack {
+            GeometryReader { geometry in
+                ZStack {
                     
-                    if appState.showThumbnail {
-                        ThumbnailView()
-                    }
+    //                Text(debugMessage)
                     
-                    Spacer()
+                    Map(coordinateRegion: $region,
+                        interactionModes: .all,
+                        showsUserLocation: true,
+                        userTrackingMode: $tracking)
+                        .edgesIgnoringSafeArea(.all)
+                        .scaleEffect(1.1)
+                        .opacity(appState.showThumbnail ? 0.3 : 0.5)
+                        .blur(radius: appState.showThumbnail ? 5 : 0)
                     
-                    Button {
-                        onAddHelpRequestTap()
-                    } label: {
-                        Text(isLoading ? "" : "Help Request")
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .frame(width: bounds.width - 60)
-                    }
-                    .buttonStyle(LargeRedButton(hasShadow: true))
-                    .overlay {
-                        //progress indicator
-                        if isLoading {
-                            ProgressView()
-                                .scaleEffect(1.5)
-                                
+                    VStack {
+                        
+                        if appState.showThumbnail {
+                            ThumbnailView(helpRequest: helpRequest, onTap: {
+                                showHelpRequestPrompt = true
+                            })
+                                .frame(width: geometry.size.width - 32, height: geometry.size.height * 0.5)
                         }
+                        
+                        Spacer()
+                        
+                        Button {
+                            onAddHelpRequestTap()
+                        } label: {
+                            Text(isLoading ? "" : "Help Request")
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .frame(width: bounds.width - 60)
+                        }
+                        .buttonStyle(LargeRedButton(hasShadow: true))
+                        .overlay {
+                            //progress indicator
+                            if isLoading {
+                                ProgressView()
+                                    .scaleEffect(1.5)
+                                    
+                            }
+                        }
+                        .padding()
                     }
-                    .padding()
+                    .navigationTitle("Help Requests")
                 }
-                .navigationTitle("Help Requests")
+                .sheet(isPresented: $showHelpRequestForm) {
+                    HelpRequestFormView(
+                        showHelpRequestForm: $showHelpRequestForm,
+                        availableFriends: $availableFriends,
+                        onCreateHelpRequest: onCreateHelpRequest
+                    )
+                        .interactiveDismissDisabled(true)
+                }
+                .sheet(isPresented: $showHelpRequestPrompt, content: {
+                    PromptView(helpInteractor: helpInteractor, helpRequest: helpRequest, showHelpRequestPrompt: $showHelpRequestPrompt)
+                        .environmentObject(appState)
+                        .interactiveDismissDisabled(true)
+                })
+                .alert(errorMessage, isPresented: $showError) {
+                    Button("Hide", role: .cancel) {}
             }
-            .sheet(isPresented: $showHelpRequestForm) {
-                HelpRequestFormView(
-                    showHelpRequestForm: $showHelpRequestForm,
-                    availableFriends: $availableFriends,
-                    onCreateHelpRequest: onCreateHelpRequest
-                )
-                    .interactiveDismissDisabled(true)
-            }
-            .sheet(isPresented: $showHelpRequestPrompt, content: {
-                PromptView(helpInteractor: helpInteractor, helpRequest: helpRequest, showHelpRequestPrompt: $showHelpRequestPrompt)
-                    .environmentObject(appState)
-                    .interactiveDismissDisabled(true)
-            })
-            .alert(errorMessage, isPresented: $showError) {
-                Button("Hide", role: .cancel) {}
             }
         }
         .task {
@@ -215,6 +221,7 @@ struct HomeTabView: View {
                 onUserChange(newUser)
             }
         }
+        .animation(.easeInOut, value: appState.showThumbnail)
     }
 }
 
