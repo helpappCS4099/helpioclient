@@ -47,6 +47,9 @@ struct PromptView: View {
     
     @State var showContent = true
     
+    @Binding var ownerAnnotation: [AnnotationItem]
+    @State var distance: String = ""
+    
     func onAccept() {
 //        DispatchQueue.main.async {
 //            withAnimation {
@@ -55,7 +58,6 @@ struct PromptView: View {
 //        }
         showContent = false
         appState.showThumbnail = true
-        //workarund the bug in iOS 16: https://developer.apple.com/forums/thread/716310
         showHelpRequestPrompt = false
         helpInteractor.acceptHelpRequest(firstName: helpRequest.myName(), helpRequestID: helpRequest.helpRequestID ?? "")
     }
@@ -67,19 +69,20 @@ struct PromptView: View {
 //            }
 //        }
         showContent = false
-        showHelpRequestPrompt = false
         helpInteractor.rejectHelpRequest(firstName: helpRequest.myName())
-//        if #available(iOS 16.0, *) {
-//            let keyWindow = UIApplication.shared.connectedScenes
-//                .filter { $0.activationState == .foregroundActive }
-//                .first(where: { $0 is UIWindowScene })
-//                .flatMap { $0 as? UIWindowScene }?.windows
-//                .first(where: \.isKeyWindow)
-//
-//            if let window = keyWindow {
-//                window.rootViewController?.presentedViewController?.dismiss(animated: true)
-//            }
-//        }
+        //workarund the bug in iOS 16: https://developer.apple.com/forums/thread/716310
+        if #available(iOS 16.0, *) {
+            let keyWindow = UIApplication.shared.connectedScenes
+                .filter { $0.activationState == .foregroundActive }
+                .first(where: { $0 is UIWindowScene })
+                .flatMap { $0 as? UIWindowScene }?.windows
+                .first(where: \.isKeyWindow)
+
+            if let window = keyWindow {
+                window.rootViewController?.presentedViewController?.dismiss(animated: true)
+            }
+        }
+        showHelpRequestPrompt = false
     }
     
     var body: some View {
@@ -87,11 +90,26 @@ struct PromptView: View {
             Map(coordinateRegion: $region,
                 interactionModes: .all,
                 showsUserLocation: true,
-                userTrackingMode: $tracking)
-                .edgesIgnoringSafeArea(.all)
+                userTrackingMode: $tracking,
+                annotationItems: ownerAnnotation,
+                annotationContent: { locationPoint in
+                MapAnnotation(coordinate: locationPoint.coordinate) {
+                    UserLocationPin(
+                        locationPoint: locationPoint,
+                        region: $region,
+                        distance: $distance,
+                        showDistanceMessage: .constant(false),
+                        isOwner: true
+                    )
+                }
+            }
+            )
+            .edgesIgnoringSafeArea(.all)
             
             stopwatch
                 .padding(.top)
+            
+            
         }
         .task {
             _ = getCurrentRegion()
@@ -111,6 +129,12 @@ struct PromptView: View {
                 .if(helpRequest.owner == nil) { config in
                     config.redacted(reason: .placeholder)
                 }
+        }
+        .onChange(of: ownerAnnotation) { newValue in
+            if let a = ownerAnnotation.last {
+                region = a.getMKMapRectRegion()
+                distance = a.getDistanceToUser()
+            }
         }
     }
     
@@ -189,24 +213,30 @@ struct PromptContentView: View {
                         }
                         .padding()
                         
-                        if !helpRequest.messages.isEmpty {
-                            GeometryReader { g in
-                                MessagePreview(geometry: g, messageEffect: _messageEffect, onTap: {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                        withAnimation {
-                                            detent = PresentationDetent.fraction(1)
-                                            showMessages = true
+                        GeometryReader { g in
+                            if !helpRequest.messages.isEmpty {
+                               
+                                    MessagePreview(geometry: g, messageEffect: _messageEffect, onTap: {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                            withAnimation {
+                                                detent = PresentationDetent.fraction(1)
+                                                showMessages = true
+                                            }
                                         }
-                                    }
-                                })
-                                .frame(height: g.size.height - 20)
-                                .padding([.leading, .trailing])
-                                .padding([.top, .bottom], 10)
+                                    })
+                                    .frame(height: g.size.height - 32)
+                                    .frame(maxHeight: 100)
+                                    .padding([.leading, .trailing])
+                                
+                            } else {
+                                NoMessagesView(canSend: false)
+                                    .frame(height: g.size.height - 32)
+                                    .frame(maxHeight: 100)
+                                    .padding([.leading, .trailing])
+                                    .padding([.top, .bottom], 10)
                             }
-                            .frame(maxHeight: 100)
-                        } else {
-                            Text("No messages yet")
                         }
+                        .frame(maxHeight: 100)
                     }
                 } else {
                     MessengerView(focused: .constant(false),
@@ -376,7 +406,7 @@ struct PromptView_Previews: PreviewProvider {
         PromptView(
             helpInteractor: di.interactors.help,
             helpRequest: HelpRequestState(),
-            showHelpRequestPrompt: .constant(true))
+            showHelpRequestPrompt: .constant(true), ownerAnnotation: .constant([]))
         .environmentObject(di.appState)
     }
 }

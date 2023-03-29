@@ -35,10 +35,23 @@ struct ThumbnailView: View {
     }
     
     @State var tracking : MapUserTrackingMode = .follow
-    @State var ownerAnnotation: [AnnotationItem] = []
-    @State var distance: String = ""
+    @Binding var ownerAnnotation: [AnnotationItem]
+    @Binding var distance: String
     
     @State var tapped: Bool = false
+    
+    func updateAnnotation() {
+        ownerAnnotation = [helpRequest.getOwnerMapItem()]
+        if let a = ownerAnnotation.last {
+            region = MKCoordinateRegion(
+                center: a.coordinate,
+                span: MKCoordinateSpan(
+                    latitudeDelta: 0.01,
+                    longitudeDelta: 0.01)
+            )
+            distance = a.getDistanceToUser()
+        }
+    }
     
     var body: some View {
         ZStack {
@@ -49,17 +62,15 @@ struct ThumbnailView: View {
                 userTrackingMode: $tracking,
                 annotationItems: ownerAnnotation,
                 annotationContent: { locationPoint in
-                MapAnnotation(coordinate: locationPoint.coordinate) {
-                    UserLocationPin(locationPoint: locationPoint, region: $region, distance: $distance, showDistanceMessage: .constant(false), isOwner: true)
+                    MapAnnotation(coordinate: locationPoint.coordinate) {
+                        UserLocationPin(locationPoint: locationPoint, region: $region, distance: $distance, showDistanceMessage: .constant(false), isOwner: true)
+                    }
                 }
-                
-            }
             )
                 .edgesIgnoringSafeArea(.all)
                 .onAppear {
                     if let location = ownerAnnotation.last {
-                        region = location.getMKMapRectRegion()
-                        distance = location.getDistanceToUser()
+                        updateAnnotation()
                     }
                 }
             
@@ -160,6 +171,9 @@ struct ThumbnailView: View {
                 ProgressView()
             }
         })
+        .onChange(of: ownerAnnotation, perform: { newValue in
+            updateAnnotation()
+        })
         .onTapGesture {
             tapped = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -194,7 +208,7 @@ struct ThumbnailView: View {
 
 struct ThumbnailView_Previews: PreviewProvider {
     static var previews: some View {
-        ThumbnailView(helpRequest: HelpRequestState())
+        ThumbnailView(helpRequest: HelpRequestState(), ownerAnnotation: .constant([]), distance: .constant("500m"))
             .frame(width: bounds.width - 32, height: 400)
     }
 }

@@ -48,6 +48,9 @@ struct HomeTabView: View {
     @StateObject var helpRequest: HelpRequestState = HelpRequestState(id: "")
     @State var showHelpRequestPrompt = false
     
+    @State var ownerAnnotation: [AnnotationItem] = []
+    @State var distance: String = ""
+    
     func pageVisitRoutine() async {
         //get user
         debugMessage = "fetching user"
@@ -72,6 +75,7 @@ struct HomeTabView: View {
             //open socket connection
             SocketInteractor.standard.onUpdate = { update in
                 helpRequest.updateFields(model: update)
+                ownerAnnotation = [helpRequest.getOwnerMapItem()]
                 if let respondent = update.respondents.first(where: {$0.userID == appState.userID}) {
                     switch respondent.status {
                     case -1:
@@ -168,7 +172,7 @@ struct HomeTabView: View {
                         if appState.showThumbnail {
                             ThumbnailView(helpRequest: helpRequest, onTap: {
                                 showHelpRequestPrompt = true
-                            })
+                            }, ownerAnnotation: $ownerAnnotation, distance: $distance)
                                 .frame(width: geometry.size.width - 32, height: geometry.size.height * 0.5)
                         }
                         
@@ -206,7 +210,7 @@ struct HomeTabView: View {
                 .interactiveDismissDisabled(true)
         }
         .sheet(isPresented: $showHelpRequestPrompt, content: {
-            PromptView(helpInteractor: helpInteractor, helpRequest: helpRequest, showHelpRequestPrompt: $showHelpRequestPrompt)
+            PromptView(helpInteractor: helpInteractor, helpRequest: helpRequest, showHelpRequestPrompt: $showHelpRequestPrompt, ownerAnnotation: $ownerAnnotation)
                 .environmentObject(appState)
                 .interactiveDismissDisabled(true)
         })
