@@ -22,8 +22,6 @@ struct AccountTabView: View {
     
     @State var colorTappedID: Int?
     
-    @State var pastHelpRequests: [HelpRequestModel] = []
-    
     var onLogOut: () -> Void = {}
     
     func queryAndPopulateUser() {
@@ -33,7 +31,7 @@ struct AccountTabView: View {
                 firstName = user.firstName
                 lastName = user.lastName
                 email = user.email
-                
+                colorScheme = user.colorScheme
             }
         }
     }
@@ -50,11 +48,11 @@ struct AccountTabView: View {
                             Spacer()
                                 .frame(height: 100)
                             
-                            Text("\(firstName) \(lastName)")
+                            Text("\(firstName ?? "firstName") \(lastName ?? "lastName")")
                                 .font(.title)
                                 .fontWeight(.medium)
                             
-                            Text(email)
+                            Text(email ?? "somemail@djskdsl.com")
                                 .font(.subheadline)
                                 .fontWeight(.light)
                             
@@ -82,15 +80,22 @@ struct AccountTabView: View {
                     }
                 }
                 .listRowInsets(EdgeInsets())
-                
-                Section(header: Text("Help Request History")) {
-                    Text("You have not yet had a help request.")
+                .if(firstName == nil) { config in
+                    config.redacted(reason: .placeholder)
                 }
+                
+//                Section(header: Text("Help Request History")) {
+//                    Text("You have not yet had a help request.")
+//                }
                 
                 Section(header: Text("Settings")) {
                     
                     centeredTextButton(text: "Permissions Settings", action: {
-                        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                        if let url = URL(string:UIApplication.openSettingsURLString) {
+                            if UIApplication.shared.canOpenURL(url) {
+                                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                            }
+                        }
                     })
                 }
                 
@@ -102,12 +107,12 @@ struct AccountTabView: View {
             
             }
             .refreshable {
-                //
+                queryAndPopulateUser()
             }
         }
         .task {
             //get user
-            
+            queryAndPopulateUser()
         }
     }
     
@@ -157,6 +162,6 @@ struct AccountTabView: View {
 
 struct AccountTabView_Previews: PreviewProvider {
     static var previews: some View {
-        AccountTabView(userInteractor: Environment.bootstrapLoggedIn(.friends).diContainer.interactors.user)
+        AccountTabView(userInteractor: Environment.bootstrapLoggedIn(currentPage: .friends).diContainer.interactors.user)
     }
 }

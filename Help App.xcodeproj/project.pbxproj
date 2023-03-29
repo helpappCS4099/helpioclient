@@ -51,6 +51,7 @@
 		5C56000629BF683D007CB3E2 /* FriendFormItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C56000529BF683D007CB3E2 /* FriendFormItemView.swift */; };
 		5C56534029C03A5D006E3F5E /* NoteFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C56533F29C03A5D006E3F5E /* NoteFormView.swift */; };
 		5C56FFFF29BF30B0007CB3E2 /* AppContentEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C56FFFE29BF30B0007CB3E2 /* AppContentEnums.swift */; };
+		5C63C69B29D48F0500FF2632 /* UserLocationPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C63C69A29D48F0500FF2632 /* UserLocationPin.swift */; };
 		5C6A8E6229C13CCD007C6D55 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6A8E6129C13CCD007C6D55 /* AudioRecorder.swift */; };
 		5C6A8E6429C2FD6F007C6D55 /* HelpRequestModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6A8E6329C2FD6F007C6D55 /* HelpRequestModels.swift */; };
 		5C6A8E6629C30990007C6D55 /* HelpWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6A8E6529C30990007C6D55 /* HelpWebRepository.swift */; };
@@ -169,6 +170,7 @@
 		5C56000529BF683D007CB3E2 /* FriendFormItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendFormItemView.swift; sourceTree = "<group>"; };
 		5C56533F29C03A5D006E3F5E /* NoteFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteFormView.swift; sourceTree = "<group>"; };
 		5C56FFFE29BF30B0007CB3E2 /* AppContentEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContentEnums.swift; sourceTree = "<group>"; };
+		5C63C69A29D48F0500FF2632 /* UserLocationPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationPin.swift; sourceTree = "<group>"; };
 		5C6A8E6129C13CCD007C6D55 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		5C6A8E6329C2FD6F007C6D55 /* HelpRequestModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpRequestModels.swift; sourceTree = "<group>"; };
 		5C6A8E6529C30990007C6D55 /* HelpWebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpWebRepository.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 				5CCBEF9B29D20C8400F81063 /* ThumbnailView.swift */,
 				5CB9FF9729CD901400D85FAD /* HelpRequestState.swift */,
 				5CB9FF9129CD423900D85FAD /* VictimHelpRequestView.swift */,
+				5C63C69A29D48F0500FF2632 /* UserLocationPin.swift */,
 				5CB9FF9329CD424700D85FAD /* RespondentHelpRequestView.swift */,
 				5C56000029BF41EA007CB3E2 /* FormComponents */,
 			);
@@ -671,6 +674,7 @@
 				5C2E4DE5298B35B3004A49B4 /* UISizes.swift in Sources */,
 				5C2E4DE8298B3E5F004A49B4 /* RootView.swift in Sources */,
 				5CC73AAE299DE4DC00654047 /* RepositoryResponse.swift in Sources */,
+				5C63C69B29D48F0500FF2632 /* UserLocationPin.swift in Sources */,
 				5CFE169D29951AF9001DF260 /* Interactors.swift in Sources */,
 				5C94796229A40E51006234E9 /* AuthFlowModels.swift in Sources */,
 				5CC73AB9299E04C900654047 /* Environment.swift in Sources */,

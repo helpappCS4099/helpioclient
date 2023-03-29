@@ -15,8 +15,8 @@ struct VictimHelpRequestView: View {
     
     @State var region: MKCoordinateRegion = MKCoordinateRegion(
         center: CLLocationCoordinate2D(
-            latitude: 40.83834587046632,
-            longitude: 14.254053016537693),
+            latitude: 56.340024,
+            longitude: -2.797745),
         span: MKCoordinateSpan(
             latitudeDelta: 0.03,
             longitudeDelta: 0.03)
@@ -41,13 +41,49 @@ struct VictimHelpRequestView: View {
     @State var showResolutionDialogue = false
     @State var showContent = false
     
+    @State var annotationItems: [AnnotationItem] = []
+    
+    @State var distance: String = ""
+    @State var showDistanceMessage = false
+    
     var body: some View {
         ZStack {
             Map(coordinateRegion: $region,
                 interactionModes: .all,
                 showsUserLocation: true,
-                userTrackingMode: $tracking)
+                userTrackingMode: $tracking,
+                annotationItems: annotationItems,
+                annotationContent: { locationPoint in
+                    MapAnnotation(coordinate: locationPoint.coordinate) {
+                    UserLocationPin(locationPoint: locationPoint,
+                                    region: $region,
+                                    distance: $distance,
+                                    showDistanceMessage: $showDistanceMessage,
+                                    victimView: true
+                                    )
+                    }
+                }
+            )
                 .edgesIgnoringSafeArea(.all)
+            
+            ZStack {
+                if showDistanceMessage {
+                    Button {
+                        //
+                    } label: {
+                        Text(distance)
+                            .foregroundColor(.adaptiveBlack)
+                    }
+                    .controlSize(.large)
+                    .buttonStyle(.bordered)
+                    .accentColor(.clear)
+                    .background(.ultraThinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .shadow(color: .black.opacity(0.3), radius: 10)
+                }
+
+            }
+            .animation(.easeInOut(duration: 1), value: showDistanceMessage)
             
             topRightCornerButtons
         }
@@ -81,6 +117,7 @@ struct VictimHelpRequestView: View {
             print("onAppear")
             #if !targetEnvironment(simulator)
             _ = getCurrentRegion()
+            annotationItems = helpRequest.getRespondentMapItems()
             guard let id = UserDefaults.standard.string(forKey: "helpRequestID") else {
                 print("user defauls sucks")
                 return
@@ -99,11 +136,15 @@ struct VictimHelpRequestView: View {
             }
             SocketInteractor.standard.onUpdate = { updatedModel in
                 helpRequest.updateFields(model: updatedModel)
+                annotationItems = helpRequest.getRespondentMapItems()
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                 showContent = true
                 detent = .fraction(0.45)
             }
+            #else
+            showContent = true
+            annotationItems = helpRequest.getRespondentMapItems()
             #endif
         }
 

@@ -50,7 +50,7 @@ struct ContentView: View {
                     }
                     .tag(AppTab.friends)
                 
-                AccountTabView(onLogOut: onLogOut, userInteractor: interactors.user)
+                AccountTabView(userInteractor: interactors.user, onLogOut: onLogOut)
                     .tabItem {
                         Label("Account", systemImage: "person.circle.fill")
                     }

@@ -16,8 +16,8 @@ struct ThumbnailView: View {
     
     @State var region: MKCoordinateRegion = MKCoordinateRegion(
         center: CLLocationCoordinate2D(
-            latitude: 40.83834587046632,
-            longitude: 14.254053016537693),
+            latitude: 56.340024,
+            longitude: -2.797745),
         span: MKCoordinateSpan(
             latitudeDelta: 0.03,
             longitudeDelta: 0.03)
@@ -35,6 +35,8 @@ struct ThumbnailView: View {
     }
     
     @State var tracking : MapUserTrackingMode = .follow
+    @State var ownerAnnotation: [AnnotationItem] = []
+    @State var distance: String = ""
     
     @State var tapped: Bool = false
     
@@ -44,8 +46,22 @@ struct ThumbnailView: View {
             Map(coordinateRegion: $region,
                 interactionModes: .all,
                 showsUserLocation: true,
-                userTrackingMode: $tracking)
+                userTrackingMode: $tracking,
+                annotationItems: ownerAnnotation,
+                annotationContent: { locationPoint in
+                MapAnnotation(coordinate: locationPoint.coordinate) {
+                    UserLocationPin(locationPoint: locationPoint, region: $region, distance: $distance, showDistanceMessage: .constant(false), isOwner: true)
+                }
+                
+            }
+            )
                 .edgesIgnoringSafeArea(.all)
+                .onAppear {
+                    if let location = ownerAnnotation.last {
+                        region = location.getMKMapRectRegion()
+                        distance = location.getDistanceToUser()
+                    }
+                }
             
             VStack {
                 stopwatch
@@ -87,7 +103,7 @@ struct ThumbnailView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     
                     HStack {
-                        Text("500m")
+                        Text(distance)
                     }
                     .frame(height: 40)
                     .padding([.leading, .trailing])
@@ -139,6 +155,11 @@ struct ThumbnailView: View {
         .scaleEffect(tapped ? 0.95: 1)
         .animation(.spring(), value: tapped)
         .contentShape(Rectangle())
+        .overlay(content: {
+            if helpRequest.owner == nil {
+                ProgressView()
+            }
+        })
         .onTapGesture {
             tapped = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {

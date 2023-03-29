@@ -19,8 +19,8 @@ struct RespondentHelpRequestView: View {
     //map states
     @State var region: MKCoordinateRegion = MKCoordinateRegion(
         center: CLLocationCoordinate2D(
-            latitude: 40.83834587046632,
-            longitude: 14.254053016537693),
+            latitude: 56.340876,
+            longitude: -2.800757),
         span: MKCoordinateSpan(
             latitudeDelta: 0.03,
             longitudeDelta: 0.03)
@@ -36,6 +36,8 @@ struct RespondentHelpRequestView: View {
         }
     }
     @State var tracking : MapUserTrackingMode = .follow
+    @State var annotations: [AnnotationItem] = []
+    @State var distanceToOwner: String = ""
     
     //page states
     @State var detent: PresentationDetent = .fraction(0.45)
@@ -57,7 +59,21 @@ struct RespondentHelpRequestView: View {
             Map(coordinateRegion: $region,
                 interactionModes: .all,
                 showsUserLocation: true,
-                userTrackingMode: $tracking)
+                userTrackingMode: $tracking,
+                annotationItems: annotations,
+                annotationContent: { coordinatePoint in
+                MapAnnotation(coordinate: coordinatePoint.coordinate) {
+                    UserLocationPin(
+                        locationPoint: coordinatePoint,
+                        region: $region,
+                        distance: $distanceToOwner,
+                        showDistanceMessage: .constant(false),
+                        victimView: false,
+                        isOwner: coordinatePoint.userID == helpRequest.owner?.userID
+                    )
+                }
+            }
+            )
                 .edgesIgnoringSafeArea(.all)
                 .onAppear {
                     detent = .fraction(0.45)
@@ -73,7 +89,14 @@ struct RespondentHelpRequestView: View {
         .transparentSheet(show: $showContent) {
             //ondismiss
         } content: {
-            RespondentHRContentView(helpInteractor: helpInteractor, detent: $detent)
+            RespondentHRContentView(helpInteractor: helpInteractor, detent: $detent, distance: $distanceToOwner, onUpdateLocation: {
+                let ownerRegion = helpRequest.getOwnerMapItem()
+                withAnimation {
+                    region = ownerRegion.getMKMapRectRegion()
+                    distanceToOwner = ownerRegion.getDistanceToUser()
+                }
+                
+            })
                 .environmentObject(helpRequest)
                 .presentationDetents(
                     undimmed: [.fraction(0.25), .fraction(0.45), .fraction(0.97), .fraction(1)],
@@ -106,6 +129,8 @@ struct RespondentHelpRequestView: View {
         .task {
             print("onappear")
             #if !targetEnvironment(simulator)
+            annotations = helpRequest.getAllMapItemsWithoutMe()
+            distanceToOwner = helpRequest.getOwnerMapItem().getDistanceToUser()
             _ = getCurrentRegion()
             guard let id = UserDefaults.standard.string(forKey: "helpRequestID") else {
                 print("user defauls sucks")
@@ -113,6 +138,8 @@ struct RespondentHelpRequestView: View {
             }
             SocketInteractor.standard.onUpdate = { updatedModel in
                 helpRequest.updateFields(model: updatedModel)
+                annotations = helpRequest.getAllMapItemsWithoutMe()
+                distanceToOwner = helpRequest.getOwnerMapItem().getDistanceToUser()
             }
             SocketInteractor.standard.onClose = {
                 helpInteractor.closeOnResolutionHelpRequest()
@@ -133,6 +160,9 @@ struct RespondentHelpRequestView: View {
                 showSheet()
                 detent = .fraction(0.45)
             }
+            #else
+            annotations = helpRequest.getAllMapItemsWithoutMe()
+            distanceToOwner = helpRequest.getOwnerMapItem().getDistanceToUser()
             #endif
         }
     }
@@ -206,6 +236,8 @@ struct RespondentHRContentView: View {
     var helpInteractor: HelpInteractor
     
     @Binding var detent: PresentationDetent
+    @Binding var distance: String
+    var onUpdateLocation: () -> Void = {}
     
     @State var showMessages: Bool = false
     @State var focused = false
@@ -242,9 +274,9 @@ struct RespondentHRContentView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             
                             Button {
-                                //sos
+                                onUpdateLocation()
                             } label: {
-                                Text("500m")
+                                Text(distance)
                             }
                             .buttonStyle(.bordered)
                             .controlSize(.large)
@@ -350,7 +382,9 @@ struct RespondentHelpRequestView_Previews: PreviewProvider {
         let di = Environment.bootstrapLoggedIn(currentPage: .home).diContainer
         RespondentHelpRequestView(
             helpInteractor: di.interactors.help,
-            helpRequest: HelpRequestState(id: "6423f2069b242284be3728b5", userID: "6408ecb25cdef284ddf7dd44"))
+//            helpRequest: HelpRequestState(id: "6423f2069b242284be3728b5", userID: "6408ecb25cdef284ddf7dd44")
+            helpRequest: HelpRequestState()
+        )
             .environmentObject(di.appState)
     }
 }
