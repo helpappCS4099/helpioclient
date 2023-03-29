@@ -9,10 +9,12 @@ import SwiftUI
 
 struct AccountTabView: View {
     
-    var firstName: String = "Artem"
-    var lastName: String = "Rakhmanov"
-    var email: String = "ar303@st-andrews.ac.uk"
-    var friendStatus: Int = 1
+    var userInteractor: UserInteractor
+    
+    @State var firstName: String?
+    @State var lastName: String?
+    @State var email: String?
+    @State var colorScheme: Int?
     
     let diameter: CGFloat = 150    //for circle
     
@@ -20,7 +22,21 @@ struct AccountTabView: View {
     
     @State var colorTappedID: Int?
     
+    @State var pastHelpRequests: [HelpRequestModel] = []
+    
     var onLogOut: () -> Void = {}
+    
+    func queryAndPopulateUser() {
+        Task {
+            let (user, _) = await userInteractor.getMyself()
+            if let user {
+                firstName = user.firstName
+                lastName = user.lastName
+                email = user.email
+                
+            }
+        }
+    }
     
     var body: some View {
         NavigationStack {
@@ -67,11 +83,6 @@ struct AccountTabView: View {
                 }
                 .listRowInsets(EdgeInsets())
                 
-                //account color
-                Section {
-                    accountColorSelection()
-                }
-                
                 Section(header: Text("Help Request History")) {
                     Text("You have not yet had a help request.")
                 }
@@ -79,7 +90,7 @@ struct AccountTabView: View {
                 Section(header: Text("Settings")) {
                     
                     centeredTextButton(text: "Permissions Settings", action: {
-                        
+                        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
                     })
                 }
                 
@@ -93,6 +104,10 @@ struct AccountTabView: View {
             .refreshable {
                 //
             }
+        }
+        .task {
+            //get user
+            
         }
     }
     
@@ -142,6 +157,6 @@ struct AccountTabView: View {
 
 struct AccountTabView_Previews: PreviewProvider {
     static var previews: some View {
-        AccountTabView()
+        AccountTabView(userInteractor: Environment.bootstrapLoggedIn(.friends).diContainer.interactors.user)
     }
 }

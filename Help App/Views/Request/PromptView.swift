@@ -54,21 +54,10 @@ struct PromptView: View {
 //            }
 //        }
         showContent = false
-//        showHelpRequestPrompt = false
         appState.showThumbnail = true
-        helpInteractor.acceptHelpRequest(firstName: helpRequest.myName(), helpRequestID: helpRequest.helpRequestID ?? "")
         //workarund the bug in iOS 16: https://developer.apple.com/forums/thread/716310
-        if #available(iOS 16.0, *) {
-            let keyWindow = UIApplication.shared.connectedScenes
-                .filter { $0.activationState == .foregroundActive }
-                .first(where: { $0 is UIWindowScene })
-                .flatMap { $0 as? UIWindowScene }?.windows
-                .first(where: \.isKeyWindow)
-
-            if let window = keyWindow {
-                window.rootViewController?.presentedViewController?.dismiss(animated: true)
-            }
-        }
+        showHelpRequestPrompt = false
+        helpInteractor.acceptHelpRequest(firstName: helpRequest.myName(), helpRequestID: helpRequest.helpRequestID ?? "")
     }
     
     func onReject() {
@@ -107,7 +96,7 @@ struct PromptView: View {
         .task {
             _ = getCurrentRegion()
         }
-        .transparentSheet(show: $showContent, onDismiss: {}) {
+        .transparentSheet(show: .constant(true), onDismiss: {}) {
             PromptContentView(detent: $detent,
                               onAccept: onAccept,
                               onReject: onReject)
@@ -309,13 +298,13 @@ struct MessagePreview: View {
             let lastMessage = helpRequest.messages.last!
             
             ZStack {
-                Text((helpRequest.owner?.firstName[0].uppercased() ?? "A") + (helpRequest.owner?.lastName[0].uppercased() ?? "B"))
+                Text(lastMessage.firstName[0].uppercased())
                     .font(.system(.title, design: .rounded))
                     .fontWeight(.bold)
                     .foregroundColor(.white)
                     .shadow(color: Color.black.opacity(0.3), radius: 5)
             }
-            .frame(width: geometry.size.height * 0.9, height: geometry.size.height * 0.9)
+            .frame(width: geometry.size.height * 0.8, height: geometry.size.height * 0.8)
             .frame(maxHeight: 100)
             .background(AccountGradient.getByID(id: helpRequest.owner?.colorScheme ?? 1))
             .clipShape(Circle())
@@ -325,7 +314,7 @@ struct MessagePreview: View {
                 HStack(alignment: .top) {
                     
                     Text(lastMessage.firstName)
-                        .font(.subheadline)
+                        .font(.headline)
                         .fontWeight(.bold)
                     
                     Spacer()
@@ -338,7 +327,7 @@ struct MessagePreview: View {
                 HStack(alignment: .top) {
                     
                     Text(lastMessage.body)
-                        .font(.body)
+                        .font(.subheadline)
                         .lineLimit(2)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .multilineTextAlignment(.leading)
@@ -361,7 +350,8 @@ struct MessagePreview: View {
             }
             .frame(maxWidth: .infinity)
         }
-        .padding()
+        .padding(10)
+        .frame(height: geometry.size.height)
         .background(.regularMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .opacity(tapped ? 0.5 : 1)

@@ -93,6 +93,20 @@ class HelpRequestState: ObservableObject {
         self.respondents = []
     }
     
+    init(id: String, userID: String) {
+        self.helpRequestID = id
+        self.myUserID = userID
+        self.owner = nil
+        self.messages = []
+        self.isResolved = nil
+        self.category = nil
+        self.currentStatus = nil
+        self.startTime = nil
+        self.endTime = nil
+        self.location = []
+        self.respondents = []
+    }
+    
     func updateFields(model: HelpRequestModel) {
         self.helpRequestID = model.helpRequestID
         self.owner = model.owner
@@ -115,6 +129,15 @@ class HelpRequestState: ObservableObject {
         }
     }
     
+    func mySurname() -> String {
+        if userIsOwner() {
+            return "Surname"
+        } else {
+            let index = respondentIndex()
+            return respondents[index].lastName
+        }
+    }
+    
     func myColorScheme() -> Int {
         if userIsOwner() {
             return owner?.colorScheme ?? 1
@@ -129,11 +152,21 @@ class HelpRequestState: ObservableObject {
     }
     
     func respondentIndex() -> Int {
+        if respondents.count == 0 {
+            return 0
+        }
         if let index = respondents.firstIndex(where: {$0.userID == myUserID}) {
             return index
         } else {
             return 0
         }
+    }
+    
+    func myStatus() -> Int {
+        if respondents.count == 0 {
+            return 0
+        }
+        return self.respondents[self.respondentIndex()].status
     }
     
     @Published var helpRequestID: String?

@@ -148,7 +148,7 @@ struct HomeTabView: View {
     }
     
     var body: some View {
-        NavigationStack {
+        NavigationView {
             GeometryReader { geometry in
                 ZStack {
                     
@@ -195,23 +195,23 @@ struct HomeTabView: View {
                     }
                     .navigationTitle("Help Requests")
                 }
-                .sheet(isPresented: $showHelpRequestForm) {
-                    HelpRequestFormView(
-                        showHelpRequestForm: $showHelpRequestForm,
-                        availableFriends: $availableFriends,
-                        onCreateHelpRequest: onCreateHelpRequest
-                    )
-                        .interactiveDismissDisabled(true)
-                }
-                .sheet(isPresented: $showHelpRequestPrompt, content: {
-                    PromptView(helpInteractor: helpInteractor, helpRequest: helpRequest, showHelpRequestPrompt: $showHelpRequestPrompt)
-                        .environmentObject(appState)
-                        .interactiveDismissDisabled(true)
-                })
-                .alert(errorMessage, isPresented: $showError) {
-                    Button("Hide", role: .cancel) {}
             }
-            }
+        }
+        .sheet(isPresented: $showHelpRequestForm) {
+            HelpRequestFormView(
+                showHelpRequestForm: $showHelpRequestForm,
+                availableFriends: $availableFriends,
+                onCreateHelpRequest: onCreateHelpRequest
+            )
+                .interactiveDismissDisabled(true)
+        }
+        .sheet(isPresented: $showHelpRequestPrompt, content: {
+            PromptView(helpInteractor: helpInteractor, helpRequest: helpRequest, showHelpRequestPrompt: $showHelpRequestPrompt)
+                .environmentObject(appState)
+                .interactiveDismissDisabled(true)
+        })
+        .alert(errorMessage, isPresented: $showError) {
+            Button("Hide", role: .cancel) {}
         }
         .task {
             await pageVisitRoutine()
@@ -221,6 +221,12 @@ struct HomeTabView: View {
                 onUserChange(newUser)
             }
         }
+        //workaround for reopened prompt
+        .onChange(of: showHelpRequestPrompt, perform: { newValue in
+            if appState.showHelpRequest && newValue == true {
+                showHelpRequestPrompt = false
+            }
+        })
         .animation(.easeInOut, value: appState.showThumbnail)
     }
 }

@@ -87,7 +87,9 @@ extension HelpInteractor: NewHelpRequestOperations {
         SocketInteractor.standard.acceptHelpRequest(userID: userID, firstName: firstName)
         appState.helpRequestID = helpRequestID
         appState.isRespondent = true
-        appState.showHelpRequest = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            appState.showHelpRequest = true
+        }
     }
     
     func rejectHelpRequest(firstName: String) {
@@ -95,7 +97,7 @@ extension HelpInteractor: NewHelpRequestOperations {
             print("no userID in accept")
             return
         }
-        
+        LocationTracker.standard.terminateLocationMonitoring()
         SocketInteractor.standard.rejectHelpRequest(userID: userID, firstName: firstName)
     }
     
@@ -115,6 +117,9 @@ extension HelpInteractor: NewHelpRequestOperations {
     
     //respondent on owner resolve
     func closeOnResolutionHelpRequest() {
-        
+        appState.helpRequestID = ""
+        appState.showHelpRequest = false
+        SocketInteractor.standard.breakConnections()
+        LocationTracker.standard.terminateLocationMonitoring()
     }
 }

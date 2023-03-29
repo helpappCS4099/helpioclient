@@ -79,6 +79,12 @@ extension SessionInteractor {
     func logOut() async -> OperationStatus {
         let response = await sessionWebRepository.logOutRequest()
         if response.status == 200 {
+            //reset user defaults
+            appState.showHelpRequest = false
+            appState.helpRequestID = ""
+            appState.userID = ""
+            appState.showThumbnail = false
+            appState.isRespondent = false
             //reset auth screen
             appState.auth = AuthState()
             appState.userIsLoggedIn = false

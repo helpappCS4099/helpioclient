@@ -18,6 +18,7 @@ final class SocketInteractor {
     var authPayload: [String: String] = [:]
     
     var onUpdate: (HelpRequestModel) -> Void = {_ in}
+    var onClose: () -> Void = {}
     
     func openSocket(for helpRequestID: String) {
         
@@ -67,12 +68,9 @@ final class SocketInteractor {
             print("close!")
             let isRespondent = UserDefaults.standard.bool(forKey: "isRespondent")
             
-            if isRespondent {
-                //
-            } else {
-                //owner
-                self.breakConnections()
-            }
+            self.breakConnections()
+            self.onClose()
+            self.onClose = {}
         }
         
         socket.connect(withPayload: authHeaderPayload)

@@ -313,7 +313,7 @@ struct RespondentsView: View {
             .frame(maxWidth: .infinity)
             .scaleEffect(isFolded ? 0 : 1)
             .opacity(isFolded ? 0 : 1)
-            .frame(height: isFolded ? 0 : geometry.size.height)
+            .frame(height: isFolded ? 0 : geometry.size.height, alignment: .top)
             .padding([.leading, .trailing])
             
         }
@@ -337,12 +337,7 @@ struct RespondentsView: View {
         }
         .padding()
         .frame(maxWidth: .infinity)
-        .if(colorScheme == .light, transform: { config in
-            config.background(.ultraThinMaterial)
-        })
-        .if(colorScheme == .dark, transform: { config in
-            config.background(Color.white.opacity(0.2))
-        })
+        .background(.regularMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(color: .black.opacity(0.16), radius: 17, x: 0, y: 2)
     }
@@ -370,12 +365,7 @@ struct RespondentsView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity)
-        .if(colorScheme == .light, transform: { config in
-            config.background(.ultraThinMaterial)
-        })
-        .if(colorScheme == .dark, transform: { config in
-            config.background(Color.white.opacity(0.2))
-        })
+        .background(.regularMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(color: .black.opacity(0.16), radius: 17, x: 0, y: 2)
     }
@@ -495,12 +485,22 @@ struct MessengerView: View {
                         .shadow(color: Color.black.opacity(0.3), radius: 5)
                 }
                 .frame(width: 25, height: 25)
-                .background(AccountGradient.getByID(id: message.colorScheme))
+                .background(helpRequest.owner?.userID == message.userID ?
+                            LinearGradient(colors: [.red], startPoint: .topLeading, endPoint: .bottomTrailing)
+                    :
+                    AccountGradient.getByID(id: message.colorScheme))
                 .clipShape(Circle())
             }
             
             
             VStack {
+                
+                Text(message.firstName)
+                    .font(.subheadline)
+                    .fontWeight(.bold)
+                    .padding(.leading, 10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
                 Text(message.body)
                     .font(.body)
                     .multilineTextAlignment(.leading)
@@ -526,7 +526,7 @@ struct MessengerView: View {
     @ViewBuilder func chatMessages() -> some View {
         ScrollView(showsIndicators: false) {
             ScrollViewReader { scroll in
-                LazyVStack {
+                LazyVStack(spacing: 5) {
                     Spacer().frame(height: 75)
                     
                     ForEach(helpRequest.messages, id: \.messageID) { message in
