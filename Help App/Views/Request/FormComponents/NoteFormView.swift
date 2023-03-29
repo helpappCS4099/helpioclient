@@ -101,6 +101,7 @@ struct NoteFormView: View {
                                     messages.append(message)
                                     message = ""
                                     onMessageSend()
+                                    hideKeyboard()
                                 }
                             }
                     }

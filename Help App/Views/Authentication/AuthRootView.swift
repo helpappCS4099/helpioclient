@@ -26,6 +26,8 @@ struct AuthRootView: View {
     
     @State var showPermissionsAlert = false
     
+    @State var showTutorial = false
+    
     var body: some View {
         GeometryReader { _ in
             VStack {
@@ -92,6 +94,10 @@ struct AuthRootView: View {
                     .padding(.bottom, 29)
                     .animation(.easeInOut(duration: 0.2))
             }
+            .sheet(isPresented: $showTutorial, content: {
+                OnboardingTutorialView(showTutorial: $showTutorial)
+                    .interactiveDismissDisabled(true)
+            })
             .contentShape(Rectangle())
             .onTapGesture {
                 focusedField = nil
@@ -121,6 +127,11 @@ struct AuthRootView: View {
                 }
             }
             .animation(.easeInOut(duration: 0.2))
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    showTutorial = true
+                }
+            }
         }
     }
     

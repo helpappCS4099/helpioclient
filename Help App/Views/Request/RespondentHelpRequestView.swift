@@ -78,6 +78,7 @@ struct RespondentHelpRequestView: View {
                 .onAppear {
                     detent = .fraction(0.45)
                     showContent = true
+                    startStopwatch()
                 }
             
             
@@ -126,9 +127,13 @@ struct RespondentHelpRequestView: View {
             showSheet()
             print("SHEET", showContent)
         }
+        .onDisappear {
+            stopStopwatch()
+        }
         .task {
             print("onappear")
             #if !targetEnvironment(simulator)
+            startStopwatch()
             annotations = helpRequest.getAllMapItemsWithoutMe()
             distanceToOwner = helpRequest.getOwnerMapItem().getDistanceToUser()
             _ = getCurrentRegion()
@@ -140,6 +145,7 @@ struct RespondentHelpRequestView: View {
                 helpRequest.updateFields(model: updatedModel)
                 annotations = helpRequest.getAllMapItemsWithoutMe()
                 distanceToOwner = helpRequest.getOwnerMapItem().getDistanceToUser()
+                startStopwatch()
             }
             SocketInteractor.standard.onClose = {
                 helpInteractor.closeOnResolutionHelpRequest()
@@ -209,15 +215,44 @@ struct RespondentHelpRequestView: View {
         .frame(maxWidth: .infinity, alignment: .trailing)
     }
     
+    @State var minutes: Int = 0
+    @State var seconds: Int = 0
+    @State var stopwatchString: String = ""
+    @State var timer: Timer?
+    
+    func startStopwatch() {
+        if let startIsoDate = helpRequest.startTime {
+            stopStopwatch()
+            (self.minutes, self.seconds) = Date.getTimerStartingPoint(isoDate: startIsoDate)
+            self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { t in
+                (self.minutes, self.seconds) = Date.addSecond(toMinutes: minutes, toSeconds: seconds)
+                stopwatchString = getStopwatchString()
+            }
+        }
+    }
+    
+    func stopStopwatch() {
+        self.timer?.invalidate()
+    }
+    
+    func getStopwatchString() -> String {
+        
+        let minutes = minutes.size == 1 ? String("0\(minutes)") : String(minutes)
+        let seconds = seconds.size == 1 ? String("0\(seconds)") : String(seconds)
+        
+        return minutes + ":" + seconds
+    }
+    
     private var stopwatch: some View {
         VStack(alignment: .trailing) {
             
             ZStack {
-                Text("00:01")
+                Text(stopwatchString)
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundColor(.red)
                     .padding()
+                    
             }
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 10))

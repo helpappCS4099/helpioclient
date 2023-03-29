@@ -53,6 +53,34 @@ struct ThumbnailView: View {
         }
     }
     
+    @State var minutes: Int = 0
+    @State var seconds: Int = 0
+    @State var stopwatchString: String = ""
+    @State var timer: Timer?
+    
+    func startStopwatch() {
+        if let startIsoDate = helpRequest.startTime {
+            stopStopwatch()
+            (self.minutes, self.seconds) = Date.getTimerStartingPoint(isoDate: startIsoDate)
+            self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { t in
+                (self.minutes, self.seconds) = Date.addSecond(toMinutes: minutes, toSeconds: seconds)
+                stopwatchString = getStopwatchString()
+            }
+        }
+    }
+    
+    func stopStopwatch() {
+        self.timer?.invalidate()
+    }
+    
+    func getStopwatchString() -> String {
+        
+        let minutes = minutes.size == 1 ? String("0\(minutes)") : String(minutes)
+        let seconds = seconds.size == 1 ? String("0\(seconds)") : String(seconds)
+        
+        return minutes + ":" + seconds
+    }
+    
     var body: some View {
         ZStack {
             //map
@@ -69,9 +97,13 @@ struct ThumbnailView: View {
             )
                 .edgesIgnoringSafeArea(.all)
                 .onAppear {
+                    startStopwatch()
                     if let location = ownerAnnotation.last {
                         updateAnnotation()
                     }
+                }
+                .onDisappear {
+                    stopStopwatch()
                 }
             
             VStack {
@@ -169,10 +201,14 @@ struct ThumbnailView: View {
         .overlay(content: {
             if helpRequest.owner == nil {
                 ProgressView()
+                    .onDisappear {
+                        startStopwatch()
+                    }
             }
         })
         .onChange(of: ownerAnnotation, perform: { newValue in
             updateAnnotation()
+            startStopwatch()
         })
         .onTapGesture {
             tapped = true
@@ -190,7 +226,7 @@ struct ThumbnailView: View {
         VStack(alignment: .trailing) {
             
             ZStack {
-                Text("00:01")
+                Text(stopwatchString)
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundColor(.red)

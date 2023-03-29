@@ -9,7 +9,7 @@ import Foundation
 
 enum PermissionDescription: Comparable, CaseIterable{
     
-    case notifications, location, microphone
+    case notifications, location
     
     var title: String {
         get {
@@ -18,8 +18,8 @@ enum PermissionDescription: Comparable, CaseIterable{
                 return "Critical Notifications"
             case .location:
                 return "Background Location"
-            case .microphone:
-                return "Microphone"
+//            case .microphone:
+//                return "Microphone"
             }
         }
     }
@@ -31,8 +31,8 @@ enum PermissionDescription: Comparable, CaseIterable{
                 return "If your friend requests help, this makes possible for you to  receive notifications even if your phone is on silent."
             case .location:
                 return "Share location with your friends in critical situations. The data is encrypted on the phone and is only visible to you or your friends."
-            case .microphone:
-                return "Share location with your friends in critical situations. The data is encrypted on the phone and is only visible to you or your friends."
+//            case .microphone:
+//                return "Share location with your friends in critical situations. The data is encrypted on the phone and is only visible to you or your friends."
             }
         }
     }
@@ -41,11 +41,11 @@ enum PermissionDescription: Comparable, CaseIterable{
         get {
             switch self {
             case .notifications:
-                return ""
+                return "app.badge"
             case .location:
-                return ""
-            case .microphone:
-                return ""
+                return "location.viewfinder"
+//            case .microphone:
+//                return ""
             }
         }
     }

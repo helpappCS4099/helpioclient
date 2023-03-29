@@ -34,14 +34,11 @@ struct PermissionsDescriptionView: View {
             }
             Spacer()
             
-            Image(imgName)
+            Image(systemName: imgName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 100, height: 100)
-                .overlay {
-                    Rectangle()
-                        .foregroundColor(.tertblue)
-                }
+                .foregroundColor(.red)
+                .frame(width: 60, height: 60)
         }
         .frame(maxWidth: .infinity)
     }
