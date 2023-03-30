@@ -127,7 +127,7 @@ struct PromptView: View {
                         region: $region,
                         distance: $distance,
                         showDistanceMessage: .constant(false),
-                        isOwner: true
+                        owner: helpRequest.owner != nil ? $helpRequest.owner : .constant(OwnerModel(userID: "", firstName: "", lastName: "", colorScheme: 1))
                     )
                 }
             }

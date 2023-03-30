@@ -28,11 +28,13 @@ final class LocationTracker: NSObject, ObservableObject, CLLocationManagerDelega
     var lastPushedLocation: CLLocation = .init(latitude: 0, longitude: 0)
     
     func startMonitoringLocation() {
+        lastPushedLocation = .init(latitude: 0, longitude: 0)
         cl.startUpdatingLocation()
     }
     
     func terminateLocationMonitoring() {
         cl.stopUpdatingLocation()
+        lastPushedLocation = .init(latitude: 0, longitude: 0)
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -64,7 +66,6 @@ final class LocationTracker: NSObject, ObservableObject, CLLocationManagerDelega
         }
         
         print("more than 5 meters diff, pushing!")
-        lastPushedLocation = location
         
         guard let socket = SocketInteractor.standard.socket, socket.status == .connected else {
             //rest api call fallback for background
@@ -73,5 +74,6 @@ final class LocationTracker: NSObject, ObservableObject, CLLocationManagerDelega
         }
     
         SocketInteractor.standard.pushLocation(longitude: location.coordinate.longitude, latitude: location.coordinate.latitude)
+        lastPushedLocation = location
     }
 }

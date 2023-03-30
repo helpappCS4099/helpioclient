@@ -165,25 +165,24 @@ class HelpRequestState: ObservableObject {
     }
     
     //display owner (for thumbnail & prompt)
-    func getOwnerMapItem() -> AnnotationItem {
+    func getOwnerMapItem() -> [AnnotationItem] {
         if let location = self.location.last {
-            return AnnotationItem(
+            return [AnnotationItem(
                 latitude: Double(location.latitude),
                 longitude: Double(location.longitude),
-                thumbnailLetters: (owner?.firstName[0].capitalized ?? "A") + (owner?.lastName[0].capitalized ?? "A"),
+                thumbnailLetters: (owner?.firstName[0].capitalized ?? "") + (owner?.lastName[0].capitalized ?? ""),
                 colorScheme: owner?.colorScheme ?? 1,
                 userID: owner?.userID ?? ""
-            )
+            )]
         } else {
-            return AnnotationItem(latitude: 56.33908399840691, longitude: -2.8002410057005633, thumbnailLetters: "AA", colorScheme: 1, userID: "djskldjslds")
+            return []
         }
         
     }
     
     //display all locations except self
     func getAllMapItemsWithoutMe() -> [AnnotationItem] {
-        var result: [AnnotationItem] = []
-        result.append(getOwnerMapItem())
+        var result: [AnnotationItem] = getOwnerMapItem()
         for respondent in respondents {
             if respondent.userID != myUserID {
                 if let lastLocationPoint = respondent.location.last {

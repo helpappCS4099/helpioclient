@@ -49,9 +49,8 @@ struct RespondentHelpRequestView: View {
     //other
     
     func showSheet() {
-        RunLoop.main.schedule {
-            showContent = true
-        }
+        showContent = true
+        print("SHEET2", showContent)
     }
     
     var body: some View {
@@ -68,17 +67,51 @@ struct RespondentHelpRequestView: View {
                         region: $region,
                         distance: $distanceToOwner,
                         showDistanceMessage: .constant(false),
-                        victimView: false,
-                        isOwner: coordinatePoint.userID == helpRequest.owner?.userID
+                        owner: helpRequest.owner != nil ? $helpRequest.owner : .constant(OwnerModel(userID: "", firstName: "", lastName: "", colorScheme: 1)),
+                        victimView: false
                     )
                 }
             }
             )
                 .edgesIgnoringSafeArea(.all)
                 .onAppear {
-                    detent = .fraction(0.45)
-                    showContent = true
                     startStopwatch()
+                }
+                .transparentSheet(show: $showContent) {
+                    //ondismiss
+                } content: {
+                    RespondentHRContentView(helpInteractor: helpInteractor, detent: $detent, distance: $distanceToOwner, onUpdateLocation: {
+                        if let ownerRegion = helpRequest.getOwnerMapItem().last {
+                            withAnimation {
+                                region = ownerRegion.getMKMapRectRegion()
+                                distanceToOwner = ownerRegion.getDistanceToUser()
+                            }
+                        }
+                    })
+                        .environmentObject(helpRequest)
+                        .presentationDetents(
+                            undimmed: [.fraction(0.25), .fraction(0.45), .fraction(0.97), .fraction(1)],
+                            largestUndimmed: .fraction(1),
+                            selection: $detent
+                        )
+                        .interactiveDismissDisabled(true)
+                        .background(Color.white.opacity(colorScheme == .light ? 0.5 : 0))
+                        .if(helpRequest.owner == nil) { config in
+                            config.redacted(reason: .placeholder)
+                        }
+                        .confirmationDialog("Close help request?",
+                                            isPresented: $showRejectDialogue) {
+                            Button("Reject help request", role: .destructive) {
+                                helpInteractor.rejectHelpRequest(firstName: helpRequest.myName())
+                                appState.showHelpRequest = false
+                            }
+                            Button("Cancel", role: .cancel) {
+                                DispatchQueue.main.async {
+                                    showRejectDialogue = false
+                                    showContent = true
+                                }
+                            }
+                        }
                 }
             
             
@@ -87,56 +120,16 @@ struct RespondentHelpRequestView: View {
             stopwatch
             
         }
-        .transparentSheet(show: $showContent) {
-            //ondismiss
-        } content: {
-            RespondentHRContentView(helpInteractor: helpInteractor, detent: $detent, distance: $distanceToOwner, onUpdateLocation: {
-                let ownerRegion = helpRequest.getOwnerMapItem()
-                withAnimation {
-                    region = ownerRegion.getMKMapRectRegion()
-                    distanceToOwner = ownerRegion.getDistanceToUser()
-                }
-                
-            })
-                .environmentObject(helpRequest)
-                .presentationDetents(
-                    undimmed: [.fraction(0.25), .fraction(0.45), .fraction(0.97), .fraction(1)],
-                    largestUndimmed: .fraction(1),
-                    selection: $detent
-                )
-                .interactiveDismissDisabled(true)
-                .background(Color.white.opacity(colorScheme == .light ? 0.5 : 0))
-                .if(helpRequest.owner == nil) { config in
-                    config.redacted(reason: .placeholder)
-                }
-                .confirmationDialog("Close help request?",
-                                    isPresented: $showRejectDialogue) {
-                    Button("Reject help request", role: .destructive) {
-                        helpInteractor.rejectHelpRequest(firstName: helpRequest.myName())
-                        appState.showHelpRequest = false
-                    }
-                    Button("Cancel", role: .cancel) {
-                        DispatchQueue.main.async {
-                            showRejectDialogue = false
-                            showContent = true
-                        }
-                    }
-                }
-        }
+        
         .onAppear {
-            showSheet()
-            print("SHEET", showContent)
-        }
-        .onDisappear {
-            stopStopwatch()
-        }
-        .task {
             print("onappear")
             #if !targetEnvironment(simulator)
             startStopwatch()
             annotations = helpRequest.getAllMapItemsWithoutMe()
-            distanceToOwner = helpRequest.getOwnerMapItem().getDistanceToUser()
-            _ = getCurrentRegion()
+            if let owner = helpRequest.getOwnerMapItem().last {
+                self.distanceToOwner = owner.getDistanceToUser()
+            }
+                _ = getCurrentRegion()
             guard let id = UserDefaults.standard.string(forKey: "helpRequestID") else {
                 print("user defauls sucks")
                 return
@@ -144,8 +137,11 @@ struct RespondentHelpRequestView: View {
             SocketInteractor.standard.onUpdate = { updatedModel in
                 helpRequest.updateFields(model: updatedModel)
                 annotations = helpRequest.getAllMapItemsWithoutMe()
-                distanceToOwner = helpRequest.getOwnerMapItem().getDistanceToUser()
+                if let owner = helpRequest.getOwnerMapItem().last {
+                    self.distanceToOwner = owner.getDistanceToUser()
+                }
                 startStopwatch()
+                showSheet()
             }
             SocketInteractor.standard.onClose = {
                 helpInteractor.closeOnResolutionHelpRequest()
@@ -168,9 +164,17 @@ struct RespondentHelpRequestView: View {
             }
             #else
             annotations = helpRequest.getAllMapItemsWithoutMe()
-            distanceToOwner = helpRequest.getOwnerMapItem().getDistanceToUser()
+            if let owner = helpRequest.getOwnerMapItem().last {
+                self.distanceToOwner = owner.getDistanceToUser()
+            }
             #endif
         }
+        .onDisappear {
+            stopStopwatch()
+        }
+//        .task {
+//
+//        }
     }
     
     private var topRightCornerButtons: some View {

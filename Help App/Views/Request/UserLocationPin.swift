@@ -15,6 +15,7 @@ struct UserLocationPin: View {
     @Binding var region: MKCoordinateRegion
     @Binding var distance: String
     @Binding var showDistanceMessage: Bool
+    @Binding var owner: OwnerModel?
     
     var victimView = true
     var isOwner = false
@@ -39,7 +40,7 @@ struct UserLocationPin: View {
             
             Rectangle()
                 .foregroundColor(.clear)
-                .background(isOwner ? LinearGradient(colors: [.red], startPoint: .top, endPoint: .bottom) : AccountGradient.getByID(id: locationPoint.colorScheme))
+                .background(owner?.userID == locationPoint.userID ? LinearGradient(colors: [.red], startPoint: .top, endPoint: .bottom) : AccountGradient.getByID(id: locationPoint.colorScheme))
                 .mask {
                     VStack(spacing: -3) {
                         Circle()
@@ -54,7 +55,7 @@ struct UserLocationPin: View {
                 .overlay {
                     
                     ZStack {
-                        if isOwner {
+                        if owner?.userID == locationPoint.userID {
                             ZStack {
                                 Circle().fill(.red.opacity(0.20)).frame(width: 60, height: 60).scaleEffect(self.animate ? 1 : 0)
                                 Circle().fill(.red.opacity(0.15)).frame(width: 70, height: 70).scaleEffect(self.animate ? 1 : 0)
@@ -84,7 +85,7 @@ struct UserLocationPin: View {
         .onTapGesture {
             withAnimation(.easeInOut(duration: 1)) {
                 region = locationPoint.getMKMapRectRegion()
-                if victimView || isOwner {
+                if victimView || owner?.userID == locationPoint.userID {
                     distance = locationPoint.getDistanceToUser()
                     showDistanceMessage = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 4) {

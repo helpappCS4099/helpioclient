@@ -59,6 +59,7 @@ struct VictimHelpRequestView: View {
                                     region: $region,
                                     distance: $distance,
                                     showDistanceMessage: $showDistanceMessage,
+                                    owner: $helpRequest.owner,
                                     victimView: true
                                     )
                     }

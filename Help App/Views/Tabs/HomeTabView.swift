@@ -75,7 +75,7 @@ struct HomeTabView: View {
             //open socket connection
             SocketInteractor.standard.onUpdate = { update in
                 helpRequest.updateFields(model: update)
-                ownerAnnotation = [helpRequest.getOwnerMapItem()]
+                ownerAnnotation = helpRequest.getOwnerMapItem()
                 if let respondent = update.respondents.first(where: {$0.userID == appState.userID}) {
                     switch respondent.status {
                     case -1:

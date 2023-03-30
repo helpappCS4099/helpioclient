@@ -41,7 +41,7 @@ struct ThumbnailView: View {
     @State var tapped: Bool = false
     
     func updateAnnotation() {
-        ownerAnnotation = [helpRequest.getOwnerMapItem()]
+        ownerAnnotation = helpRequest.getOwnerMapItem()
         if let a = ownerAnnotation.last {
             region = MKCoordinateRegion(
                 center: a.coordinate,
@@ -91,14 +91,14 @@ struct ThumbnailView: View {
                 annotationItems: ownerAnnotation,
                 annotationContent: { locationPoint in
                     MapAnnotation(coordinate: locationPoint.coordinate) {
-                        UserLocationPin(locationPoint: locationPoint, region: $region, distance: $distance, showDistanceMessage: .constant(false), isOwner: true)
+                        UserLocationPin(locationPoint: locationPoint, region: $region, distance: $distance, showDistanceMessage: .constant(false), owner: helpRequest.owner != nil ? $helpRequest.owner : .constant(OwnerModel(userID: "", firstName: "", lastName: "", colorScheme: 1)))
                     }
                 }
             )
                 .edgesIgnoringSafeArea(.all)
                 .onAppear {
                     startStopwatch()
-                    if let location = ownerAnnotation.last {
+                    if let _ = ownerAnnotation.last {
                         updateAnnotation()
                     }
                 }

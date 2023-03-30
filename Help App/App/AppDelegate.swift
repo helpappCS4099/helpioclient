@@ -93,20 +93,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationC
         case 1:
             environment?.diContainer.appState.currentPage = .home
         case 2:
-            //call to update user to prompt presentation of friend requests
-            Task {
-                await environment?.diContainer.interactors.user.getMyself()
-            }
             environment?.diContainer.appState.currentPage = .friends
         case 3:
             environment?.diContainer.appState.currentPage = .account
         case 4:
             //show prompt
             environment?.diContainer.appState.currentPage = .home
-            //call to update a user object in app state to prompt sheet / thumbnail presentation
-            Task {
-                await environment?.diContainer.interactors.user.getMyself()
-            }
         default:
             break
         }

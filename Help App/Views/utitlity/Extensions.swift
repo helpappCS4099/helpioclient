@@ -174,7 +174,7 @@ extension Date
         let now = Date()
         
         let minutes = now.minutes(from: date)
-        let seconds = now.seconds(from: date) % minutes
+        let seconds = minutes != 0 ? now.seconds(from: date) % minutes : 0
         
         return (minutes,seconds)
     }
