@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import Lottie
 
 extension AuthRootView {
     func verifyEmail() -> some View {
         VStack {
-            
+            LottieView()
+                .frame(width: bounds.width * 0.6)
         }
     }
 }

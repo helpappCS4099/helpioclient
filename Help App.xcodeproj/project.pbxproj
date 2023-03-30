@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C16CBAA29D553E200ADAF0D /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 5C16CBA929D553E200ADAF0D /* Lottie */; };
+		5C16CBAC29D553FD00ADAF0D /* emailAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 5C16CBAB29D553FD00ADAF0D /* emailAnimation.json */; };
+		5C16CBAE29D5545200ADAF0D /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C16CBAD29D5545200ADAF0D /* LottieView.swift */; };
 		5C27C0A329B8C3CF008C1A0B /* TouchVisualizer.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C27C0A229B8C3CE008C1A0B /* TouchVisualizer.xcframework */; };
 		5C27C0A429B8C3CF008C1A0B /* TouchVisualizer.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5C27C0A229B8C3CE008C1A0B /* TouchVisualizer.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5C27C0A729B8DC60008C1A0B /* UserWebRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C27C0A629B8DC60008C1A0B /* UserWebRepository.swift */; };
@@ -123,6 +126,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5C16CBAB29D553FD00ADAF0D /* emailAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = emailAnimation.json; sourceTree = "<group>"; };
+		5C16CBAD29D5545200ADAF0D /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		5C27C09D29B8C1AB008C1A0B /* TouchVisualizer.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TouchVisualizer.xcframework; path = "Help App/Carthage/Build/TouchVisualizer.xcframework"; sourceTree = "<group>"; };
 		5C27C0A229B8C3CE008C1A0B /* TouchVisualizer.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TouchVisualizer.xcframework; path = Carthage/Build/TouchVisualizer.xcframework; sourceTree = "<group>"; };
 		5C27C0A629B8DC60008C1A0B /* UserWebRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserWebRepository.swift; sourceTree = "<group>"; };
@@ -218,6 +223,7 @@
 			files = (
 				5C27C0A329B8C3CF008C1A0B /* TouchVisualizer.xcframework in Frameworks */,
 				5C37283829D0B07F00FF32D1 /* SocketIO in Frameworks */,
+				5C16CBAA29D553E200ADAF0D /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,6 +260,7 @@
 				5CB9FF9529CD431F00D85FAD /* TransparentSheet.swift */,
 				5CB9FF9929CE134400D85FAD /* UndimmedDetents.swift */,
 				5C2E4DDC298B2947004A49B4 /* Gradients.swift */,
+				5C16CBAD29D5545200ADAF0D /* LottieView.swift */,
 				5C2E4DDE298B299C004A49B4 /* Colors.swift */,
 				5C2E4DE0298B3075004A49B4 /* Fields.swift */,
 				5C2E4DE4298B35B3004A49B4 /* UISizes.swift */,
@@ -480,6 +487,7 @@
 		5CF827F229D4E5C80035A8DA /* AnimationAssets */ = {
 			isa = PBXGroup;
 			children = (
+				5C16CBAB29D553FD00ADAF0D /* emailAnimation.json */,
 			);
 			path = AnimationAssets;
 			sourceTree = "<group>";
@@ -525,6 +533,7 @@
 			name = "Help App";
 			packageProductDependencies = (
 				5C37283729D0B07F00FF32D1 /* SocketIO */,
+				5C16CBA929D553E200ADAF0D /* Lottie */,
 			);
 			productName = "Help App";
 			productReference = 5C50CBE82989A3CE008AEDA7 /* Help App.app */;
@@ -600,6 +609,7 @@
 			mainGroup = 5C50CBDF2989A3CE008AEDA7;
 			packageReferences = (
 				5C37283629D0B07F00FF32D1 /* XCRemoteSwiftPackageReference "socket" */,
+				5C16CBA829D553E200ADAF0D /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = 5C50CBE92989A3CE008AEDA7 /* Products */;
 			projectDirPath = "";
@@ -618,6 +628,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C50CBF32989A3D0008AEDA7 /* Preview Assets.xcassets in Resources */,
+				5C16CBAC29D553FD00ADAF0D /* emailAnimation.json in Resources */,
 				5C50CBF02989A3D0008AEDA7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -700,6 +711,7 @@
 				5C2E4DEF298B3EDA004A49B4 /* FriendsTabView.swift in Sources */,
 				5CC73AB0299DEB9100654047 /* URLSessionExtensions.swift in Sources */,
 				5C2E4DED298B3ECE004A49B4 /* HomeTabView.swift in Sources */,
+				5C16CBAE29D5545200ADAF0D /* LottieView.swift in Sources */,
 				5CF827F429D4E6920035A8DA /* OnboardingTutorialView.swift in Sources */,
 				5CB9FF9229CD423900D85FAD /* VictimHelpRequestView.swift in Sources */,
 				5C2F022529A6A89C0068A61B /* Extensions.swift in Sources */,
@@ -1057,6 +1069,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		5C16CBA829D553E200ADAF0D /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		5C37283629D0B07F00FF32D1 /* XCRemoteSwiftPackageReference "socket" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
@@ -1068,6 +1088,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		5C16CBA929D553E200ADAF0D /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5C16CBA829D553E200ADAF0D /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
 		5C37283729D0B07F00FF32D1 /* SocketIO */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5C37283629D0B07F00FF32D1 /* XCRemoteSwiftPackageReference "socket" */;
