@@ -70,6 +70,11 @@ struct HomeTabView: View {
     
     func queryHelpRequestStatusAndDisplay(user: UserModel) {
         if user.respondingCurrentHelpRequestID != "" {
+            //stop polling
+            pollingTimer?.invalidate()
+            pollingTimer = nil
+            appState.pollingEnabled = false
+            
             debugMessage = "user is responding to help request"
             helpRequest.helpRequestID = user.respondingCurrentHelpRequestID
             //open socket connection
@@ -151,6 +156,8 @@ struct HomeTabView: View {
         }
     }
     
+    @State var pollingTimer: Timer?
+    
     var body: some View {
         NavigationView {
             GeometryReader { geometry in
@@ -213,6 +220,12 @@ struct HomeTabView: View {
             PromptView(helpInteractor: helpInteractor, helpRequest: helpRequest, showHelpRequestPrompt: $showHelpRequestPrompt, ownerAnnotation: $ownerAnnotation)
                 .environmentObject(appState)
                 .interactiveDismissDisabled(true)
+        })
+        .onReceive(NotificationCenter.default.publisher(for: .onHelpRequestReceived), perform: { _ in
+            print("received")
+            Task {
+                await pageVisitRoutine()
+            }
         })
         .alert(errorMessage, isPresented: $showError) {
             Button("Hide", role: .cancel) {}

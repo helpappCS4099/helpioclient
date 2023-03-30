@@ -45,7 +45,8 @@ final class SocketInteractor {
         })
         
         socket.on(clientEvent: .error) { data, _ in
-            print(data)
+            print("CHECK", data[0])
+            self.onClose()
         }
         
         socket.on(clientEvent: .disconnect) { data, _ in

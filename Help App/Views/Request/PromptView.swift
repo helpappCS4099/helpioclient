@@ -58,8 +58,18 @@ struct PromptView: View {
 //        }
         showContent = false
         appState.showThumbnail = true
-        showHelpRequestPrompt = false
         helpInteractor.acceptHelpRequest(firstName: helpRequest.myName(), helpRequestID: helpRequest.helpRequestID ?? "")
+        if #available(iOS 16.0, *) {
+            let keyWindow = UIApplication.shared.connectedScenes
+                .filter { $0.activationState == .foregroundActive }
+                .first(where: { $0 is UIWindowScene })
+                .flatMap { $0 as? UIWindowScene }?.windows
+                .first(where: \.isKeyWindow)
+
+            if let window = keyWindow {
+                window.rootViewController?.presentedViewController?.dismiss(animated: true)
+            }
+        }
     }
     
     func onReject() {

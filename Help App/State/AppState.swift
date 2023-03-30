@@ -15,6 +15,12 @@ class AppState: ObservableObject {
         }
     }
     
+    @Published var pollingEnabled = UserDefaults.standard.bool(forKey: "pollingEnabled") {
+        didSet {
+            UserDefaults.standard.set(self.pollingEnabled, forKey: "pollingEnabled")
+        }
+    }
+    
     //extract to NavigationState? or this is extra?
     @Published var currentPage: AppTab = .home
     
@@ -58,6 +64,10 @@ class AppState: ObservableObject {
     
     init(auth: AuthState) {
         self.auth = auth
+    }
+    
+    func startPolling() {
+        
     }
     
     #if DEBUG

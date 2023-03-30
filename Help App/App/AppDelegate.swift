@@ -74,21 +74,15 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationC
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.banner, .sound, .badge])
-    }
-    
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        defer { completionHandler() }
+        print("hey, im a notification", notification.request.content)
         
-        guard response.actionIdentifier == UNNotificationDefaultActionIdentifier else {
-            return
-        }
-        
-        let payload = response.notification.request.content
+        let payload = notification.request.content
         
         guard let status = payload.userInfo["s"] as? Int else {
             print("no status")
             return
         }
+        environment?.diContainer.appState.pollingEnabled = false
         switch status {
         case 1:
             environment?.diContainer.appState.currentPage = .home
@@ -98,7 +92,42 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationC
             environment?.diContainer.appState.currentPage = .account
         case 4:
             //show prompt
+            NotificationCenter.default.post(name: .onHelpRequestReceived, object: nil)
+            print("sent")
+            self.environment?.diContainer.appState.currentPage = .home
+        default:
+            break
+        }
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        defer { completionHandler() }
+        
+        guard response.actionIdentifier == UNNotificationDefaultActionIdentifier else {
+            return
+        }
+        
+        print("hey, im a notification")
+        
+        let payload = response.notification.request.content
+        
+        guard let status = payload.userInfo["s"] as? Int else {
+            print("no status")
+            return
+        }
+        environment?.diContainer.appState.pollingEnabled = false
+        switch status {
+        case 1:
             environment?.diContainer.appState.currentPage = .home
+        case 2:
+            environment?.diContainer.appState.currentPage = .friends
+        case 3:
+            environment?.diContainer.appState.currentPage = .account
+        case 4:
+            //show prompt
+            NotificationCenter.default.post(name: .onHelpRequestReceived, object: nil)
+            print("sent")
+            self.environment?.diContainer.appState.currentPage = .home
         default:
             break
         }

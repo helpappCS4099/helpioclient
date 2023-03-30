@@ -194,3 +194,7 @@ extension Int {
         self == 0 ? 1 : Int(pow(10.0, floor(log10(abs(Double(self))))))
     }
 }
+
+extension NSNotification.Name {
+    static let onHelpRequestReceived = Notification.Name("onHelpRequestReceived")
+}
