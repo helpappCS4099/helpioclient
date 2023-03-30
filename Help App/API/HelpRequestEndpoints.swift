@@ -10,6 +10,8 @@ import Foundation
 enum HelpRequestEndpoint {
     case availableFriends
     case newHelpRequest(category: Int, messages: [String], respondents: [RespondentModel])
+    case sos(helpRequestID: String)
+    case location(helpRequestID: String, userID: String, latitude: Double, longitude: Double)
 }
 
 extension HelpRequestEndpoint: Endpoint {
@@ -18,6 +20,10 @@ extension HelpRequestEndpoint: Endpoint {
         case .availableFriends:
             return .get
         case .newHelpRequest( _, _, _):
+            return .post
+        case .sos(_):
+            return .get
+        case .location(_,_,_,_):
             return .post
         }
     }
@@ -32,6 +38,10 @@ extension HelpRequestEndpoint: Endpoint {
             return "helprequests/availableFriends"
         case .newHelpRequest( _, _, _):
             return "helprequests"
+        case .sos(let helpRequestID):
+            return "helprequests/\(helpRequestID)/sos"
+        case .location(let hid, let uid,_,_):
+            return "helprequests/\(hid)/\(uid)/location"
         }
     }
     
@@ -55,6 +65,13 @@ extension HelpRequestEndpoint: Endpoint {
                 "respondents" : respondents.map({ res in
                     return res.convertToDictionary()
                 })
+            ]
+        case .sos(_):
+            return [:]
+        case .location(_,_,let lat,let lgt):
+            return [
+                "latitude": lat,
+                "longitude": lgt
             ]
         }
     }

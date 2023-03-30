@@ -46,6 +46,26 @@ struct VictimHelpRequestView: View {
     @State var distance: String = ""
     @State var showDistanceMessage = false
     
+    @State var showSOSConfirmation = false
+    @State var showSOSError = false
+    
+    func onSendSOS() {
+        if let helpID = helpRequest.helpRequestID {
+            showSOSError = false
+            Task {
+                let status = await helpInteractor.sendSOS(helpRequestID: helpID)
+                if status {
+                    DispatchQueue.main.async {
+                        showSOSConfirmation = true
+                    }
+                } else {
+                    showSOSError = true
+                    showSOSConfirmation = true
+                }
+            }
+        }
+    }
+    
     var body: some View {
         ZStack {
             Map(coordinateRegion: $region,
@@ -91,7 +111,7 @@ struct VictimHelpRequestView: View {
         .transparentSheet(show: $showContent) {
             //onDismiss?
         } content: {
-            VictimHRContent(detent: $detent)
+            VictimHRContent(detent: $detent, onSOS: onSendSOS, showSOSConfirmation: $showSOSConfirmation, showSOSError: $showSOSError)
                 .environmentObject(helpRequest)
                 .presentationDetents(
                     undimmed: [.fraction(0.25), .fraction(0.45), .fraction(0.97), .fraction(1)],
@@ -198,6 +218,9 @@ struct VictimHelpRequestView: View {
 struct VictimHRContent: View {
     
     @Binding var detent: PresentationDetent
+    var onSOS: () -> Void = {}
+    @Binding var showSOSConfirmation: Bool
+    @Binding var showSOSError: Bool
     
     @EnvironmentObject var helpRequest: HelpRequestState
     
@@ -241,7 +264,7 @@ struct VictimHRContent: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             
                             Button {
-                                //sos
+                                onSOS()
                             } label: {
                                 Text("SOS")
                             }
@@ -295,11 +318,15 @@ struct VictimHRContent: View {
                 )
 
             }
+            .alert(showSOSError ? "Error occured" : "SOS was sent to all respondents.", isPresented: $showSOSConfirmation) {
+                Button("OK", role: .cancel) { }
+            }
             .onChange(of: detent) { newValue in
                 if newValue == .fraction(0.25) {
                     withAnimation(.linear(duration: 0.2)) {
                         isFolded = true
                         isExpanded = false
+                        showMessages = false
                     }
                 } else if newValue == .fraction(0.97) {
                     withAnimation {
@@ -310,6 +337,7 @@ struct VictimHRContent: View {
                     withAnimation {
                         isExpanded = false
                         isFolded = false
+                        showMessages = false
                     }
                 }
             }
@@ -636,46 +664,64 @@ struct MessageCapsuleView: View {
     }
     
     var body: some View {
-        ZStack {
-            TextField("Type Here", text: $message, axis: .horizontal)
-                .frame(height: 50)
-                .padding([.leading, .trailing])
-                .padding(.trailing, 100)
-                .focused($keyboard)
-                .onSubmit {
-                    sendMessage()
-                }
-            
-            //button
-            HStack {
-                Button {
-                    onToggleMessenger()
-                } label: {
-                    if showMessages {
-                        Text("Hide Chat")
-                    } else {
-                        Text("All Messages")
+        HStack {
+            ZStack {
+                TextField("Type Here", text: $message, axis: .horizontal)
+                    .frame(height: 50)
+                    .padding([.leading, .trailing])
+                    .padding(.trailing, 100)
+                    .focused($keyboard)
+                    .onSubmit {
+                        sendMessage()
                     }
+                
+                //button
+                HStack {
+                    Button {
+                        onToggleMessenger()
+                    } label: {
+                        if showMessages {
+                            Text("Hide Chat")
+                        } else {
+                            Text("All Messages")
+                        }
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.regular)
+                    .buttonBorderShape(.capsule)
+                    .tint(showMessages ? nil : Color.sysblue)
+                    .padding(.trailing, 10)
+                }
+                .frame(maxWidth: .infinity, alignment: .trailing)
+            }
+            .background(Color.white.opacity(colorScheme == .light ? 1 : 0.2))
+            .clipShape(RoundedRectangle(cornerRadius: 25))
+            .frame(minHeight: 50, maxHeight: 100)
+            .padding([.leading, .trailing])
+            .onChange(of: keyboard) { newValue in
+                keyboard = newValue
+                focused = newValue
+                if newValue == true && !showMessages {
+                    onToggleMessenger()
+                }
+            }
+            
+            if !message.isEmpty {
+                Button {
+                    sendMessage()
+                } label: {
+                    Image(systemName: "arrow.up")
                 }
                 .buttonStyle(.borderedProminent)
-                .controlSize(.regular)
+                .tint(.sysblue)
                 .buttonBorderShape(.capsule)
-                .tint(showMessages ? Color.orange : Color.sysblue)
-                .padding(.trailing, 10)
+                .controlSize(.regular)
+                .padding([.trailing])
+                .padding(.leading, -10)
             }
-            .frame(maxWidth: .infinity, alignment: .trailing)
+            
         }
-        .background(Color.white.opacity(colorScheme == .light ? 1 : 0.2))
-        .clipShape(RoundedRectangle(cornerRadius: 25))
-        .frame(minHeight: 50, maxHeight: 100)
-        .padding([.leading, .trailing])
-        .onChange(of: keyboard) { newValue in
-            keyboard = newValue
-            focused = newValue
-            if newValue == true && !showMessages {
-                onToggleMessenger()
-            }
-        }
+        .animation(.easeInOut, value: message)
     }
 }
 

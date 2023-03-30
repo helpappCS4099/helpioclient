@@ -69,7 +69,16 @@ final class LocationTracker: NSObject, ObservableObject, CLLocationManagerDelega
         
         guard let socket = SocketInteractor.standard.socket, socket.status == .connected else {
             //rest api call fallback for background
-            
+            let helpWR = HelpWebRepository()
+            Task {
+                guard let hrid = UserDefaults.standard.string(forKey: "helpRequestID"), let uid = UserDefaults.standard.string(forKey: "userID") else {
+                    print("no data")
+                    return
+                }
+                print("pushing rest?")
+                let _ = await helpWR.pushLocationRequest(helpRequestID: hrid, userID: uid, latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+                lastPushedLocation = location
+            }
             return
         }
     

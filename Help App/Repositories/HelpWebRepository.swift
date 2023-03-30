@@ -48,6 +48,23 @@ extension HelpWebRepository: NewHelpRequestProtocol {
         }
     }
     
+    func pushLocationRequest(helpRequestID: String, userID: String, latitude: Double, longitude: Double) async -> RepositoryResponse {
+        do {
+            let endpoint = HelpRequestEndpoint.location(helpRequestID: helpRequestID, userID: userID, latitude: latitude, longitude: longitude)
+            let (_, _) = try await makeServerRequest(endpoint: endpoint, session: session)
+            
+            return .success(status: 200)
+            
+        } catch let error as APIError {
+            print(error)
+            return RepositoryResponse.failure(status: error.status, errorMessage: "API ERROR + \(error.status)")
+        } catch {
+            print(error)
+            return RepositoryResponse.failure(status: 1000,
+                                              errorMessage: "Investigate unexpected error at availableUsersRequest")
+        }
+    }
+    
     func availableUsersRequest() async -> RepositoryResponse {
         do {
             let endpoint = HelpRequestEndpoint.availableFriends
@@ -69,5 +86,21 @@ extension HelpWebRepository: NewHelpRequestProtocol {
         }
     }
     
+    func sosRequest(helpRequestID: String) async -> RepositoryResponse {
+        do {
+            let endpoint = HelpRequestEndpoint.sos(helpRequestID: helpRequestID)
+            let (responseData, error) = try await makeServerRequest(endpoint: endpoint, session: session)
+            
+            return .success(status: 200)
+            
+        } catch let error as APIError {
+            print(error)
+            return RepositoryResponse.failure(status: error.status, errorMessage: "API ERROR + \(error.status)")
+        } catch {
+            print(error)
+            return RepositoryResponse.failure(status: 1000,
+                                              errorMessage: "Investigate unexpected error at availableUsersRequest")
+        }
+    }
     
 }

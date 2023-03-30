@@ -32,7 +32,7 @@ final class SocketInteractor {
         let authHeaderPayload: [String: String] = ["token": jwt]
         authPayload = authHeaderPayload
 //        let manager = SocketManager(socketURL: url, config: [.log(true), .forcePolling(false), .forceWebsockets(true)])
-        manager = SocketManager(socketURL: base, config: [.log(true), .forcePolling(false), .forceWebsockets(true)])
+        manager = SocketManager(socketURL: base, config: [.log(true), .secure(true)])
         socket = manager?.socket(forNamespace: "/ws/helprequests/" + helpRequestID)
         guard let socket = socket else {
             print("socket was nil")

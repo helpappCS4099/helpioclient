@@ -164,6 +164,7 @@ struct RespondentHelpRequestView: View {
             }
             #else
             annotations = helpRequest.getAllMapItemsWithoutMe()
+            showSheet()
             if let owner = helpRequest.getOwnerMapItem().last {
                 self.distanceToOwner = owner.getDistanceToUser()
             }
@@ -409,6 +410,14 @@ struct RespondentHRContentView: View {
                             focused: $focused
                         )
                     }
+                }
+            }
+            .onChange(of: detent) { newValue in
+                switch newValue {
+                case .fraction(0.25), .fraction(0.45):
+                    showMessages = false
+                default:
+                    break
                 }
             }
         }

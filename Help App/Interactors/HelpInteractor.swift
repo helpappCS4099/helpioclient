@@ -101,6 +101,16 @@ extension HelpInteractor: NewHelpRequestOperations {
         SocketInteractor.standard.rejectHelpRequest(userID: userID, firstName: firstName)
     }
     
+    func sendSOS(helpRequestID: String) async -> Bool{
+        let sosResponse = await helpWebRepository.sosRequest(helpRequestID: helpRequestID)
+        switch sosResponse.status {
+        case 200:
+            return true
+        default:
+            return false
+        }
+    }
+    
     //owner
     func resolveHelpRequest() {
         //socket method
