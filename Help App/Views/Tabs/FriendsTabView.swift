@@ -114,6 +114,7 @@ struct FriendsTabView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .listRowInsets(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
+                        
                         }
                     }
                     .refreshable {
@@ -167,7 +168,6 @@ struct FriendsTabView: View {
             }
             
         }
-        .searchable(text: $queryString)
         .task {
             //get a user object and fill in friends
             let (myUserObject, opStatus) = await userInteractor.getMyself()

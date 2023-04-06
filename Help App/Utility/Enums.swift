@@ -31,6 +31,7 @@ enum AppTab {
 }
 
 enum AuthScreen {
+    
     case landing, login, signup_credentials, signup_name, verification, persmissions
     
     var headerTitle: String {

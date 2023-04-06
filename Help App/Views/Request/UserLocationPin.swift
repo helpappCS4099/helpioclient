@@ -36,6 +36,11 @@ struct UserLocationPin: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 10,height: 10)
+                
+                Spacer().frame(height: 10)
+                
+                Circle()
+                    .frame(width: 5, height: 5)
             }
             
             Rectangle()
@@ -49,6 +54,11 @@ struct UserLocationPin: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 10,height: 10)
+                        
+                        Spacer().frame(height: 10)
+                        
+                        Circle()
+                            .frame(width: 5, height: 5)
                     }
                 }
                 .zIndex(4)
@@ -74,7 +84,7 @@ struct UserLocationPin: View {
                             .zIndex(5)
                             
                     }
-                    .offset(y: -4)
+                    .offset(y: -8)
                 }
                 .shadow(color: .black.opacity(0.15), radius: 10)
             

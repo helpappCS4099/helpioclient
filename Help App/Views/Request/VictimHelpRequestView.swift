@@ -49,6 +49,8 @@ struct VictimHelpRequestView: View {
     @State var showSOSConfirmation = false
     @State var showSOSError = false
     
+    @State var enlargeResolution = false
+    
     func onSendSOS() {
         if let helpID = helpRequest.helpRequestID {
             showSOSError = false
@@ -74,7 +76,7 @@ struct VictimHelpRequestView: View {
                 userTrackingMode: $tracking,
                 annotationItems: annotationItems,
                 annotationContent: { locationPoint in
-                    MapAnnotation(coordinate: locationPoint.coordinate) {
+                MapAnnotation(coordinate: locationPoint.coordinate, anchorPoint: CGPoint(x:0.5, y:1.0)) {
                     UserLocationPin(locationPoint: locationPoint,
                                     region: $region,
                                     distance: $distance,
@@ -158,6 +160,13 @@ struct VictimHelpRequestView: View {
             SocketInteractor.standard.onUpdate = { updatedModel in
                 helpRequest.updateFields(model: updatedModel)
                 annotationItems = helpRequest.getRespondentMapItems()
+                if let minDistance = annotationItems.map({ $0.getDistance() }).min() {
+                    if minDistance <= 50 {
+                        enlargeResolution = true
+                    } else {
+                        enlargeResolution = false
+                    }
+                }
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                 showContent = true
@@ -182,9 +191,15 @@ struct VictimHelpRequestView: View {
                         showResolutionDialogue = true
                     }
                 } label: {
-                    Image(systemName: "xmark")
-                        .font(.system(size: 28, weight: .light))
-                        .tint(colorScheme == .light ? .gray : .white)
+                    if enlargeResolution {
+                        Text("I am safe")
+                            .font(.body)
+                            .tint(.green)
+                    } else {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 28, weight: .light))
+                            .tint(colorScheme == .light ? .gray : .white)
+                    }
                 }
                 .padding(8)
                 .frame(height: 55)
@@ -205,13 +220,14 @@ struct VictimHelpRequestView: View {
             }
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 7))
-            .frame(width: 50)
+            .frame(width: enlargeResolution ? 100 : 50)
             .frame(maxHeight: 120)
             .padding(.trailing)
             
             Spacer()
         }
         .frame(maxWidth: .infinity, alignment: .trailing)
+        .animation(.easeInOut, value: enlargeResolution)
     }
 }
 

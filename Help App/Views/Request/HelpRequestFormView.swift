@@ -56,14 +56,22 @@ struct HelpRequestFormView: View {
         progress = .note
     }
     
+    @State var loading = false
+    
     func createHelpRequest() {
+        if loading {return}
+        loading = true
         let impact = UIImpactFeedbackGenerator(style: .heavy)
         impact.impactOccurred()
         if selectedFriendIDS.isEmpty {
             //illegal
             errorMessage = "You need to select at least one friend"
             showError = true
+            loading = false
             return
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            loading = false
         }
         onCreateHelpRequest(selectedCriticalSituation.categoryCode, availableFriends, selectedFriendIDS, messages)
     }
@@ -184,9 +192,13 @@ struct HelpRequestFormView: View {
                                 break
                             }
                         } label: {
-                            Text(progress == .note ? "Get Help" : "Continue")
-                                .font(.title)
-                                .fontWeight(.bold)
+                            if loading {
+                                ProgressView()
+                            } else {
+                                Text(progress == .note ? "Get Help" : "Continue")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                            }
                         }
                         .buttonStyle(FormAccessibleButton(isRed: $redButton))
                         .padding(.bottom, 5)

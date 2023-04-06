@@ -90,7 +90,7 @@ struct ThumbnailView: View {
                 userTrackingMode: $tracking,
                 annotationItems: ownerAnnotation,
                 annotationContent: { locationPoint in
-                    MapAnnotation(coordinate: locationPoint.coordinate) {
+                    MapAnnotation(coordinate: locationPoint.coordinate, anchorPoint: CGPoint(x:0.5, y:1.0)) {
                         UserLocationPin(locationPoint: locationPoint, region: $region, distance: $distance, showDistanceMessage: .constant(false), owner: helpRequest.owner != nil ? $helpRequest.owner : .constant(OwnerModel(userID: "", firstName: "", lastName: "", colorScheme: 1)))
                     }
                 }

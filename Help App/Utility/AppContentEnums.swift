@@ -9,6 +9,12 @@ import SwiftUI
 
 enum CriticalSituation: String, CaseIterable, Identifiable {
     
+    case trauma = "Trauma"
+    case assault = "Assault"
+    case stalking = "Stalking"
+    case intoxication = "Intoxication"
+    case spiking = "Spiking"
+    
     init(code: Int) {
         switch code {
         case 0: self = .trauma
@@ -25,13 +31,6 @@ enum CriticalSituation: String, CaseIterable, Identifiable {
             return UUID()
         }
     }
-    
-    
-    case trauma = "Trauma"
-    case assault = "Assault"
-    case stalking = "Stalking"
-    case intoxication = "Intoxication"
-    case spiking = "Spiking"
     
     var color: Color {
         get {

@@ -307,4 +307,13 @@ class AnnotationItem: Identifiable, Equatable {
             return ""
         }
     }
+    
+    func getDistance() -> Int {
+        if let userLocation = LocationTracker.standard.cl.location {
+            let pointLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            return Int(pointLocation.distance(from: userLocation))
+        } else {
+            return 100
+        }
+    }
 }

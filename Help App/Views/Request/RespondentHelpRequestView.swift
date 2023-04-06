@@ -61,7 +61,7 @@ struct RespondentHelpRequestView: View {
                 userTrackingMode: $tracking,
                 annotationItems: annotations,
                 annotationContent: { coordinatePoint in
-                MapAnnotation(coordinate: coordinatePoint.coordinate) {
+                MapAnnotation(coordinate: coordinatePoint.coordinate, anchorPoint: CGPoint(x:0.5, y:1.0)) {
                     UserLocationPin(
                         locationPoint: coordinatePoint,
                         region: $region,

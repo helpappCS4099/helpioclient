@@ -35,6 +35,15 @@ struct PromptView: View {
         }
     }
     
+    func onUpdateLocation() {
+        if let ownerRegion = helpRequest.getOwnerMapItem().last {
+            withAnimation {
+                region = ownerRegion.getMKMapRectRegion()
+                distance = ownerRegion.getDistanceToUser()
+            }
+        }
+    }
+    
     @State var tracking : MapUserTrackingMode = .follow
     
     @State var detent: PresentationDetent = .fraction(0.45)
@@ -131,7 +140,7 @@ struct PromptView: View {
                 userTrackingMode: $tracking,
                 annotationItems: ownerAnnotation,
                 annotationContent: { locationPoint in
-                MapAnnotation(coordinate: locationPoint.coordinate) {
+                MapAnnotation(coordinate: locationPoint.coordinate, anchorPoint: CGPoint(x:0.5, y:1.0)) {
                     UserLocationPin(
                         locationPoint: locationPoint,
                         region: $region,
@@ -161,7 +170,10 @@ struct PromptView: View {
         .transparentSheet(show: .constant(true), onDismiss: {}) {
             PromptContentView(detent: $detent,
                               onAccept: onAccept,
-                              onReject: onReject)
+                              onReject: onReject,
+                              distance: $distance,
+                              onUpdateLocation: onUpdateLocation
+            )
                 .environmentObject(helpRequest)
                 .presentationDetents(
                     undimmed: [.fraction(0.45), .fraction(1)],
@@ -215,6 +227,9 @@ struct PromptContentView: View {
     var onAccept: () -> Void = {}
     var onReject: () -> Void = {}
     
+    @Binding var distance: String
+    var onUpdateLocation: () -> Void = {}
+    
     var body: some View {
         GeometryReader { geometry in
             VStack {
@@ -247,9 +262,9 @@ struct PromptContentView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             
                             Button {
-                                //sos
+                                _ = onUpdateLocation()
                             } label: {
-                                Text("500m")
+                                Text(distance)
                             }
                             .buttonStyle(.bordered)
                             .controlSize(.large)
